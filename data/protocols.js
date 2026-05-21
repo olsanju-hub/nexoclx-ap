@@ -482,26 +482,26 @@ window.NEXO_PROTOCOLS = [
   },
   {
     id: 'tos',
-    title: 'Tos en Atención Primaria',
+    title: 'Infección respiratoria aguda / tos aguda',
     category: 'Respiratorio',
     type: 'Síndrome',
-    focus: 'síndrome',
-    keywords: ['tos', 'bronquitis', 'asma', 'EPOC', 'IECA', 'reflujo', 'rinitis', 'neumonía', 'hemoptisis'],
-    synonyms: ['tos aguda', 'tos crónica', 'tos postinfecciosa'],
+    focus: 'síndrome agudo / tratamiento antimicrobiano',
+    keywords: ['tos', 'catarro', 'bronquitis', 'infección respiratoria', 'mocos', 'fiebre', 'neumonía', 'antibiótico', 'hemoptisis'],
+    synonyms: ['ira', 'infección respiratoria aguda', 'resfriado', 'infección respiratoria alta', 'bronquitis aguda', 'tos aguda'],
     reviewed: '2026-05-21',
-    mainSource: 'NICE NG120; ERS chronic cough guidelines',
+    mainSource: 'NICE NG120: Cough acute antimicrobial prescribing',
     confidence: 'alto',
     meds: ['doxiciclina', 'amoxicilina'],
     calculators: [],
-    bibliography: ['nice-ng120', 'ers-cough-2019'],
+    bibliography: ['nice-ng120'],
     blocks: [
       {
         title: 'Qué hacer ahora',
         items: [
-          'Empezar como síntoma, no como infección: duración, características, fiebre, disnea, dolor torácico, hemoptisis, saturación, tabaquismo, fármacos IECA, exposición laboral, reflujo/rinitis, asma/EPOC e inmunosupresión.',
-          'Clasificar: aguda <3 semanas; subaguda 3-8 semanas; crónica >8 semanas en adultos.',
-          'Alarmas inmediatas: disnea importante, SatO2 baja, dolor torácico, hemoptisis, fiebre persistente o mal estado general, pérdida de peso, sospecha neumonía, TEP, insuficiencia cardiaca, inmunosupresión o tabaquismo con síntomas persistentes.',
-          'Exploración mínima: constantes, SatO2, auscultación, ORL si rinorrea/goteo, signos de IC/TEP, medicación y exposición.'
+          'Confirmar que es un cuadro agudo: catarro/IRA alta, tos aguda o bronquitis aguda. Duración habitual de tos: hasta 3-4 semanas.',
+          'Datos mínimos: días de evolución, fiebre, disnea, dolor torácico, hemoptisis, SatO2 si disponible, constantes, auscultación, comorbilidad, embarazo, inmunosupresión y alergias.',
+          'No antibiótico de rutina en catarro, infección respiratoria alta o bronquitis aguda sin sospecha de neumonía.',
+          'Alarmas: disnea importante, SatO2 baja, dolor torácico, hemoptisis, confusión, mal estado general, sepsis, fiebre persistente, inmunosupresión o sospecha de neumonía/TEP/IC.'
         ]
       },
       {
@@ -511,153 +511,126 @@ window.NEXO_PROTOCOLS = [
       {
         title: 'Seguimiento',
         items: [
-          'Tos aguda sin alarma: revisión si empeora rápida o significativamente, aparece fiebre/disnea/dolor torácico/hemoptisis, o no mejora en 3-4 semanas.',
-          'Subaguda postinfecciosa: revisar a 4-8 semanas; si persiste, hacer radiografía de tórax si no realizada, revisar IECA, asma, rinitis, reflujo y tabaquismo.',
-          'Crónica >8 semanas: radiografía de tórax y espirometría con broncodilatación si sospecha asma/EPOC; considerar FeNO/eosinófilos si disponible y útil.',
-          'Si se inicia tratamiento etiológico, fijar respuesta esperada: rinitis 2-4 semanas, asma 2-8 semanas, reflujo solo si síntomas típicos y reevaluar 4-8 semanas.'
+          'Sin alarma: informar que la tos puede durar 3-4 semanas; revisión si empeora o aparecen alarmas.',
+          'Si se pauta antibiótico por afectación sistémica/alto riesgo/neumonía probable: revisar en 48-72 h si no mejora o antes si empeora.',
+          'Pedir Rx tórax si sospecha neumonía, exploración focal, SatO2 baja, hemoptisis, mal estado general, fiebre persistente, fumador con síntomas persistentes o evolución no esperada.',
+          'Si tos persiste más allá de 8 semanas, no ampliar este protocolo: pasar a protocolo futuro de tos persistente/crónica.'
         ]
       },
       {
         title: 'Derivar / urgencias',
         items: [
-          'Urgencias: SatO2 baja, disnea moderada-grave, hemoptisis relevante, dolor torácico, sospecha TEP, sepsis, neumonía grave, IC aguda o inmunosupresión con afectación sistémica.',
-          'Radiografía urgente/preferente si sospecha neumonía, hemoptisis, pérdida de peso, tabaquismo con tos persistente, exploración focal, fiebre persistente o fracaso clínico.',
-          'Neumología: tos crónica >8 semanas con Rx anormal, espirometría alterada no explicada, sospecha asma difícil/EPOC, bronquiectasias, tos refractaria tras abordaje inicial o hemoptisis.',
-          'ORL si clínica dominante de vía aérea superior refractaria; digestivo si reflujo con alarma digestiva o refractario con sospecha objetiva.'
+          'Urgencias: SatO2 baja, disnea moderada-grave, dolor torácico, hemoptisis relevante, confusión, hipotensión, sepsis, neumonía grave, sospecha TEP/IC o inmunosupresión con afectación sistémica.',
+          'Derivación/valoración preferente si neumonía con comorbilidad relevante, mala evolución a 48-72 h, Rx patológica preocupante o síntomas persistentes en fumador.',
+          'No derivar por tos aguda no complicada si constantes, exploración y evolución son compatibles con IRA/bronquitis aguda.'
         ]
       }
     ],
     treatmentRows: [
       {
-        scenario: 'Tos aguda <3 semanas sin alarmas',
-        action: 'Descartar neumonía/TEP/IC por clínica. Tratamiento sintomático y evitar antibiótico.',
+        scenario: 'Catarro / IRA alta sin alarmas',
+        action: 'Explicar curso autolimitado. No antibiótico.',
         drugClass: 'No antibiótico; medidas sintomáticas',
         medication: '-',
         dose: '-',
         frequency: '-',
-        duration: 'Curso habitual hasta 3-4 semanas.',
-        escalation: 'Revisar si empeora, fiebre persistente, disnea, dolor torácico, hemoptisis o no mejora en 3-4 semanas.',
+        duration: 'Rinorrea y malestar suelen mejorar en días; tos puede durar 3-4 semanas.',
+        escalation: 'Revisar si fiebre persistente, disnea, dolor torácico, hemoptisis o empeoramiento claro.',
         followUp: 'Sin revisión programada si evolución esperada; instrucciones de alarma.',
-        safety: 'No broncodilatador/corticoide si no hay asma/EPOC.',
+        safety: 'Evitar antibióticos y mucolíticos de rutina.',
         cimaMedicationId: ''
       },
       {
-        scenario: 'Tos aguda con afectación sistémica importante o alto riesgo',
-        action: 'Valorar antibiótico según NICE NG120 tras descartar neumonía grave.',
-        drugClass: 'Antibiótico si indicado',
+        scenario: 'Bronquitis aguda / tos aguda sin sospecha de neumonía',
+        action: 'No antibiótico. No broncodilatador ni corticoide si no hay enfermedad aérea subyacente.',
+        drugClass: 'Sintomático',
+        medication: '-',
+        dose: '-',
+        frequency: '-',
+        duration: 'Tos hasta 3-4 semanas.',
+        escalation: 'Reevaluar si empeora rápida/significativamente o aparecen alarmas.',
+        followUp: 'Consulta si no mejora en 3-4 semanas o antes si alarma.',
+        safety: 'No ofrecer acetilcisteína/carbocisteína de rutina para tos aguda.',
+        cimaMedicationId: ''
+      },
+      {
+        scenario: 'Tos con fiebre persistente o afectación general',
+        action: 'Constantes, SatO2 si disponible y auscultación. Buscar neumonía o complicación.',
+        drugClass: 'Antibiótico solo si alto riesgo o sospecha bacteriana/neumonía',
         medication: 'doxiciclina',
         dose: '200 mg VO día 1; luego 100 mg VO',
         frequency: 'Cada 24 h.',
         duration: '5 días en total.',
-        escalation: 'Si alergia/embarazo o contraindicación, usar alternativa NICE y verificar CIMA.',
-        followUp: 'Revisar en 48-72 h si alto riesgo o mala evolución.',
-        safety: 'Evitar en embarazo; fotosensibilidad/esofagitis. Enlace CIMA pendiente.',
+        escalation: 'Rx tórax si foco auscultatorio, fiebre persistente, SatO2 baja, comorbilidad o mala evolución.',
+        followUp: '48-72 h si se pauta antibiótico o alto riesgo.',
+        safety: 'Evitar doxiciclina en embarazo; CIMA pendiente.',
         cimaMedicationId: 'doxiciclina'
       },
       {
         scenario: 'Sospecha de neumonía',
-        action: 'Constantes, SatO2, auscultación; Rx tórax si duda, gravedad o evolución no esperada.',
-        drugClass: 'Antibiótico si neumonía probable según valoración',
+        action: 'Valorar Rx tórax, gravedad y tratamiento ambulatorio solo si estable.',
+        drugClass: 'Antibiótico si neumonía probable y manejo ambulatorio apropiado',
         medication: 'amoxicilina',
         dose: '500 mg VO',
         frequency: 'Cada 8 h.',
-        duration: '5 días si tratamiento ambulatorio apropiado.',
+        duration: '5 días.',
         escalation: 'Urgencias si SatO2 baja, sepsis, confusión, hipotensión, comorbilidad grave o mala tolerancia oral.',
-        followUp: '48-72 h si tratado ambulatoriamente.',
+        followUp: '48-72 h si tratamiento ambulatorio.',
         safety: 'Verificar alergia a penicilina y ficha CIMA antes de prescribir.',
         cimaMedicationId: 'amoxicilina'
       },
       {
-        scenario: 'Tos con disnea importante o SatO2 baja',
-        action: 'Enviar a urgencias; descartar neumonía grave, TEP, IC, crisis asmática/EPOC.',
-        drugClass: 'Manejo según causa en entorno urgente',
+        scenario: 'EPOC/asma o comorbilidad relevante',
+        action: 'Distinguir IRA simple de exacerbación. Medir SatO2 y auscultar.',
+        drugClass: 'Tratamiento de exacerbación solo si criterios clínicos',
+        medication: '-',
+        dose: '-',
+        frequency: '-',
+        duration: 'Según diagnóstico de exacerbación, no por tos aislada.',
+        escalation: 'Valorar antibiótico si EPOC con aumento de disnea, volumen y purulencia de esputo o gravedad.',
+        followUp: '24-72 h si exacerbación o comorbilidad relevante.',
+        safety: 'Urgencias si SatO2 baja, trabajo respiratorio o fracaso de tratamiento inicial.',
+        cimaMedicationId: ''
+      },
+      {
+        scenario: 'Disnea, SatO2 baja, dolor torácico, hemoptisis o mal estado general',
+        action: 'Enviar a urgencias o valorar de forma preferente según gravedad.',
+        drugClass: 'No demorar por tratamiento sintomático',
         medication: '-',
         dose: '-',
         frequency: '-',
         duration: 'Inmediato.',
-        escalation: 'No demorar por pruebas ambulatorias.',
-        followUp: 'Revisión AP tras alta.',
-        safety: 'SatO2 baja o trabajo respiratorio son criterios de urgencias.',
+        escalation: 'Descartar neumonía grave, TEP, IC, sepsis o sangrado relevante.',
+        followUp: 'Revisión AP tras alta o resolución del episodio.',
+        safety: 'No atribuir a bronquitis si hay signos de alarma.',
         cimaMedicationId: ''
       },
       {
-        scenario: 'Tos con hemoptisis',
-        action: 'Cuantificar, constantes y riesgo; Rx tórax preferente/urgente.',
-        drugClass: 'Según causa',
-        medication: '-',
-        dose: '-',
-        frequency: '-',
-        duration: '-',
-        escalation: 'Urgencias si hemoptisis relevante, disnea, inestabilidad o anticoagulación con sangrado.',
-        followUp: 'Neumología preferente si persiste, fumador o Rx anormal.',
-        safety: 'No atribuir a bronquitis sin descartar causas graves.',
-        cimaMedicationId: ''
-      },
-      {
-        scenario: 'Tos en paciente con IECA',
-        action: 'Suspender IECA si relación temporal plausible y sustituir por ARA-II.',
+        scenario: 'Tos tras inicio de IECA',
+        action: 'Nota breve: si relación temporal plausible, cambiar IECA por ARA-II y reevaluar.',
         drugClass: 'ARA-II',
         medication: 'losartán',
         dose: '50 mg VO',
         frequency: 'Cada 24 h.',
-        duration: 'Crónico si controla PA y desaparece tos.',
-        escalation: 'Si tos no mejora en 4-8 semanas, estudiar otras causas; puede tardar hasta 3 meses.',
+        duration: 'Revisar respuesta; no desarrollar como tos crónica en este protocolo.',
+        escalation: 'Si persiste más de 8 semanas, abordar en protocolo futuro de tos persistente/crónica.',
         followUp: 'PA/AMPA en 2-4 semanas; renal/K si ARA-II.',
         safety: 'No usar ARA-II en embarazo; enlace CIMA monofármaco pendiente.',
         cimaMedicationId: 'losartan'
-      },
-      {
-        scenario: 'Tos subaguda 3-8 semanas postinfecciosa sin alarmas',
-        action: 'Explicar curso, revisar desencadenantes y no usar antibiótico si no hay nueva infección bacteriana.',
-        drugClass: 'No antibiótico de rutina',
-        medication: '-',
-        dose: '-',
-        frequency: '-',
-        duration: 'Reevaluar hasta semana 8.',
-        escalation: 'Rx tórax si persiste, fumador, fiebre, pérdida de peso, hemoptisis o exploración anormal.',
-        followUp: 'Revisión a 4-8 semanas.',
-        safety: 'Evitar antitusivos sedantes en fragilidad/conducción.',
-        cimaMedicationId: ''
-      },
-      {
-        scenario: 'Tos crónica >8 semanas',
-        action: 'Rx tórax y espirometría si sospecha asma/EPOC; revisar IECA, rinitis, reflujo, tabaco y ocupacional.',
-        drugClass: 'Tratamiento dirigido a causa',
-        medication: '-',
-        dose: '-',
-        frequency: '-',
-        duration: 'Ensayo terapéutico por causa con respuesta definida.',
-        escalation: 'Neumología si Rx anormal, espirometría alterada, hemoptisis o refractaria tras abordaje inicial.',
-        followUp: 'Respuesta: rinitis 2-4 semanas, asma 2-8 semanas, reflujo 4-8 semanas si síntomas típicos.',
-        safety: 'No encadenar antibióticos ni corticoides sin diagnóstico probable.',
-        cimaMedicationId: ''
-      },
-      {
-        scenario: 'Tos con rinitis/goteo nasal posterior o reflujo típico',
-        action: 'Explorar ORL/digestivo dirigido y tratar causa; no antibiótico.',
-        drugClass: 'Tratamiento etiológico',
-        medication: 'pendiente según causa',
-        dose: 'No definido en V1',
-        frequency: '-',
-        duration: 'Ensayo 2-8 semanas según causa.',
-        escalation: 'ORL si vía aérea superior refractaria; digestivo si alarma digestiva o refractario.',
-        followUp: 'Revisar respuesta en 2-4 semanas si rinitis; 4-8 semanas si reflujo.',
-        safety: 'No iniciar IBP si no hay clínica de reflujo o indicación clara.',
-        cimaMedicationId: ''
       }
     ],
     secondary: [
       {
         title: 'Ajustes y seguridad',
         items: [
-          'No aplicar protocolo simple en inmunosupresión, embarazo complejo, sospecha tuberculosis, cáncer, TEP, IC o neumonía grave.',
+          'No aplicar como IRA simple si inmunosupresión, embarazo complejo, sospecha tuberculosis, cáncer, TEP, IC o neumonía grave.',
           'Antitusivos de venta libre tienen beneficio limitado; evitar sedantes en fragilidad, conducción o riesgo de caídas.',
           'Antibióticos: verificar alergias, embarazo, interacciones y ficha CIMA antes de prescribir.'
         ]
       },
       {
         title: 'Bibliografía',
-        items: ['Fuentes principales: NICE NG120 para tos aguda infecciosa/bronquitis y ERS 2019 para tos crónica.']
+        items: ['Fuente principal: NICE NG120 para tos aguda asociada a infección respiratoria alta o bronquitis aguda. Tos persistente/crónica queda pendiente para una versión futura.']
       }
     ]
   }

@@ -89,13 +89,13 @@ window.NEXO_BIBLIOGRAPHY = [
   },
   {
     id: 'ers-cough-2019',
-    protocol: 'tos',
+    protocol: 'pendiente: tos persistente/crónica',
     title: 'ERS guidelines on the diagnosis and treatment of chronic cough in adults and children',
     institution: 'European Respiratory Society',
     year: '2019',
     url: 'https://publications.ersnet.org/content/erj/early/2019/09/02/1399300301136-2019.abstract',
     reviewed: '2026-05-21',
     confidence: 'alto',
-    notes: 'Fuente para tos crónica; define tos crónica en adultos desde 8 semanas.'
+    notes: 'Fuente reservada para el protocolo futuro de tos persistente/crónica; no es fuente principal del protocolo de infección respiratoria aguda.'
   }
 ];

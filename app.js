@@ -3,8 +3,7 @@ const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selec
 
 const state = {
   query: '',
-  category: 'Todas',
-  type: 'Todos'
+  category: 'Todas'
 };
 
 const data = {
@@ -38,7 +37,6 @@ function searchableText(protocol) {
     protocol.title,
     protocol.category,
     protocol.focus,
-    protocol.type,
     protocol.keywords.join(' '),
     protocol.synonyms.join(' '),
     meds
@@ -49,9 +47,8 @@ function filterProtocols() {
   const q = normalize(state.query);
   return data.protocols.filter((protocol) => {
     const categoryOk = state.category === 'Todas' || protocol.category === state.category;
-    const typeOk = state.type === 'Todos' || normalize(protocol.type) === normalize(state.type);
     const queryOk = !q || searchableText(protocol).includes(q);
-    return categoryOk && typeOk && queryOk;
+    return categoryOk && queryOk;
   });
 }
 
@@ -101,7 +98,6 @@ function protocolList(protocols) {
 
 function searchBox() {
   const categories = ['Todas', ...new Set(data.protocols.map((protocol) => protocol.category))];
-  const types = ['Todos', ...new Set(data.protocols.map((protocol) => protocol.type).filter(Boolean))];
   return `
     <div class="search-panel">
       <label for="main-search">Buscar protocolo, síntoma, fármaco o término clínico</label>
@@ -110,12 +106,6 @@ function searchBox() {
         <span>Categoría</span>
         <div class="filters" role="list" aria-label="Categorías">
         ${categories.map((category) => `<button class="chip" data-category="${category}" ${state.category === category ? 'aria-pressed="true"' : ''}>${category}</button>`).join('')}
-        </div>
-      </div>
-      <div class="filter-group">
-        <span>Tipo</span>
-        <div class="filters" role="list" aria-label="Tipo clínico">
-        ${types.map((type) => `<button class="chip" data-type="${type}" ${state.type === type ? 'aria-pressed="true"' : ''}>${type}</button>`).join('')}
         </div>
       </div>
     </div>
@@ -133,7 +123,6 @@ function bindSearch() {
   $$('.chip').forEach((button) => {
     button.addEventListener('click', () => {
       if (button.dataset.category) state.category = button.dataset.category;
-      if (button.dataset.type) state.type = button.dataset.type;
       route();
     });
   });
