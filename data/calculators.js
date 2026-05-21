@@ -30,6 +30,6 @@ window.NEXO_CALCULATORS = [
     formula: 'No implementada localmente. Usar herramienta oficial ESC HeartScore.',
     source: 'ESC HeartScore / SCORE2',
     reviewed: '2026-05-21',
-    warning: 'No se simula SCORE2/SCORE2-OP en esta V1 para evitar fórmulas no verificadas.'
+    warning: 'Calcular siempre en ESC HeartScore oficial.'
   }
 ];

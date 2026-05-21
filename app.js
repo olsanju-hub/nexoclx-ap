@@ -92,7 +92,6 @@ function protocolList(protocols) {
         <strong>${protocol.title}</strong>
         <small>${protocol.category} · ${protocol.focus}</small>
       </span>
-      <em>${protocol.confidence}</em>
     </a>
   `).join('')}</div>`;
 }
@@ -169,7 +168,7 @@ function renderProtocol(id) {
 
   layout(
     protocol.title,
-    `${protocol.category} · ${protocol.focus} · revisión interna ${protocol.reviewed} · confianza ${protocol.confidence}`,
+    `${protocol.category} · ${protocol.focus}`,
     `
       <section class="protocol-grid">
         ${protocol.blocks.map((block) => `
@@ -346,7 +345,7 @@ function renderBibliography() {
   const rows = data.bibliography.map(renderBibRow).join('');
   layout(
     'Bibliografía',
-    'Fuentes usadas por protocolo, año, institución, revisión interna y nivel de confianza.',
+    'Fuentes usadas por protocolo, año, institución y trazabilidad.',
     `<div class="table-wrap"><table><thead><tr><th>Protocolo</th><th>Fuente</th><th>Año</th><th>Institución</th><th>Confianza</th><th>Enlace</th></tr></thead><tbody>${rows}</tbody></table></div>`
   );
 }
@@ -355,7 +354,7 @@ function renderBibRow(bib) {
   return `
     <tr>
       <td>${bib.protocol}</td>
-      <td>${bib.title}<br><small>${bib.notes}</small></td>
+      <td>${bib.title}</td>
       <td>${bib.year}</td>
       <td>${bib.institution}</td>
       <td>${bib.confidence}</td>

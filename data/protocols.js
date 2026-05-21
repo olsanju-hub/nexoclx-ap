@@ -66,7 +66,7 @@ window.NEXO_PROTOCOLS = [
       },
       {
         title: 'Bibliografía',
-        items: ['Fuente principal ESC 2024. Revisión interna 2026-05-21. Confianza alta. Dudas: adaptar a protocolos locales españoles si el área sanitaria tiene circuito específico.']
+        items: ['Fuente principal: ESC 2024. Aplicar circuitos locales si existen para MAPA, derivación o HTA resistente.']
       }
     ]
   },
@@ -135,7 +135,7 @@ window.NEXO_PROTOCOLS = [
       },
       {
         title: 'Bibliografía',
-        items: ['ADA 2026, redGDPS 2026 y redGDPS insulinización 2022. Revisión interna 2026-05-21. Confianza alta; insulinización redGDPS marcada medio por fuente 2022.']
+        items: ['Fuentes principales: ADA 2026 y redGDPS 2026. Insulinización basal apoyada en algoritmo redGDPS 2022.']
       }
     ]
   },
@@ -203,7 +203,7 @@ window.NEXO_PROTOCOLS = [
       },
       {
         title: 'Bibliografía',
-        items: ['ESC/EAS 2025 Focused Update, ESC prevención 2021 y HeartScore. Revisión interna 2026-05-21. Confianza alta. SCORE2 local pendiente por regla de no simular fórmulas.']
+        items: ['Fuentes principales: ESC/EAS 2025 Focused Update y ESC prevención 2021. SCORE2/SCORE2-OP debe calcularse en HeartScore oficial.']
       }
     ]
   },
@@ -236,7 +236,7 @@ window.NEXO_PROTOCOLS = [
           'Tos aguda por catarro/bronquitis sin alarma: explicar curso habitual hasta 3-4 semanas, hidratación, evitar humo, miel si >1 año. No antibiótico de rutina.',
           'NICE NG120: no ofrecer broncodilatador ni corticoide oral/inhalado para tos aguda por IVRA/bronquitis salvo enfermedad aérea subyacente como asma.',
           'No ofrecer mucolítico como acetilcisteína/carbocisteína para tos aguda por IVRA/bronquitis.',
-          'Antibiótico solo si sistémicamente muy afectado o alto riesgo de complicaciones: doxiciclina 200 mg día 1 y 100 mg/24 h 4 días más; alternativas NICE: amoxicilina 500 mg/8 h 5 días o claritromicina/eritromicina según embarazo/alergia. Enlaces CIMA de antibióticos pendientes en esta V1.',
+          'Antibiótico solo si sistémicamente muy afectado o alto riesgo de complicaciones: doxiciclina 200 mg día 1 y 100 mg/24 h 4 días más; alternativas NICE: amoxicilina 500 mg/8 h 5 días o claritromicina/eritromicina según embarazo/alergia. Verificar ficha CIMA antes de prescribir.',
           'Tos por IECA: suspender IECA si clínicamente plausible y cambiar a ARA-II; esperar mejoría en 1-4 semanas, a veces hasta 3 meses.',
           'Tos crónica: orientar por causa probable: asma/hiperreactividad, EPOC, rinitis/goteo posterior, reflujo, fármacos, ocupacional, bronquiectasias/neoplasia. Tratar causa, no encadenar antitusivos.'
         ]
@@ -266,12 +266,12 @@ window.NEXO_PROTOCOLS = [
         items: [
           'No aplicar protocolo simple en inmunosupresión, embarazo complejo, sospecha tuberculosis, cáncer, TEP, IC o neumonía grave.',
           'Antitusivos de venta libre tienen beneficio limitado; evitar sedantes en fragilidad, conducción o riesgo de caídas.',
-          'Antibióticos: verificar alergias, embarazo, interacciones y ficha CIMA antes de prescribir; CIMA de doxiciclina/amoxicilina pendiente en esta V1.'
+          'Antibióticos: verificar alergias, embarazo, interacciones y ficha CIMA antes de prescribir.'
         ]
       },
       {
         title: 'Bibliografía',
-        items: ['NICE NG120 para tos aguda infecciosa/bronquitis; ERS 2019 para tos crónica. Revisión interna 2026-05-21. Confianza alta.']
+        items: ['Fuentes principales: NICE NG120 para tos aguda infecciosa/bronquitis y ERS 2019 para tos crónica.']
       }
     ]
   }

@@ -75,6 +75,7 @@ Jerarquía aceptada: guías oficiales de sociedades científicas u organismos p�
 
 | Fecha | Cambio | Archivos modificados | Protocolos afectados | Commit asociado | Pendientes |
 | --- | --- | --- | --- | --- | --- |
+| 2026-05-21 | Limpieza de la interfaz pública para ocultar notas internas y reducir explicaciones no necesarias en la vista clínica | `app.js`, `data/protocols.js`, `data/calculators.js`, `sw.js`, `README.md` | HTA, DM2, dislipemia, tos | `chore: simplify clinical UI copy` | Revisar con uso real si quedan textos demasiado largos en medicamentos |
 | 2026-05-21 | Sustitución del icono/logo por el diseño solicitado y actualización de caché PWA | `assets/logo.svg`, `assets/icons/`, `favicon.png`, `sw.js`, `README.md` | Ninguno | `chore: update app icon` | Verificar refresco de service worker en dispositivos ya instalados |
 | 2026-05-21 | Creación inicial de app PWA estática con 4 protocolos, calculadoras, medicamentos, bibliografía y README vivo | `index.html`, `styles.css`, `app.js`, `sw.js`, `manifest.webmanifest`, `assets/`, `data/`, `README.md` | HTA, DM2, dislipemia, tos | `feat: create NexoClx AP initial PWA` | Validación clínica externa; enlaces CIMA pendientes; verificar primera publicación de GitHub Pages |
 
