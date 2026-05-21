@@ -110,6 +110,17 @@ input, select, textarea {
   color: var(--text);
 }
 
+.filter-group {
+  display: grid;
+  gap: .35rem;
+}
+
+.filter-group span {
+  color: var(--muted);
+  font-size: .86rem;
+  font-weight: 750;
+}
+
 .filters { display: flex; flex-wrap: wrap; gap: .45rem; }
 
 button, .button-link {
@@ -181,6 +192,10 @@ h3 { margin: 0 0 .4rem; font-size: 1rem; }
   padding: .95rem;
 }
 
+.clinical-block:has(.treatment-grid) {
+  grid-column: 1 / -1;
+}
+
 ul { padding-left: 1.15rem; margin: 0; }
 li + li { margin-top: .45rem; }
 
@@ -198,6 +213,41 @@ li + li { margin-top: .45rem; }
 
 .med-card p { margin: .35rem 0; }
 .pending { color: var(--danger); font-weight: 700; }
+
+.treatment-grid {
+  display: grid;
+  gap: .65rem;
+}
+
+.treatment-row {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: .75rem;
+  background: #fbfdfc;
+}
+
+.treatment-row h3 {
+  color: var(--primary-dark);
+  font-size: 1rem;
+  margin-bottom: .55rem;
+}
+
+.treatment-row dl {
+  display: grid;
+  grid-template-columns: minmax(7.2rem, 34%) 1fr;
+  gap: .32rem .6rem;
+  margin: 0;
+}
+
+.treatment-row dt {
+  color: var(--muted);
+  font-size: .82rem;
+}
+
+.treatment-row dd {
+  color: var(--text);
+  font-size: .92rem;
+}
 
 .details details {
   border-top: 1px solid var(--line);

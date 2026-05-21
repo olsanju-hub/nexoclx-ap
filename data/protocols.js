@@ -3,6 +3,7 @@ window.NEXO_PROTOCOLS = [
     id: 'hta',
     title: 'Hipertensión arterial en Atención Primaria',
     category: 'Cardiometabólico',
+    type: 'Crónico',
     focus: 'diagnóstico / seguimiento crónico / tratamiento farmacológico',
     keywords: ['hipertensión', 'hta', 'tensión', 'presión arterial', 'AMPA', 'MAPA', 'enalapril', 'losartán', 'amlodipino'],
     synonyms: ['tensión alta', 'presión alta', 'elevated blood pressure'],
@@ -25,14 +26,7 @@ window.NEXO_PROTOCOLS = [
       },
       {
         title: 'Tratamiento',
-        items: [
-          'PA elevada sin alto riesgo: intervención de estilo de vida 3 meses: sal <5 g/día, dieta mediterránea/DASH, pérdida ponderal si sobrepeso, actividad aeróbica y fuerza, alcohol mínimo, dejar tabaco.',
-          'PA elevada con alto riesgo CV, diabetes, ERC, ECV, daño orgánico o PA >=130/80 persistente tras 3 meses: iniciar fármaco si balance beneficio/riesgo favorable.',
-          'HTA confirmada >=140/90: iniciar tratamiento farmacológico junto a medidas no farmacológicas. En la mayoría, preferir combinación inicial a dosis bajas si PA claramente por encima de objetivo.',
-          'Primera línea: IECA o ARA-II + calcioantagonista dihidropiridínico o tiazida/tiazida-like. No combinar IECA + ARA-II.',
-          'Ejemplos: enalapril 5 mg/24 h y titular; amlodipino 5 mg/24 h; hidroclorotiazida 12,5 mg/24 h; losartán 50 mg/24 h si IECA no tolerado.',
-          'Cambiar o intensificar si tras 4-6 semanas de adherencia y AMPA válida no alcanza objetivo o si efectos adversos: tos por IECA -> ARA-II; edema por amlodipino -> bajar dosis/asociar IECA/ARA-II o cambiar.'
-        ]
+        items: []
       },
       {
         title: 'Seguimiento',
@@ -52,6 +46,112 @@ window.NEXO_PROTOCOLS = [
           'Derivar a nefrología/cardiología/medicina interna según contexto si HTA resistente a 3 fármacos incluyendo diurético, sospecha secundaria, hipopotasemia espontánea, deterioro renal, albuminuria marcada o inicio <40 años con HTA grado alto.',
           'No derivar a urgencias una cifra aislada asintomática sin daño agudo si puede reevaluarse, confirmar medición e iniciar/ajustar tratamiento con seguimiento estrecho.'
         ]
+      }
+    ],
+    treatmentRows: [
+      {
+        scenario: 'PA elevada 120-139/70-89 sin alto riesgo',
+        action: 'Confirmar medidas, AMPA si dudas y medidas no farmacológicas intensivas.',
+        drugClass: 'Sin fármaco inicial',
+        medication: '-',
+        dose: '-',
+        frequency: '-',
+        duration: '3 meses antes de decidir fármaco si no hay alto riesgo.',
+        escalation: 'Si persiste >=130/80 con alto riesgo o progresa a >=140/90, pasar a fila de HTA.',
+        followUp: 'Revisar PA/AMPA en 3 meses; antes si síntomas o cifras suben.',
+        safety: 'No etiquetar HTA con una toma aislada.',
+        cimaMedicationId: ''
+      },
+      {
+        scenario: 'HTA confirmada >=140/90 y <160/100 sin daño orgánico',
+        action: 'Estilo de vida + iniciar monoterapia si bajo riesgo o combinación a dosis bajas si lejos de objetivo.',
+        drugClass: 'IECA o ARA-II; calcioantagonista si tos/contraindicación; asociar si no controla.',
+        medication: 'enalapril',
+        dose: '5 mg VO',
+        frequency: 'Cada 24 h; titular a 10-20 mg/día en 1-2 tomas.',
+        duration: 'Crónico si eficaz y tolerado.',
+        escalation: 'Si AMPA media >=135/85 o consulta >=140/90 tras 4-6 semanas, subir dosis o añadir amlodipino 5 mg/24 h.',
+        followUp: 'PA/AMPA y adherencia en 2-4 semanas. Creatinina, eGFR y K en 1-2 semanas.',
+        safety: 'Evitar IECA en embarazo, angioedema, hiperpotasemia o estenosis renal bilateral.',
+        cimaMedicationId: 'enalapril'
+      },
+      {
+        scenario: 'HTA >=160/100 o PA claramente por encima de objetivo',
+        action: 'Iniciar combinación desde el principio salvo fragilidad/hipotensión.',
+        drugClass: 'IECA o ARA-II + calcioantagonista dihidropiridínico',
+        medication: 'enalapril + amlodipino',
+        dose: 'enalapril 5 mg + amlodipino 5 mg VO',
+        frequency: 'Cada 24 h.',
+        duration: 'Crónico; ajustar por respuesta.',
+        escalation: 'Si no controla en 4 semanas, titular IECA/ARA-II o añadir tiazida: hidroclorotiazida 12,5 mg/24 h.',
+        followUp: 'Revisión en 2-4 semanas; renal/electrolitos 1-2 semanas tras IECA/diurético.',
+        safety: 'No combinar IECA + ARA-II. Vigilar edema con amlodipino e iones con diurético.',
+        cimaMedicationId: 'amlodipino'
+      },
+      {
+        scenario: 'HTA con diabetes, ERC, ECV o daño orgánico',
+        action: 'Confirmar si no urgente, iniciar fármaco sin demoras y tratar riesgo global.',
+        drugClass: 'IECA/ARA-II preferente; combinar con calcioantagonista o diurético si precisa.',
+        medication: 'losartán',
+        dose: '50 mg VO',
+        frequency: 'Cada 24 h; habitual 50-100 mg/día.',
+        duration: 'Crónico si eficaz y tolerado.',
+        escalation: 'Si no controla en 4 semanas, añadir amlodipino 5 mg/24 h o tiazida si función renal lo permite.',
+        followUp: 'PA/AMPA en 2-4 semanas; creatinina/eGFR/K en 1-2 semanas; albuminuria según contexto.',
+        safety: 'Losartán monofármaco: enlace CIMA pendiente; confirmar ficha antes de prescribir.',
+        cimaMedicationId: 'losartan'
+      },
+      {
+        scenario: 'PA >=180/110 sin síntomas ni daño agudo',
+        action: 'Repetir medida, descartar daño agudo, iniciar/ajustar fármaco y seguimiento estrecho.',
+        drugClass: 'Combinación oral de primera línea',
+        medication: 'amlodipino + enalapril',
+        dose: 'amlodipino 5 mg + enalapril 5 mg VO',
+        frequency: 'Cada 24 h.',
+        duration: 'Crónico; no bajar bruscamente si no hay emergencia.',
+        escalation: 'Revisar en 48-72 h o pocos días; intensificar si sigue >=180/110 o no baja claramente.',
+        followUp: 'Exploración dirigida, ECG/orina/renal/electrolitos. Confirmar AMPA cuando sea seguro.',
+        safety: 'Si aparece dolor torácico, focalidad, disnea, confusión, embarazo o lesión renal aguda: urgencias.',
+        cimaMedicationId: 'amlodipino'
+      },
+      {
+        scenario: 'Sospecha de emergencia hipertensiva',
+        action: 'No manejar como ajuste ambulatorio. Enviar a urgencias.',
+        drugClass: 'Tratamiento IV/hospitalario',
+        medication: '-',
+        dose: '-',
+        frequency: '-',
+        duration: 'Valoración inmediata.',
+        escalation: 'Urgencias si daño agudo de órgano diana o síntomas compatibles.',
+        followUp: 'Tras alta, revisar plan, adherencia y causas secundarias.',
+        safety: 'No intentar normalizar PA rápidamente en consulta sin monitorización.',
+        cimaMedicationId: ''
+      },
+      {
+        scenario: 'Anciano, fragilidad u ortostatismo',
+        action: 'Empezar bajo, comprobar bipedestación y priorizar tolerancia.',
+        drugClass: 'Monoterapia a dosis baja',
+        medication: 'amlodipino',
+        dose: '5 mg VO; considerar 2,5 mg si disponible y fragilidad marcada.',
+        frequency: 'Cada 24 h.',
+        duration: 'Crónico si no hay caídas, hipotensión o edema limitante.',
+        escalation: 'Subir o añadir fármaco solo si PA sigue alta y no hay ortostatismo/caídas.',
+        followUp: 'Revisión en 2-4 semanas; PA sentado/de pie; revisar mareo, caídas y edema.',
+        safety: 'Objetivo menos estricto si >85 años, fragilidad o hipotensión sintomática.',
+        cimaMedicationId: 'amlodipino'
+      },
+      {
+        scenario: 'Embarazo o sospecha de embarazo',
+        action: 'No usar IECA/ARA-II. Confirmar embarazo y derivar según circuito obstétrico.',
+        drugClass: 'Fármacos específicos de embarazo',
+        medication: 'pendiente de verificación CIMA',
+        dose: 'No pautar desde esta tabla.',
+        frequency: '-',
+        duration: '-',
+        escalation: 'Si PA alta o síntomas: valoración obstétrica/urgencias.',
+        followUp: 'Control preferente el mismo día si cifras altas o síntomas.',
+        safety: 'IECA/ARA-II contraindicados.',
+        cimaMedicationId: ''
       }
     ],
     secondary: [
@@ -74,6 +174,7 @@ window.NEXO_PROTOCOLS = [
     id: 'dm2',
     title: 'Diabetes mellitus tipo 2',
     category: 'Cardiometabólico',
+    type: 'Crónico',
     focus: 'seguimiento crónico / tratamiento farmacológico',
     keywords: ['diabetes', 'dm2', 'azúcar', 'glucosa', 'hba1c', 'metformina', 'insulina', 'iSGLT2', 'GLP-1'],
     synonyms: ['azúcar alta', 'diabetes tipo 2', 'insulinización'],
@@ -95,15 +196,7 @@ window.NEXO_PROTOCOLS = [
       },
       {
         title: 'Tratamiento',
-        items: [
-          'Siempre: plan alimentario realista, actividad física adaptada, sueño, tabaco, vacunas, cuidado del pie y educación sobre hipoglucemia si usa insulina/sulfonilurea.',
-          'Si no hay ECV/IC/ERC predominante: metformina si tolerada y eGFR lo permite; titular desde 500-850 mg con comida hasta dosis eficaz tolerada.',
-          'Si ECV, insuficiencia cardiaca o ERC: priorizar iSGLT2 y/o arGLP-1 con beneficio cardiorrenal, independientemente de metformina cuando esté indicado por guía y ficha.',
-          'Si HbA1c >8,5% o glucemia media estimada >200 mg/dl, iniciar tratamiento combinado desde el principio si no hay contraindicación.',
-          'Si coste, bajo riesgo de hipoglucemia y necesidad moderada: iDPP4 como sitagliptina; si coste bajo y se acepta hipoglucemia: gliclazida LM con desayuno, evitar en fragilidad o ingesta irregular.',
-          'Insulina basal: indicada si hiperglucemia sintomática/catabólica, HbA1c muy elevada pese a terapia, fracaso de combinaciones o contraindicación/intolerancia a alternativas. Inicio orientativo: 10 UI SC nocturna o 0,1-0,2 UI/kg/día; extremo bajo si fragilidad o hipoglucemia.',
-          'Titulación basal: autocontrol basal diario al inicio; si mediana de 3 días por encima de objetivo y sin hipoglucemia, subir 2 UI cada 3 días. Si hipoglucemia <70 mg/dl o nocturna, reducir 10-20% y revisar causa.'
-        ]
+        items: []
       },
       {
         title: 'Seguimiento',
@@ -121,6 +214,99 @@ window.NEXO_PROTOCOLS = [
           'Endocrinología preferente: sospecha DM1/LADA, fracaso de insulinización basal con HbA1c alta pese a basal optimizada, hipoglucemias graves/recurrentes, necesidad de pauta bolo-basal compleja, embarazo o planificación gestacional.',
           'Nefrología si eGFR cae rápidamente, albuminuria muy elevada persistente o dudas de etiología no diabética.'
         ]
+      }
+    ],
+    treatmentRows: [
+      {
+        scenario: 'Diagnóstico reciente, sin síntomas graves, HbA1c cerca de objetivo',
+        action: 'Plan alimentario/actividad + iniciar metformina si eGFR lo permite.',
+        drugClass: 'Biguanida',
+        medication: 'metformina',
+        dose: '500-850 mg VO con comida',
+        frequency: 'Cada 24 h al inicio; titular a cada 12 h según tolerancia.',
+        duration: 'Crónico si eficaz y tolerado.',
+        escalation: 'Si HbA1c fuera de objetivo a 3 meses, titular o añadir segundo fármaco según comorbilidad.',
+        followUp: 'HbA1c en 3 meses; eGFR al inicio y al menos anual.',
+        safety: 'No iniciar si eGFR <45; contraindicada habitualmente si eGFR <30.',
+        cimaMedicationId: 'metformina'
+      },
+      {
+        scenario: 'HbA1c claramente elevada (>8,5%) sin descompensación',
+        action: 'Iniciar terapia combinada desde el principio.',
+        drugClass: 'Metformina + iSGLT2 o arGLP-1 según perfil',
+        medication: 'metformina + empagliflozina',
+        dose: 'metformina 500-850 mg + empagliflozina 10 mg VO',
+        frequency: 'Cada 24 h; metformina con comida.',
+        duration: 'Crónico si objetivo y tolerancia adecuados.',
+        escalation: 'Si HbA1c sigue fuera de objetivo a 3 meses, añadir arGLP-1 o basal si síntomas/catabolismo.',
+        followUp: 'HbA1c 3 meses; revisar síntomas, peso, eGFR y eventos adversos en 4-12 semanas.',
+        safety: 'Pausar iSGLT2 en ayuno, cirugía o enfermedad aguda grave.',
+        cimaMedicationId: 'empagliflozina'
+      },
+      {
+        scenario: 'ECV establecida, insuficiencia cardiaca o ERC',
+        action: 'Priorizar fármaco con beneficio cardiorrenal aunque HbA1c esté cerca de objetivo.',
+        drugClass: 'iSGLT2; arGLP-1 si predominio aterosclerótico/obesidad',
+        medication: 'empagliflozina',
+        dose: '10 mg VO',
+        frequency: 'Cada 24 h.',
+        duration: 'Crónico si indicación cardiorrenal y tolerancia.',
+        escalation: 'Si control glucémico insuficiente, añadir metformina si procede, arGLP-1 o iDPP4 según objetivo.',
+        followUp: 'eGFR/volemia al inicio y según ERC; HbA1c en 3 meses.',
+        safety: 'Riesgo de depleción de volumen y cetoacidosis euglucémica; educar señales de alarma.',
+        cimaMedicationId: 'empagliflozina'
+      },
+      {
+        scenario: 'Obesidad o necesidad de pérdida ponderal',
+        action: 'Preferir arGLP-1 si no contraindicado y accesible.',
+        drugClass: 'Agonista receptor GLP-1',
+        medication: 'liraglutida',
+        dose: '0,6 mg SC',
+        frequency: 'Cada 24 h 1 semana; después 1,2 mg/24 h.',
+        duration: 'Crónico si reduce HbA1c/peso y se tolera.',
+        escalation: 'Subir a 1,8 mg/24 h si precisa y tolera.',
+        followUp: 'Revisar tolerancia gastrointestinal en 2-4 semanas; HbA1c y peso a 3 meses.',
+        safety: 'No usar si sospecha pancreatitis; precaución con vómitos/deshidratación.',
+        cimaMedicationId: 'liraglutida'
+      },
+      {
+        scenario: 'Anciano/frágil o alto riesgo de hipoglucemia',
+        action: 'Evitar hipoglucemias; objetivo HbA1c menos estricto.',
+        drugClass: 'iDPP4 si se necesita fármaco con bajo riesgo de hipoglucemia',
+        medication: 'sitagliptina',
+        dose: '100 mg VO si función renal conservada',
+        frequency: 'Cada 24 h.',
+        duration: 'Crónico si eficaz.',
+        escalation: 'Si no controla en 3 meses, ajustar por eGFR y añadir opción sin hipoglucemia; evitar sulfonilurea si fragilidad.',
+        followUp: 'HbA1c en 3 meses; eGFR para ajustar dosis.',
+        safety: 'Dosis renal pendiente de verificación por ficha concreta antes de prescribir.',
+        cimaMedicationId: 'sitagliptina'
+      },
+      {
+        scenario: 'Coste bajo, sin fragilidad y bajo riesgo de hipoglucemia',
+        action: 'Usar solo si se acepta riesgo de hipoglucemia y hay comidas regulares.',
+        drugClass: 'Sulfonilurea',
+        medication: 'gliclazida liberación modificada',
+        dose: '30 mg VO',
+        frequency: 'Cada 24 h con desayuno.',
+        duration: 'Crónico si eficaz y sin hipoglucemias.',
+        escalation: 'Ajustar por respuesta hasta 120 mg/día; suspender/reducir si hipoglucemia.',
+        followUp: 'Glucemias si síntomas o riesgo; HbA1c a 3 meses.',
+        safety: 'Evitar en ingesta irregular, hipoglucemias previas o fragilidad.',
+        cimaMedicationId: 'gliclazida'
+      },
+      {
+        scenario: 'Hiperglucemia sintomática/catabólica o criterio de insulinización',
+        action: 'Iniciar insulina basal y educación; no plantear bolo-basal desde AP si complejo.',
+        drugClass: 'Insulina basal',
+        medication: 'insulina glargina U100',
+        dose: '10 UI SC o 0,1-0,2 UI/kg/día',
+        frequency: 'Cada 24 h, horario fijo.',
+        duration: 'Crónico; reevaluar al alcanzar control.',
+        escalation: '+2 UI cada 3 días si mediana de glucemia basal sobre objetivo y sin hipoglucemia; reducir 10-20% si <70 mg/dl.',
+        followUp: 'Contacto 3-7 días; revisión 1-2 semanas; HbA1c 3 meses.',
+        safety: 'Derivar/urgencias si cetosis, vómitos, deshidratación, alteración conciencia o sospecha DM1.',
+        cimaMedicationId: 'insulina-glargina'
       }
     ],
     secondary: [
@@ -143,6 +329,7 @@ window.NEXO_PROTOCOLS = [
     id: 'dislipemia',
     title: 'Dislipemia / riesgo cardiovascular',
     category: 'Cardiometabólico',
+    type: 'Crónico',
     focus: 'diagnóstico / tratamiento farmacológico',
     keywords: ['dislipemia', 'colesterol', 'ldl', 'estatinas', 'atorvastatina', 'rosuvastatina', 'ezetimiba', 'riesgo cardiovascular', 'score2'],
     synonyms: ['colesterol alto', 'hipercolesterolemia', 'riesgo CV'],
@@ -164,14 +351,7 @@ window.NEXO_PROTOCOLS = [
       },
       {
         title: 'Tratamiento',
-        items: [
-          'Base no farmacológica: patrón mediterráneo, reducir grasas saturadas/trans, fibra, pérdida ponderal si procede, ejercicio, tabaco cero y tratar causas secundarias.',
-          'Objetivos LDL ESC/EAS 2019 mantenidos por actualización 2025: muy alto riesgo <55 mg/dl y reducción >=50%; alto riesgo <70 mg/dl y reducción >=50%; moderado <100 mg/dl; bajo <116 mg/dl.',
-          'Alta intensidad si alto/muy alto riesgo o LDL muy elevado: atorvastatina 40-80 mg/24 h o rosuvastatina 20-40 mg/24 h si no contraindicación.',
-          'Intensidad moderada si riesgo moderado, edad avanzada/frágil o interacciones: atorvastatina 10-20 mg/24 h o rosuvastatina 5-10 mg/24 h.',
-          'Añadir ezetimiba 10 mg/24 h si no alcanza objetivo con estatina máxima tolerada a 4-6 semanas o si solo tolera estatina parcial.',
-          'Si sigue fuera de objetivo con estatina + ezetimiba en muy alto riesgo, hipercolesterolemia familiar o intolerancia compleja: derivar/valorar PCSK9, ácido bempedoico u otras opciones según circuito.'
-        ]
+        items: []
       },
       {
         title: 'Seguimiento',
@@ -189,6 +369,99 @@ window.NEXO_PROTOCOLS = [
           'Urgencias si rabdomiólisis sospechada: dolor/debilidad muscular marcada, orina oscura, CK muy elevada o deterioro renal.',
           'Preferente si pancreatitis o dolor abdominal compatible con TG muy elevados.'
         ]
+      }
+    ],
+    treatmentRows: [
+      {
+        scenario: 'Prevención primaria sin alto riesgo automático',
+        action: 'Calcular SCORE2/SCORE2-OP en HeartScore y tratar según riesgo.',
+        drugClass: 'Medidas no farmacológicas; estatina si riesgo/LDL lo indica',
+        medication: 'atorvastatina',
+        dose: '10-20 mg VO si riesgo moderado/alto y se decide iniciar',
+        frequency: 'Cada 24 h.',
+        duration: 'Crónico si objetivo y tolerancia.',
+        escalation: 'Si LDL no alcanza objetivo a 4-6 semanas, subir intensidad.',
+        followUp: 'Perfil lipídico y adherencia a 4-6 semanas.',
+        safety: 'No calcular SCORE2 local; usar herramienta oficial.',
+        cimaMedicationId: 'atorvastatina'
+      },
+      {
+        scenario: 'Riesgo alto',
+        action: 'Objetivo LDL <70 mg/dl y reducción >=50% si procede.',
+        drugClass: 'Estatina alta intensidad si tolera',
+        medication: 'atorvastatina',
+        dose: '40 mg VO',
+        frequency: 'Cada 24 h.',
+        duration: 'Crónico.',
+        escalation: 'Subir a 80 mg o cambiar a rosuvastatina 20 mg; añadir ezetimiba si no objetivo a 4-6 semanas.',
+        followUp: 'LDL, ALT si clínica o criterio local, adherencia en 4-6 semanas.',
+        safety: 'Revisar interacciones y hepatopatía activa.',
+        cimaMedicationId: 'atorvastatina'
+      },
+      {
+        scenario: 'Muy alto riesgo o prevención secundaria',
+        action: 'Objetivo LDL <55 mg/dl y reducción >=50%.',
+        drugClass: 'Estatina alta intensidad + intensificación precoz',
+        medication: 'rosuvastatina',
+        dose: '20 mg VO',
+        frequency: 'Cada 24 h.',
+        duration: 'Crónico.',
+        escalation: 'Si no objetivo a 4-6 semanas, añadir ezetimiba 10 mg/24 h; derivar si sigue fuera de objetivo.',
+        followUp: 'Perfil lipídico a 4-6 semanas y tras cada cambio.',
+        safety: 'Revisar función renal antes de dosis altas; evitar en embarazo/lactancia.',
+        cimaMedicationId: 'rosuvastatina'
+      },
+      {
+        scenario: 'LDL no objetivo con estatina máxima tolerada',
+        action: 'Añadir ezetimiba.',
+        drugClass: 'Inhibidor absorción colesterol',
+        medication: 'ezetimiba',
+        dose: '10 mg VO',
+        frequency: 'Cada 24 h.',
+        duration: 'Crónico si eficaz y tolerado.',
+        escalation: 'Si muy alto riesgo y no objetivo con estatina + ezetimiba, derivar para PCSK9/u otras opciones.',
+        followUp: 'LDL a 4-6 semanas.',
+        safety: 'Vigilar transaminasas si combinación; evitar hepatopatía moderada-grave sin revisar ficha.',
+        cimaMedicationId: 'ezetimiba'
+      },
+      {
+        scenario: 'Sospecha hipercolesterolemia familiar o LDL >=190 persistente',
+        action: 'Iniciar alta intensidad y derivar a unidad lipídica/cardiología/endocrino.',
+        drugClass: 'Estatina alta intensidad',
+        medication: 'atorvastatina',
+        dose: '40-80 mg VO',
+        frequency: 'Cada 24 h.',
+        duration: 'Crónico.',
+        escalation: 'Añadir ezetimiba si no objetivo; valorar familia y tratamiento especializado.',
+        followUp: 'LDL a 4-6 semanas; documentar antecedentes familiares.',
+        safety: 'Descartar causas secundarias: hipotiroidismo, nefrosis, colestasis, fármacos.',
+        cimaMedicationId: 'atorvastatina'
+      },
+      {
+        scenario: 'Mialgias o intolerancia a estatina',
+        action: 'No abandonar objetivo: pausar si síntomas relevantes, comprobar CK y reintroducir estrategia tolerable.',
+        drugClass: 'Estatina baja/intermitente o ezetimiba',
+        medication: 'rosuvastatina o ezetimiba',
+        dose: 'rosuvastatina 5 mg VO o ezetimiba 10 mg VO',
+        frequency: 'Cada 24 h; pauta intermitente solo si protocolo local lo avala.',
+        duration: 'Reevaluar tras resolución de síntomas.',
+        escalation: 'Si CK >4x LSN o síntomas intensos, suspender y reevaluar; derivar si intolerancia múltiple.',
+        followUp: 'CK si síntomas importantes; LDL 4-6 semanas tras reintroducción.',
+        safety: 'Buscar hipotiroidismo, interacciones, alcohol y ejercicio intenso.',
+        cimaMedicationId: 'ezetimiba'
+      },
+      {
+        scenario: 'ALT/AST >3x LSN persistente o hepatopatía activa',
+        action: 'No iniciar o suspender estatina/ezetimiba hasta aclarar.',
+        drugClass: 'Evitar hipolipemiante hepatotóxico hasta estudio',
+        medication: '-',
+        dose: '-',
+        frequency: '-',
+        duration: 'Hasta resolver o aclarar causa.',
+        escalation: 'Reintroducir con control si normaliza y beneficio supera riesgo; derivar si duda.',
+        followUp: 'Repetir analítica y estudiar causa hepática.',
+        safety: 'Embarazo/lactancia: estatinas contraindicadas.',
+        cimaMedicationId: ''
       }
     ],
     secondary: [
@@ -211,6 +484,7 @@ window.NEXO_PROTOCOLS = [
     id: 'tos',
     title: 'Tos en Atención Primaria',
     category: 'Respiratorio',
+    type: 'Síndrome',
     focus: 'síndrome',
     keywords: ['tos', 'bronquitis', 'asma', 'EPOC', 'IECA', 'reflujo', 'rinitis', 'neumonía', 'hemoptisis'],
     synonyms: ['tos aguda', 'tos crónica', 'tos postinfecciosa'],
@@ -232,14 +506,7 @@ window.NEXO_PROTOCOLS = [
       },
       {
         title: 'Tratamiento',
-        items: [
-          'Tos aguda por catarro/bronquitis sin alarma: explicar curso habitual hasta 3-4 semanas, hidratación, evitar humo, miel si >1 año. No antibiótico de rutina.',
-          'NICE NG120: no ofrecer broncodilatador ni corticoide oral/inhalado para tos aguda por IVRA/bronquitis salvo enfermedad aérea subyacente como asma.',
-          'No ofrecer mucolítico como acetilcisteína/carbocisteína para tos aguda por IVRA/bronquitis.',
-          'Antibiótico solo si sistémicamente muy afectado o alto riesgo de complicaciones: doxiciclina 200 mg día 1 y 100 mg/24 h 4 días más; alternativas NICE: amoxicilina 500 mg/8 h 5 días o claritromicina/eritromicina según embarazo/alergia. Verificar ficha CIMA antes de prescribir.',
-          'Tos por IECA: suspender IECA si clínicamente plausible y cambiar a ARA-II; esperar mejoría en 1-4 semanas, a veces hasta 3 meses.',
-          'Tos crónica: orientar por causa probable: asma/hiperreactividad, EPOC, rinitis/goteo posterior, reflujo, fármacos, ocupacional, bronquiectasias/neoplasia. Tratar causa, no encadenar antitusivos.'
-        ]
+        items: []
       },
       {
         title: 'Seguimiento',
@@ -258,6 +525,125 @@ window.NEXO_PROTOCOLS = [
           'Neumología: tos crónica >8 semanas con Rx anormal, espirometría alterada no explicada, sospecha asma difícil/EPOC, bronquiectasias, tos refractaria tras abordaje inicial o hemoptisis.',
           'ORL si clínica dominante de vía aérea superior refractaria; digestivo si reflujo con alarma digestiva o refractario con sospecha objetiva.'
         ]
+      }
+    ],
+    treatmentRows: [
+      {
+        scenario: 'Tos aguda <3 semanas sin alarmas',
+        action: 'Descartar neumonía/TEP/IC por clínica. Tratamiento sintomático y evitar antibiótico.',
+        drugClass: 'No antibiótico; medidas sintomáticas',
+        medication: '-',
+        dose: '-',
+        frequency: '-',
+        duration: 'Curso habitual hasta 3-4 semanas.',
+        escalation: 'Revisar si empeora, fiebre persistente, disnea, dolor torácico, hemoptisis o no mejora en 3-4 semanas.',
+        followUp: 'Sin revisión programada si evolución esperada; instrucciones de alarma.',
+        safety: 'No broncodilatador/corticoide si no hay asma/EPOC.',
+        cimaMedicationId: ''
+      },
+      {
+        scenario: 'Tos aguda con afectación sistémica importante o alto riesgo',
+        action: 'Valorar antibiótico según NICE NG120 tras descartar neumonía grave.',
+        drugClass: 'Antibiótico si indicado',
+        medication: 'doxiciclina',
+        dose: '200 mg VO día 1; luego 100 mg VO',
+        frequency: 'Cada 24 h.',
+        duration: '5 días en total.',
+        escalation: 'Si alergia/embarazo o contraindicación, usar alternativa NICE y verificar CIMA.',
+        followUp: 'Revisar en 48-72 h si alto riesgo o mala evolución.',
+        safety: 'Evitar en embarazo; fotosensibilidad/esofagitis. Enlace CIMA pendiente.',
+        cimaMedicationId: 'doxiciclina'
+      },
+      {
+        scenario: 'Sospecha de neumonía',
+        action: 'Constantes, SatO2, auscultación; Rx tórax si duda, gravedad o evolución no esperada.',
+        drugClass: 'Antibiótico si neumonía probable según valoración',
+        medication: 'amoxicilina',
+        dose: '500 mg VO',
+        frequency: 'Cada 8 h.',
+        duration: '5 días si tratamiento ambulatorio apropiado.',
+        escalation: 'Urgencias si SatO2 baja, sepsis, confusión, hipotensión, comorbilidad grave o mala tolerancia oral.',
+        followUp: '48-72 h si tratado ambulatoriamente.',
+        safety: 'Verificar alergia a penicilina y ficha CIMA antes de prescribir.',
+        cimaMedicationId: 'amoxicilina'
+      },
+      {
+        scenario: 'Tos con disnea importante o SatO2 baja',
+        action: 'Enviar a urgencias; descartar neumonía grave, TEP, IC, crisis asmática/EPOC.',
+        drugClass: 'Manejo según causa en entorno urgente',
+        medication: '-',
+        dose: '-',
+        frequency: '-',
+        duration: 'Inmediato.',
+        escalation: 'No demorar por pruebas ambulatorias.',
+        followUp: 'Revisión AP tras alta.',
+        safety: 'SatO2 baja o trabajo respiratorio son criterios de urgencias.',
+        cimaMedicationId: ''
+      },
+      {
+        scenario: 'Tos con hemoptisis',
+        action: 'Cuantificar, constantes y riesgo; Rx tórax preferente/urgente.',
+        drugClass: 'Según causa',
+        medication: '-',
+        dose: '-',
+        frequency: '-',
+        duration: '-',
+        escalation: 'Urgencias si hemoptisis relevante, disnea, inestabilidad o anticoagulación con sangrado.',
+        followUp: 'Neumología preferente si persiste, fumador o Rx anormal.',
+        safety: 'No atribuir a bronquitis sin descartar causas graves.',
+        cimaMedicationId: ''
+      },
+      {
+        scenario: 'Tos en paciente con IECA',
+        action: 'Suspender IECA si relación temporal plausible y sustituir por ARA-II.',
+        drugClass: 'ARA-II',
+        medication: 'losartán',
+        dose: '50 mg VO',
+        frequency: 'Cada 24 h.',
+        duration: 'Crónico si controla PA y desaparece tos.',
+        escalation: 'Si tos no mejora en 4-8 semanas, estudiar otras causas; puede tardar hasta 3 meses.',
+        followUp: 'PA/AMPA en 2-4 semanas; renal/K si ARA-II.',
+        safety: 'No usar ARA-II en embarazo; enlace CIMA monofármaco pendiente.',
+        cimaMedicationId: 'losartan'
+      },
+      {
+        scenario: 'Tos subaguda 3-8 semanas postinfecciosa sin alarmas',
+        action: 'Explicar curso, revisar desencadenantes y no usar antibiótico si no hay nueva infección bacteriana.',
+        drugClass: 'No antibiótico de rutina',
+        medication: '-',
+        dose: '-',
+        frequency: '-',
+        duration: 'Reevaluar hasta semana 8.',
+        escalation: 'Rx tórax si persiste, fumador, fiebre, pérdida de peso, hemoptisis o exploración anormal.',
+        followUp: 'Revisión a 4-8 semanas.',
+        safety: 'Evitar antitusivos sedantes en fragilidad/conducción.',
+        cimaMedicationId: ''
+      },
+      {
+        scenario: 'Tos crónica >8 semanas',
+        action: 'Rx tórax y espirometría si sospecha asma/EPOC; revisar IECA, rinitis, reflujo, tabaco y ocupacional.',
+        drugClass: 'Tratamiento dirigido a causa',
+        medication: '-',
+        dose: '-',
+        frequency: '-',
+        duration: 'Ensayo terapéutico por causa con respuesta definida.',
+        escalation: 'Neumología si Rx anormal, espirometría alterada, hemoptisis o refractaria tras abordaje inicial.',
+        followUp: 'Respuesta: rinitis 2-4 semanas, asma 2-8 semanas, reflujo 4-8 semanas si síntomas típicos.',
+        safety: 'No encadenar antibióticos ni corticoides sin diagnóstico probable.',
+        cimaMedicationId: ''
+      },
+      {
+        scenario: 'Tos con rinitis/goteo nasal posterior o reflujo típico',
+        action: 'Explorar ORL/digestivo dirigido y tratar causa; no antibiótico.',
+        drugClass: 'Tratamiento etiológico',
+        medication: 'pendiente según causa',
+        dose: 'No definido en V1',
+        frequency: '-',
+        duration: 'Ensayo 2-8 semanas según causa.',
+        escalation: 'ORL si vía aérea superior refractaria; digestivo si alarma digestiva o refractario.',
+        followUp: 'Revisar respuesta en 2-4 semanas si rinitis; 4-8 semanas si reflujo.',
+        safety: 'No iniciar IBP si no hay clínica de reflujo o indicación clara.',
+        cimaMedicationId: ''
       }
     ],
     secondary: [

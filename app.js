@@ -3,7 +3,8 @@ const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selec
 
 const state = {
   query: '',
-  category: 'Todas'
+  category: 'Todas',
+  type: 'Todos'
 };
 
 const data = {
@@ -37,6 +38,7 @@ function searchableText(protocol) {
     protocol.title,
     protocol.category,
     protocol.focus,
+    protocol.type,
     protocol.keywords.join(' '),
     protocol.synonyms.join(' '),
     meds
@@ -47,8 +49,9 @@ function filterProtocols() {
   const q = normalize(state.query);
   return data.protocols.filter((protocol) => {
     const categoryOk = state.category === 'Todas' || protocol.category === state.category;
+    const typeOk = state.type === 'Todos' || normalize(protocol.type) === normalize(state.type);
     const queryOk = !q || searchableText(protocol).includes(q);
-    return categoryOk && queryOk;
+    return categoryOk && typeOk && queryOk;
   });
 }
 
@@ -98,12 +101,22 @@ function protocolList(protocols) {
 
 function searchBox() {
   const categories = ['Todas', ...new Set(data.protocols.map((protocol) => protocol.category))];
+  const types = ['Todos', ...new Set(data.protocols.map((protocol) => protocol.type).filter(Boolean))];
   return `
     <div class="search-panel">
       <label for="main-search">Buscar protocolo, síntoma, fármaco o término clínico</label>
       <input id="main-search" type="search" value="${state.query}" placeholder="tensión, azúcar, colesterol, tos, IECA, insulina...">
-      <div class="filters" role="list" aria-label="Categorías">
+      <div class="filter-group">
+        <span>Categoría</span>
+        <div class="filters" role="list" aria-label="Categorías">
         ${categories.map((category) => `<button class="chip" data-category="${category}" ${state.category === category ? 'aria-pressed="true"' : ''}>${category}</button>`).join('')}
+        </div>
+      </div>
+      <div class="filter-group">
+        <span>Tipo</span>
+        <div class="filters" role="list" aria-label="Tipo clínico">
+        ${types.map((type) => `<button class="chip" data-type="${type}" ${state.type === type ? 'aria-pressed="true"' : ''}>${type}</button>`).join('')}
+        </div>
       </div>
     </div>
   `;
@@ -119,14 +132,15 @@ function bindSearch() {
   }
   $$('.chip').forEach((button) => {
     button.addEventListener('click', () => {
-      state.category = button.dataset.category;
+      if (button.dataset.category) state.category = button.dataset.category;
+      if (button.dataset.type) state.type = button.dataset.type;
       route();
     });
   });
 }
 
 function renderHome() {
-  const frequent = ['hta', 'dm2', 'dislipemia', 'tos'].map((id) => data.protocols.find((p) => p.id === id));
+  const visibleProtocols = filterProtocols();
   layout(
     'NexoClx AP',
     'Protocolos rápidos de Atención Primaria para consulta clínica con tiempo limitado.',
@@ -135,7 +149,7 @@ function renderHome() {
       <section class="split">
         <div>
           <h2>Protocolos frecuentes</h2>
-          <div class="protocol-list-wrap">${protocolList(frequent)}</div>
+          <div class="protocol-list-wrap">${protocolList(visibleProtocols)}</div>
         </div>
         <aside class="side-panel">
           <h2>Herramientas</h2>
@@ -174,7 +188,7 @@ function renderProtocol(id) {
         ${protocol.blocks.map((block) => `
           <article class="clinical-block">
             <h2>${block.title}</h2>
-            <ul>${block.items.map((item) => `<li>${linkMedicationNames(item)}</li>`).join('')}</ul>
+            ${block.title === 'Tratamiento' && protocol.treatmentRows ? renderTreatmentRows(protocol.treatmentRows) : `<ul>${block.items.map((item) => `<li>${linkMedicationNames(item)}</li>`).join('')}</ul>`}
           </article>
         `).join('')}
       </section>
@@ -190,6 +204,32 @@ function renderProtocol(id) {
     `
   );
   bindCalculators();
+}
+
+function renderTreatmentRows(rows) {
+  return `<div class="treatment-grid">${rows.map((row) => {
+    const med = row.cimaMedicationId ? medById(row.cimaMedicationId) : null;
+    const cima = med?.cima?.startsWith('http')
+      ? `<a href="${med.cima}" target="_blank" rel="noopener">CIMA</a>`
+      : row.medication && row.medication !== '-' ? '<span class="pending">CIMA pendiente</span>' : '-';
+    return `
+      <article class="treatment-row">
+        <h3>${row.scenario}</h3>
+        <dl>
+          <dt>Conducta</dt><dd>${row.action}</dd>
+          <dt>Grupo</dt><dd>${row.drugClass || '-'}</dd>
+          <dt>Fármaco</dt><dd><strong>${row.medication || '-'}</strong></dd>
+          <dt>Dosis</dt><dd>${row.dose || '-'}</dd>
+          <dt>Frecuencia</dt><dd>${row.frequency || '-'}</dd>
+          <dt>Duración</dt><dd>${row.duration || '-'}</dd>
+          <dt>Subir/cambiar</dt><dd>${row.escalation || '-'}</dd>
+          <dt>Control</dt><dd>${row.followUp || '-'}</dd>
+          <dt>Precauciones</dt><dd>${row.safety || '-'}</dd>
+          <dt>CIMA</dt><dd>${cima}</dd>
+        </dl>
+      </article>
+    `;
+  }).join('')}</div>`;
 }
 
 function linkMedicationNames(text) {
