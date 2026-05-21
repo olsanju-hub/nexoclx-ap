@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nexoclx-ap-v1';
+const CACHE_NAME = 'nexoclx-ap-v2';
 const APP_SHELL = [
   './',
   './index.html',
