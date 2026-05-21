@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0f766e">
+    <meta name="description" content="NexoClx AP · Protocolos rápidos de Atención Primaria">
+    <title>NexoClx AP</title>
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+    <link rel="alternate icon" href="favicon.png" type="image/png">
+    <link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="app-header">
+      <a class="brand" href="#/inicio" aria-label="Inicio NexoClx AP">
+        <img src="assets/logo.svg" alt="" width="42" height="42">
+        <span><strong>NexoClx AP</strong><small>Protocolos rápidos de Atención Primaria</small></span>
+      </a>
+      <nav class="top-nav" aria-label="Navegación principal">
+        <a href="#/inicio" data-route="inicio">Inicio</a>
+        <a href="#/protocolos" data-route="protocolos">Protocolos</a>
+        <a href="#/herramientas" data-route="herramientas">Herramientas</a>
+        <a href="#/bibliografia" data-route="bibliografia">Bibliografía</a>
+      </nav>
+    </header>
+
+    <main id="app" tabindex="-1"></main>
+
+    <nav class="bottom-nav" aria-label="Navegación móvil">
+      <a href="#/inicio" data-route="inicio">Inicio</a>
+      <a href="#/protocolos" data-route="protocolos">Protocolos</a>
+      <a href="#/herramientas" data-route="herramientas">Herramientas</a>
+      <a href="#/bibliografia" data-route="bibliografia">Fuentes</a>
+    </nav>
+
+    <script src="data/medications.js"></script>
+    <script src="data/bibliography.js"></script>
+    <script src="data/calculators.js"></script>
+    <script src="data/protocols.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
