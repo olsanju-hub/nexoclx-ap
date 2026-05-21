@@ -481,27 +481,27 @@ window.NEXO_PROTOCOLS = [
     ]
   },
   {
-    id: 'tos',
-    title: 'Infección respiratoria aguda / tos aguda',
+    id: 'nac',
+    title: 'Neumonía adquirida en la comunidad en Atención Primaria',
     category: 'Respiratorio',
-    type: 'Síndrome',
-    focus: 'síndrome agudo / tratamiento antimicrobiano',
-    keywords: ['tos', 'catarro', 'bronquitis', 'infección respiratoria', 'mocos', 'fiebre', 'neumonía', 'antibiótico', 'hemoptisis'],
-    synonyms: ['ira', 'infección respiratoria aguda', 'resfriado', 'infección respiratoria alta', 'bronquitis aguda', 'tos aguda'],
+    type: 'Agudo',
+    focus: 'diagnóstico / tratamiento antimicrobiano',
+    keywords: ['neumonía', 'nac', 'infección respiratoria', 'tos', 'fiebre', 'disnea', 'saturación', 'antibiótico', 'amoxicilina', 'macrólido', 'radiografía', 'rx tórax', 'crepitantes'],
+    synonyms: ['neumonia adquirida comunidad', 'cap', 'community acquired pneumonia', 'infección respiratoria baja', 'neumonía comunitaria'],
     reviewed: '2026-05-21',
-    mainSource: 'NICE NG120: Cough acute antimicrobial prescribing',
+    mainSource: 'NICE NG250: Pneumonia in adults: diagnosis and management',
     confidence: 'alto',
-    meds: ['doxiciclina', 'amoxicilina'],
+    meds: ['amoxicilina', 'doxiciclina', 'claritromicina', 'amoxicilina-clavulanico'],
     calculators: [],
-    bibliography: ['nice-ng120'],
+    bibliography: ['nice-ng250-nac', 'separ-nac-2020'],
     blocks: [
       {
         title: 'Qué hacer ahora',
         items: [
-          'Confirmar que es un cuadro agudo: catarro/IRA alta, tos aguda o bronquitis aguda. Duración habitual de tos: hasta 3-4 semanas.',
-          'Datos mínimos: días de evolución, fiebre, disnea, dolor torácico, hemoptisis, SatO2 si disponible, constantes, auscultación, comorbilidad, embarazo, inmunosupresión y alergias.',
-          'No antibiótico de rutina en catarro, infección respiratoria alta o bronquitis aguda sin sospecha de neumonía.',
-          'Alarmas: disnea importante, SatO2 baja, dolor torácico, hemoptisis, confusión, mal estado general, sepsis, fiebre persistente, inmunosupresión o sospecha de neumonía/TEP/IC.'
+          'Sospechar NAC si tos aguda con fiebre, disnea, dolor pleurítico, taquipnea, crepitantes/foco auscultatorio o deterioro general sin otra causa clara.',
+          'Datos mínimos antes de decidir: temperatura, FR, FC, PA, SatO2, nivel de conciencia, hidratación, comorbilidad, fragilidad, alergias, función renal/hepática si consta, embarazo/inmunosupresión y posibilidad real de revisión.',
+          'Estratificar gravedad en AP con CRB65: confusión, FR >=30/min, PAS <90 o PAD <=60 mmHg, edad >=65 años. CRB65 0 suele permitir manejo ambulatorio si SatO2 y seguimiento son adecuados; CRB65 >=2 requiere valoración urgente.',
+          'Pedir Rx tórax si diagnóstico incierto, SatO2 baja, foco auscultatorio dudoso, comorbilidad/fragilidad, mala evolución, sospecha de complicación o necesidad de confirmar antes de tratar; no retrasar urgencias si hay gravedad.'
         ]
       },
       {
@@ -511,126 +511,160 @@ window.NEXO_PROTOCOLS = [
       {
         title: 'Seguimiento',
         items: [
-          'Sin alarma: informar que la tos puede durar 3-4 semanas; revisión si empeora o aparecen alarmas.',
-          'Si se pauta antibiótico por afectación sistémica/alto riesgo/neumonía probable: revisar en 48-72 h si no mejora o antes si empeora.',
-          'Pedir Rx tórax si sospecha neumonía, exploración focal, SatO2 baja, hemoptisis, mal estado general, fiebre persistente, fumador con síntomas persistentes o evolución no esperada.',
-          'Si tos persiste más allá de 8 semanas, no ampliar este protocolo: pasar a protocolo futuro de tos persistente/crónica.'
+          'Si manejo ambulatorio: contacto o revisión clínica a las 48-72 h; en anciano/frágil o comorbilidad relevante, 24-48 h.',
+          'En la revisión: temperatura, FR, SatO2, PA, disnea, estado general, tolerancia oral, adherencia, alergia/diarrea/QT/interacciones y necesidad de Rx si no se hizo.',
+          'Si mejora y está estable: completar 5 días. No prolongar antibiótico de rutina; valorar más duración solo si no hay estabilidad, complicación o patógeno no habitual.',
+          'Fracaso terapéutico: fiebre persistente, aumento de disnea, SatO2 peor, hipotensión, confusión, intolerancia oral, deterioro a 48-72 h o nueva focalidad. Revalorar diagnóstico, adherencia, Rx/analítica y derivar si hay gravedad.',
+          'Rx de control no rutinaria si recuperación completa. Valorar a unas 6 semanas si síntomas persistentes, fumador, edad avanzada o sospecha de neoplasia/complicación.'
         ]
       },
       {
         title: 'Derivar / urgencias',
         items: [
-          'Urgencias: SatO2 baja, disnea moderada-grave, dolor torácico, hemoptisis relevante, confusión, hipotensión, sepsis, neumonía grave, sospecha TEP/IC o inmunosupresión con afectación sistémica.',
-          'Derivación/valoración preferente si neumonía con comorbilidad relevante, mala evolución a 48-72 h, Rx patológica preocupante o síntomas persistentes en fumador.',
-          'No derivar por tos aguda no complicada si constantes, exploración y evolución son compatibles con IRA/bronquitis aguda.'
+          'Urgencias: SatO2 baja, disnea importante, FR >=30/min, confusión, PAS <90 o PAD <=60 mmHg, sepsis, cianosis, dolor torácico intenso, hemoptisis relevante o mal estado general.',
+          'Derivar o valorar preferente: CRB65 >=2, comorbilidad descompensada, fragilidad sin soporte, imposibilidad de seguimiento, embarazo, inmunosupresión, sospecha de tuberculosis/aspiración grave o complicación.',
+          'Urgencias si no mejora o empeora a las 48-72 h, o si se sospecha derrame pleural, empiema, absceso, neumonía extensa, neumonía posgripal grave o deterioro clínico.'
         ]
       }
     ],
     treatmentRows: [
       {
-        scenario: 'Catarro / IRA alta sin alarmas',
-        action: 'Explicar curso autolimitado. No antibiótico.',
-        drugClass: 'No antibiótico; medidas sintomáticas',
-        medication: '-',
-        dose: '-',
-        frequency: '-',
-        duration: 'Rinorrea y malestar suelen mejorar en días; tos puede durar 3-4 semanas.',
-        escalation: 'Revisar si fiebre persistente, disnea, dolor torácico, hemoptisis o empeoramiento claro.',
-        followUp: 'Sin revisión programada si evolución esperada; instrucciones de alarma.',
-        safety: 'Evitar antibióticos y mucolíticos de rutina.',
-        cimaMedicationId: ''
-      },
-      {
-        scenario: 'Bronquitis aguda / tos aguda sin sospecha de neumonía',
-        action: 'No antibiótico. No broncodilatador ni corticoide si no hay enfermedad aérea subyacente.',
-        drugClass: 'Sintomático',
-        medication: '-',
-        dose: '-',
-        frequency: '-',
-        duration: 'Tos hasta 3-4 semanas.',
-        escalation: 'Reevaluar si empeora rápida/significativamente o aparecen alarmas.',
-        followUp: 'Consulta si no mejora en 3-4 semanas o antes si alarma.',
-        safety: 'No ofrecer acetilcisteína/carbocisteína de rutina para tos aguda.',
-        cimaMedicationId: ''
-      },
-      {
-        scenario: 'Tos con fiebre persistente o afectación general',
-        action: 'Constantes, SatO2 si disponible y auscultación. Buscar neumonía o complicación.',
-        drugClass: 'Antibiótico solo si alto riesgo o sospecha bacteriana/neumonía',
-        medication: 'doxiciclina',
-        dose: '200 mg VO día 1; luego 100 mg VO',
-        frequency: 'Cada 24 h.',
-        duration: '5 días en total.',
-        escalation: 'Rx tórax si foco auscultatorio, fiebre persistente, SatO2 baja, comorbilidad o mala evolución.',
-        followUp: '48-72 h si se pauta antibiótico o alto riesgo.',
-        safety: 'Evitar doxiciclina en embarazo; CIMA pendiente.',
-        cimaMedicationId: 'doxiciclina'
-      },
-      {
-        scenario: 'Sospecha de neumonía',
-        action: 'Valorar Rx tórax, gravedad y tratamiento ambulatorio solo si estable.',
-        drugClass: 'Antibiótico si neumonía probable y manejo ambulatorio apropiado',
+        scenario: 'NAC leve, estable, CRB65 0 y seguimiento posible',
+        action: 'Manejo en AP si tolera vía oral, SatO2 aceptable, sin sepsis y revisión 48-72 h garantizada.',
+        drugClass: 'Betalactámico oral',
         medication: 'amoxicilina',
         dose: '500 mg VO',
         frequency: 'Cada 8 h.',
         duration: '5 días.',
-        escalation: 'Urgencias si SatO2 baja, sepsis, confusión, hipotensión, comorbilidad grave o mala tolerancia oral.',
-        followUp: '48-72 h si tratamiento ambulatorio.',
-        safety: 'Verificar alergia a penicilina y ficha CIMA antes de prescribir.',
+        escalation: 'Si alergia a penicilina o amoxicilina no adecuada: doxiciclina o claritromicina. Si no mejora en 48-72 h, revalorar y no escalar a ciegas.',
+        followUp: 'Revisión o contacto en 48-72 h.',
+        safety: 'Verificar alergia a penicilina y ajuste renal. No usar antibiótico sin sospecha clínica de NAC.',
         cimaMedicationId: 'amoxicilina'
       },
       {
-        scenario: 'EPOC/asma o comorbilidad relevante',
-        action: 'Distinguir IRA simple de exacerbación. Medir SatO2 y auscultar.',
-        drugClass: 'Tratamiento de exacerbación solo si criterios clínicos',
+        scenario: 'NAC leve con alergia a penicilina o sospecha de atípicos',
+        action: 'Tratamiento ambulatorio solo si no hay criterios de gravedad y hay seguimiento.',
+        drugClass: 'Tetraciclina o macrólido',
+        medication: 'doxiciclina',
+        dose: '200 mg VO el día 1; luego 100 mg VO',
+        frequency: 'Cada 24 h.',
+        duration: '5 días en total.',
+        escalation: 'Si doxiciclina contraindicada, claritromicina 500 mg VO cada 12 h durante 5 días si no hay QT/interacciones relevantes.',
+        followUp: 'Revisión 48-72 h; antes si fiebre alta persistente, disnea o mala tolerancia.',
+        safety: 'Evitar doxiciclina en embarazo. Con macrólidos revisar QT, estatinas, anticoagulantes y antiarrítmicos.',
+        cimaMedicationId: 'doxiciclina'
+      },
+      {
+        scenario: 'NAC con comorbilidad relevante pero estable',
+        action: 'Confirmar gravedad, SatO2 y soporte. Manejo ambulatorio solo si estable y con bajo umbral de derivación.',
+        drugClass: 'Betalactámico; añadir macrólido solo si sospecha de atípicos',
+        medication: 'amoxicilina',
+        dose: '500 mg VO',
+        frequency: 'Cada 8 h.',
+        duration: '5 días si estabilidad clínica.',
+        escalation: 'Si sospecha de atípicos: claritromicina 500 mg VO cada 12 h 5 días, revisando interacciones. Si comorbilidad descompensada, urgencias.',
+        followUp: 'Revisión en 24-48 h.',
+        safety: 'Revisar ERC, hepatopatía, EPOC avanzada, insuficiencia cardiaca, anticoagulación e interacciones.',
+        cimaMedicationId: 'amoxicilina'
+      },
+      {
+        scenario: 'NAC en paciente mayor o frágil',
+        action: 'Valorar CRB65, SatO2, hidratación, delirium, soporte domiciliario y tolerancia oral antes de decidir AP.',
+        drugClass: 'Betalactámico oral si manejo domiciliario es seguro',
+        medication: 'amoxicilina',
+        dose: '500 mg VO',
+        frequency: 'Cada 8 h.',
+        duration: '5 días si estabilidad clínica.',
+        escalation: 'Derivar si fragilidad impide seguimiento, hay caída funcional, confusión, deshidratación, SatO2 baja o mala tolerancia oral.',
+        followUp: '24-48 h; control más precoz si vive solo o alto riesgo.',
+        safety: 'Evitar sedantes antitusivos. Revisar función renal para dosificación y riesgo de diarrea/deshidratación.',
+        cimaMedicationId: 'amoxicilina'
+      },
+      {
+        scenario: 'SatO2 baja, disnea importante o mal estado general',
+        action: 'Enviar a urgencias. No convertir en manejo domiciliario por iniciar antibiótico oral.',
+        drugClass: 'Antibiótico hospitalario según gravedad',
         medication: '-',
         dose: '-',
         frequency: '-',
-        duration: 'Según diagnóstico de exacerbación, no por tos aislada.',
-        escalation: 'Valorar antibiótico si EPOC con aumento de disnea, volumen y purulencia de esputo o gravedad.',
-        followUp: '24-72 h si exacerbación o comorbilidad relevante.',
-        safety: 'Urgencias si SatO2 baja, trabajo respiratorio o fracaso de tratamiento inicial.',
+        duration: 'Inmediato: derivación.',
+        escalation: 'Oxígeno/soporte según recursos y traslado. Si demora inevitable, contactar con urgencias/microbiología local.',
+        followUp: 'Seguimiento AP tras alta o plan hospitalario.',
+        safety: 'Riesgo de hipoxemia, sepsis o fracaso respiratorio.',
         cimaMedicationId: ''
       },
       {
-        scenario: 'Disnea, SatO2 baja, dolor torácico, hemoptisis o mal estado general',
-        action: 'Enviar a urgencias o valorar de forma preferente según gravedad.',
-        drugClass: 'No demorar por tratamiento sintomático',
+        scenario: 'Sepsis, confusión, hipotensión o FR >=30/min',
+        action: 'Urgencias/emergencias. CRB65 elevado o sepsis probable.',
+        drugClass: 'No iniciar pauta AP como sustituto de valoración urgente',
+        medication: 'amoxicilina/ácido clavulánico',
+        dose: '500/125 mg VO o 1,2 g IV en esquemas hospitalarios NICE',
+        frequency: 'Cada 8 h, asociado a macrólido si alta gravedad según guía.',
+        duration: '5 días y reevaluación; hospital decide vía y duración.',
+        escalation: 'Derivación inmediata; hemocultivos/analítica/imagen y tratamiento IV si procede.',
+        followUp: 'AP tras alta; no seguimiento diferido en domicilio.',
+        safety: 'Quinolonas no son rutina; reservar a indicación especializada/alergia grave según guía y seguridad.',
+        cimaMedicationId: 'amoxicilina-clavulanico'
+      },
+      {
+        scenario: 'Sospecha de NAC sin seguimiento domiciliario fiable',
+        action: 'No tratar como ambulatoria si no puede revisarse o no hay soporte seguro.',
+        drugClass: 'Valoración urgente o preferente',
+        medication: '-',
+        dose: '-',
+        frequency: '-',
+        duration: 'Hasta asegurar circuito de control.',
+        escalation: 'Derivar si vive solo frágil, barrera de comunicación, deterioro cognitivo, mala adherencia probable o acceso difícil.',
+        followUp: 'Confirmar revisión en 24-48 h si finalmente queda en domicilio.',
+        safety: 'El antibiótico no compensa una mala capacidad de vigilancia clínica.',
+        cimaMedicationId: ''
+      },
+      {
+        scenario: 'Falta de mejoría tras 48-72 h de antibiótico',
+        action: 'Reevaluar presencialmente: constantes, SatO2, adherencia, alergia, diagnóstico alternativo y complicación.',
+        drugClass: 'No cambiar antibiótico sin nueva valoración',
+        medication: '-',
+        dose: '-',
+        frequency: '-',
+        duration: 'Revisión inmediata si deterioro.',
+        escalation: 'Pedir Rx tórax si no se hizo; derivar si hipoxemia, sepsis, derrame, neumonía extensa o imposibilidad de control.',
+        followUp: 'Decidir en la visita: completar, cambiar con criterio o derivar.',
+        safety: 'Buscar TEP, IC, COVID/gripe, tuberculosis, cáncer, aspiración o resistencia.',
+        cimaMedicationId: ''
+      },
+      {
+        scenario: 'Sospecha de derrame, empiema, absceso, neumonía extensa o deterioro',
+        action: 'Derivación urgente para imagen, analítica y manejo especializado.',
+        drugClass: 'Tratamiento especializado',
         medication: '-',
         dose: '-',
         frequency: '-',
         duration: 'Inmediato.',
-        escalation: 'Descartar neumonía grave, TEP, IC, sepsis o sangrado relevante.',
-        followUp: 'Revisión AP tras alta o resolución del episodio.',
-        safety: 'No atribuir a bronquitis si hay signos de alarma.',
+        escalation: 'No ampliar duración ni añadir antibióticos en AP sin confirmar complicación y gravedad.',
+        followUp: 'Revisión AP tras alta o indicación hospitalaria.',
+        safety: 'Complicación pleural o necrosante requiere circuito hospitalario.',
         cimaMedicationId: ''
-      },
-      {
-        scenario: 'Tos tras inicio de IECA',
-        action: 'Nota breve: si relación temporal plausible, cambiar IECA por ARA-II y reevaluar.',
-        drugClass: 'ARA-II',
-        medication: 'losartán',
-        dose: '50 mg VO',
-        frequency: 'Cada 24 h.',
-        duration: 'Revisar respuesta; no desarrollar como tos crónica en este protocolo.',
-        escalation: 'Si persiste más de 8 semanas, abordar en protocolo futuro de tos persistente/crónica.',
-        followUp: 'PA/AMPA en 2-4 semanas; renal/K si ARA-II.',
-        safety: 'No usar ARA-II en embarazo; enlace CIMA monofármaco pendiente.',
-        cimaMedicationId: 'losartan'
       }
     ],
     secondary: [
       {
         title: 'Ajustes y seguridad',
         items: [
-          'No aplicar como IRA simple si inmunosupresión, embarazo complejo, sospecha tuberculosis, cáncer, TEP, IC o neumonía grave.',
-          'Antitusivos de venta libre tienen beneficio limitado; evitar sedantes en fragilidad, conducción o riesgo de caídas.',
-          'Antibióticos: verificar alergias, embarazo, interacciones y ficha CIMA antes de prescribir.'
+          'Insuficiencia renal: amoxicilina requiere límite de dosis en GFR 10-30 ml/min y <10 ml/min según ficha CIMA; claritromicina reduce dosis si ClCr <30 ml/min. No calcular ajuste no documentado.',
+          'Insuficiencia hepática: evitar amoxicilina/clavulánico si antecedente de ictericia o lesión hepática asociada; precaución con macrólidos y hepatopatía.',
+          'Alergia a betalactámicos: doxiciclina o claritromicina son alternativas para NAC leve; si reacción grave, comorbilidad o alta gravedad, derivar/consultar.',
+          'Anticoagulación/interacciones: macrólidos pueden potenciar anticoagulantes e interactuar con estatinas, antiarrítmicos y fármacos que prolongan QT.',
+          'Embarazo/lactancia: no usar doxiciclina; macrólido alternativo según guía y ficha técnica. Valorar derivación si gravedad, comorbilidad o duda.',
+          'Uso prudente PROA: antibiótico solo con sospecha clínica de NAC; duración corta de 5 días si estabilidad; revisar a 48-72 h y desescalar/suspender si el diagnóstico cambia.'
         ]
       },
       {
         title: 'Bibliografía',
-        items: ['Fuente principal: NICE NG120 para tos aguda asociada a infección respiratoria alta o bronquitis aguda. Tos persistente/crónica queda pendiente para una versión futura.']
+        items: [
+          'Fuente principal: NICE NG250 (2025) para diagnóstico, gravedad y antibióticos en adultos.',
+          'Fuente de apoyo española: normativa SEPAR NAC 2020 para criterios de estabilidad, duración mínima de 5 días y prudencia antimicrobiana.',
+          'CIMA/AEMPS: fichas técnicas de amoxicilina, doxiciclina, claritromicina y amoxicilina/ácido clavulánico registradas en medicamentos.'
+        ]
       }
     ]
   }

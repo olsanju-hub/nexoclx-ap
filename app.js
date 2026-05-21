@@ -101,7 +101,7 @@ function searchBox() {
   return `
     <div class="search-panel">
       <label for="main-search">Buscar protocolo, síntoma, fármaco o término clínico</label>
-      <input id="main-search" type="search" value="${state.query}" placeholder="tensión, azúcar, colesterol, tos, IECA, insulina...">
+      <input id="main-search" type="search" value="${state.query}" placeholder="tensión, azúcar, colesterol, neumonía, NAC, insulina...">
       <div class="filter-group">
         <span>Categoría</span>
         <div class="filters" role="list" aria-label="Categorías">

@@ -145,23 +145,45 @@ window.NEXO_MEDICATIONS = [
   {
     id: 'doxiciclina',
     generic: 'doxiciclina',
-    protocols: ['tos'],
-    cima: 'enlace CIMA pendiente',
-    dose: 'Para tos aguda con indicación antibiótica según NICE NG120: 200 mg VO día 1, luego 100 mg VO cada 24 h 4 días más.',
-    duration: '5 días en total cuando esté indicada por paciente sistémicamente muy afectado o alto riesgo.',
+    protocols: ['nac'],
+    cima: 'https://cima.aemps.es/cima/dochtml/ft/50404/FichaTecnica_50404.html',
+    dose: 'NAC leve si alergia a penicilina o amoxicilina no adecuada: 200 mg VO día 1, luego 100 mg VO cada 24 h.',
+    duration: '5 días en total si estable clínicamente.',
     safety: 'Evitar en embarazo y niños pequeños. Fotosensibilidad, esofagitis; tomar con agua y no acostarse inmediatamente.',
-    renal: 'Ajuste renal pendiente de verificación CIMA.',
-    hepatic: 'Precaución en hepatopatía; ajuste pendiente de verificación CIMA.'
+    renal: 'No registrar ajuste concreto automático; revisar ficha si insuficiencia renal avanzada.',
+    hepatic: 'Precaución en hepatopatía; revisar ficha si insuficiencia hepática relevante.'
   },
   {
     id: 'amoxicilina',
     generic: 'amoxicilina',
-    protocols: ['tos'],
-    cima: 'enlace CIMA pendiente',
-    dose: 'Alternativa NICE NG120 si antibiótico indicado: 500 mg VO cada 8 h.',
-    duration: '5 días.',
+    protocols: ['nac'],
+    cima: 'https://cima.aemps.es/cima/dochtml/ft/62586/FT_62586.html',
+    dose: 'NAC leve: 500 mg VO cada 8 h; en infecciones graves la ficha permite 750 mg-1 g cada 8 h según indicación.',
+    duration: '5 días si estabilidad clínica.',
     safety: 'Evitar si alergia a penicilinas. Vigilar exantema, diarrea y anafilaxia.',
-    renal: 'Requiere ajuste en insuficiencia renal; pauta concreta pendiente de verificación CIMA.',
-    hepatic: 'Sin ajuste concreto registrado; verificar ficha.'
+    renal: 'Ficha CIMA: si GFR 10-30 ml/min, máximo 500 mg cada 12 h; si GFR <10 ml/min, máximo 500 mg/día.',
+    hepatic: 'Dosificar con precaución y monitorizar función hepática a intervalos regulares.'
+  },
+  {
+    id: 'claritromicina',
+    generic: 'claritromicina',
+    protocols: ['nac'],
+    cima: 'https://cima.aemps.es/cima/dochtml/ft/79006/ft_79006.html',
+    dose: 'NAC si alergia a penicilina o sospecha de atípicos: 500 mg VO cada 12 h.',
+    duration: '5 días si estabilidad clínica.',
+    safety: 'Riesgo de prolongación QT e interacciones CYP3A4; revisar anticoagulación, antiarrítmicos, estatinas y otros fármacos.',
+    renal: 'Ficha CIMA: si ClCr <30 ml/min reducir dosis a la mitad; no prolongar más de 14 días en estos pacientes.',
+    hepatic: 'Usar con precaución en insuficiencia hepática; evitar si hepatopatía grave o interacciones relevantes.'
+  },
+  {
+    id: 'amoxicilina-clavulanico',
+    generic: 'amoxicilina/ácido clavulánico',
+    protocols: ['nac'],
+    cima: 'https://cima.aemps.es/cima/dochtml/ft/72246/FT_72246.html',
+    dose: 'NAC de alta gravedad según NICE requiere valoración hospitalaria; si se usa VO por indicación especializada: 500/125 mg VO cada 8 h en guía NICE.',
+    duration: '5 días y revisar; uso ambulatorio no rutinario en este protocolo.',
+    safety: 'Evitar si antecedente de ictericia o disfunción hepática por amoxicilina/clavulánico. Riesgo de diarrea y hepatotoxicidad colestásica.',
+    renal: 'Requiere ajuste en insuficiencia renal; verificar ficha antes de prescribir.',
+    hepatic: 'Usar con precaución y monitorizar función hepática; evitar si antecedente de lesión hepática asociada.'
   }
 ];

@@ -191,6 +191,7 @@ h3 { margin: 0 0 .4rem; font-size: 1rem; }
   border: 1px solid var(--line);
   border-radius: var(--radius);
   padding: .95rem;
+  min-width: 0;
 }
 
 .clinical-block:has(.treatment-grid) {
@@ -299,7 +300,9 @@ input[type="checkbox"] {
   min-height: 2.5rem;
 }
 
-.table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: #fff; }
+.protocol-grid > *, .split > *, section { min-width: 0; }
+
+.table-wrap { overflow-x: auto; max-width: 100%; border: 1px solid var(--line); border-radius: var(--radius); background: #fff; }
 table { width: 100%; border-collapse: collapse; min-width: 680px; }
 th, td { text-align: left; padding: .7rem; border-bottom: 1px solid var(--line); vertical-align: top; }
 th { background: #eef8f6; font-size: .88rem; }

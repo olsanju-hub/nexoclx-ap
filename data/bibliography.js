@@ -78,14 +78,36 @@ window.NEXO_BIBLIOGRAPHY = [
   },
   {
     id: 'nice-ng120',
-    protocol: 'tos',
+    protocol: 'pendiente: IRA/tos aguda',
     title: 'NICE NG120: Cough acute antimicrobial prescribing',
     institution: 'NICE',
     year: '2019, amended 2021',
     url: 'https://www.nice.org.uk/guidance/ng120',
     reviewed: '2026-05-21',
     confidence: 'alto',
-    notes: 'Fuente para tos aguda asociada a infección respiratoria alta o bronquitis aguda.'
+    notes: 'Fuente reservada si se implementa un protocolo futuro de IRA/tos aguda.'
+  },
+  {
+    id: 'nice-ng250-nac',
+    protocol: 'nac',
+    title: 'NICE NG250: Pneumonia in adults: diagnosis and management',
+    institution: 'NICE',
+    year: '2025',
+    url: 'https://www.nice.org.uk/guidance/ng250',
+    reviewed: '2026-05-21',
+    confidence: 'alto',
+    notes: 'Fuente principal para diagnóstico, gravedad, derivación y antibióticos en NAC.'
+  },
+  {
+    id: 'separ-nac-2020',
+    protocol: 'nac',
+    title: 'Neumonía adquirida en la comunidad. Normativa SEPAR. Actualización 2020',
+    institution: 'Sociedad Española de Neumología y Cirugía Torácica',
+    year: '2020',
+    url: 'https://archbronconeumol.org/es-neumonia-adquirida-comunidad-normativa-sociedad-articulo-S0300289620300405',
+    reviewed: '2026-05-21',
+    confidence: 'alto',
+    notes: 'Fuente española de apoyo para estabilidad clínica, duración mínima de 5 días y uso prudente de antibióticos.'
   },
   {
     id: 'ers-cough-2019',

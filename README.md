@@ -1,6 +1,6 @@
 # NexoClx AP
 
-NexoClx AP es una app web estática de apoyo clínico rápido para consulta de Atención Primaria. La V1 contiene 4 protocolos piloto: hipertensión arterial, diabetes mellitus tipo 2 con insulinización basal, dislipemia/riesgo cardiovascular e infección respiratoria aguda/tos aguda.
+NexoClx AP es una app web estática de apoyo clínico rápido para consulta de Atención Primaria. La V1 contiene 4 protocolos piloto: hipertensión arterial, diabetes mellitus tipo 2 con insulinización basal, dislipemia/riesgo cardiovascular y neumonía adquirida en la comunidad.
 
 NexoClx AP no sustituye el juicio clínico, la valoración individual ni las guías oficiales vigentes. El contenido debe revisarse antes de uso asistencial real.
 
@@ -29,7 +29,8 @@ Estructura:
 | `manifest.webmanifest` | Configuración instalable PWA |
 | `sw.js` | Service worker básico con caché de shell y datos V1 |
 | `assets/logo.svg` | Logo verde de NexoClx AP del paquete de iconos |
-| `assets/icons/` | Iconos PNG PWA, favicon y variantes maskable |
+| `assets/icons/` | Iconos PNG PWA y variantes maskable |
+| `favicon.ico`, `favicon.png`, `apple-touch-icon.png` | Iconos de navegador y Apple generados desde la misma identidad verde |
 | `data/protocols.js` | Contenido clínico estructurado por protocolo |
 | `data/medications.js` | Medicamentos, dosis, seguridad y enlaces CIMA |
 | `data/calculators.js` | Metadatos y criterios de calculadoras |
@@ -46,7 +47,7 @@ Los tratamientos rápidos se registran en `treatmentRows` dentro de cada protoco
 | Hipertensión arterial en Atención Primaria | Cardiometabólico | diagnóstico / seguimiento crónico / tratamiento farmacológico | implementado / comiteado | commit inicial `feat: create NexoClx AP initial PWA` | 2024 ESC Guidelines for elevated BP and hypertension | 2024 | 2026-05-21 | Cockcroft-Gault | Adaptar a circuitos locales si existen |
 | Diabetes mellitus tipo 2 | Cardiometabólico | seguimiento crónico / tratamiento farmacológico | implementado / comiteado | commit inicial `feat: create NexoClx AP initial PWA` | ADA Standards of Care 2026; redGDPS 2026 | 2026 | 2026-05-21 | Insulina basal; Cockcroft-Gault | Insulinización redGDPS vigente localizada es 2022 |
 | Dislipemia / riesgo cardiovascular | Cardiometabólico | diagnóstico / tratamiento farmacológico | implementado / comiteado | commit inicial `feat: create NexoClx AP initial PWA` | 2025 ESC/EAS Focused Update | 2025 | 2026-05-21 | SCORE2 enlazado; Cockcroft-Gault | SCORE2 no se calcula localmente |
-| Infección respiratoria aguda / tos aguda | Respiratorio | síndrome agudo / tratamiento antimicrobiano | implementado / comiteado | `refactor: simplify filters focus respiratory protocol and unify icon` | NICE NG120 | 2019/2021 | 2026-05-21 | Ninguna | Centrado en catarro, bronquitis aguda, antibiótico sí/no, neumonía y alarmas |
+| Neumonía adquirida en la comunidad en Atención Primaria | Respiratorio | diagnóstico / tratamiento antimicrobiano | implementado / comiteado | `refactor: replace acute cough protocol with CAP and fix favicon` | NICE NG250 | 2025 | 2026-05-21 | Ninguna | Sustituye al protocolo amplio de IRA/tos aguda para mantener la V1 concreta y accionable |
 
 ## Calculadoras incluidas
 
@@ -60,7 +61,9 @@ Los tratamientos rápidos se registran en `treatmentRows` dentro de cada protoco
 
 Los medicamentos se registran en `data/medications.js` con nombre genérico, protocolos, dosis, duración, seguridad, ajuste renal/hepático y enlace a ficha técnica CIMA/AEMPS. No se deben inventar URLs. Si no se verifica un enlace, usar literalmente `enlace CIMA pendiente` y no añadir una URL comercial.
 
-Fármacos con enlace CIMA verificado en V1: enalapril, amlodipino, hidroclorotiazida, metformina, empagliflozina, sitagliptina, gliclazida, liraglutida, insulina glargina, atorvastatina, rosuvastatina, ezetimiba. Pendientes o parciales: losartán monofármaco, doxiciclina, amoxicilina.
+Fármacos con enlace CIMA verificado en V1: enalapril, amlodipino, hidroclorotiazida, metformina, empagliflozina, sitagliptina, gliclazida, liraglutida, insulina glargina, atorvastatina, rosuvastatina, ezetimiba, doxiciclina, amoxicilina, claritromicina y amoxicilina/ácido clavulánico. Pendiente o parcial: losartán monofármaco.
+
+En protocolos con antibióticos se puede usar documentación PROA como apoyo si es institucional, autonómica, nacional, hospitalaria o de sociedad científica, con fecha y trazabilidad clara. PROA no sustituye a la guía clínica principal ni a CIMA/AEMPS; si hay discrepancia, debe registrarse en bibliografía/observaciones.
 
 ## Bibliografía clínica
 
@@ -71,12 +74,13 @@ Jerarquía aceptada: guías oficiales de sociedades científicas u organismos p�
 | HTA | ESC 2024 HTA | SEC/comentarios si se incorporan después | 2024 | https://academic.oup.com/eurheartj/article/45/38/3912/7741010 | 2026-05-21 | alto |
 | DM2 | ADA Standards of Care 2026 | redGDPS 2026; redGDPS insulinización 2022 | 2026/2022 | https://professional.diabetes.org/standards-of-care | 2026-05-21 | alto/medio |
 | Dislipemia | ESC/EAS Focused Update 2025 | ESC Prevention 2021; HeartScore | 2025/2021 | https://academic.oup.com/eurheartj/article/46/42/4359/8234482 | 2026-05-21 | alto |
-| Infección respiratoria aguda / tos aguda | NICE NG120 | Pendiente de apoyo local trazable si se incorpora | 2019/2021 | https://www.nice.org.uk/guidance/ng120 | 2026-05-21 | alto |
+| Neumonía adquirida en la comunidad en AP | NICE NG250 | SEPAR NAC 2020; PROA local pendiente si se identifica fuente aplicable | 2025/2020 | https://www.nice.org.uk/guidance/ng250 / https://archbronconeumol.org/es-neumonia-adquirida-comunidad-normativa-sociedad-articulo-S0300289620300405 | 2026-05-21 | alto |
 
 ## Historial de cambios
 
 | Fecha | Cambio | Archivos modificados | Protocolos afectados | Commit asociado | Pendientes |
 | --- | --- | --- | --- | --- | --- |
+| 2026-05-21 | Corrección del favicon de navegador con query string de versión, unificación visual de icono interno/PWA/favicon y sustitución del protocolo amplio de IRA/tos aguda por NAC en AP con filas terapéuticas accionables | `index.html`, `styles.css`, `app.js`, `sw.js`, `data/protocols.js`, `data/medications.js`, `data/bibliography.js`, `README.md` | NAC | `refactor: replace acute cough protocol with CAP and fix favicon` | Identificar PROA local/autonómico aplicable; validación clínica local de pauta antibiótica y criterios de derivación |
 | 2026-05-21 | Eliminación del filtro visible de tipo para reducir densidad; cambio de Tos en AP a Infección respiratoria aguda / tos aguda; unificación del icono interno con el icono PWA usando el PNG verde del paquete | `app.js`, `styles.css`, `index.html`, `data/protocols.js`, `data/bibliography.js`, `sw.js`, `README.md` | Respiratorio | `refactor: simplify filters focus respiratory protocol and unify icon` | Protocolo futuro de tos persistente/crónica; validación clínica del protocolo respiratorio agudo |
 | 2026-05-21 | Sustitución de iconos por el paquete `nexoclx-ap-icon-pack-verde`, incorporación de favicon ICO, Apple Touch Icon y variantes maskable; carpeta de paquete eliminada | `assets/logo.svg`, `assets/icons/`, `favicon.png`, `favicon.ico`, `apple-touch-icon.png`, `index.html`, `manifest.webmanifest`, `sw.js`, `README.md` | Ninguno | `chore: use provided green icon pack` | Comprobar refresco de icono en PWAs ya instaladas |
 | 2026-05-21 | Conversión de tratamientos a filas estructuradas de decisión rápida y reparación del filtro por categoría/tipo | `app.js`, `styles.css`, `data/protocols.js`, `sw.js`, `README.md` | HTA, DM2, dislipemia, tos | `fix: make protocols clinically actionable and repair filters` | Validación clínica externa de filas terapéuticas |
@@ -110,8 +114,10 @@ GitHub Pages: publicar desde la rama `main`, carpeta raíz.
 ## Pendientes y roadmap
 
 - Validación clínica externa por profesional o comité antes de uso real.
+- Protocolo futuro pendiente: Infección respiratoria aguda / tos aguda en Atención Primaria. Enfoque previsto: catarro, bronquitis aguda, antibiótico sí/no, tratamiento sintomático, revisión y alarmas.
 - Protocolo futuro pendiente: Tos persistente / tos crónica en Atención Primaria. Enfoque previsto: tos subaguda/crónica, IECA, rinitis/goteo nasal posterior, asma, EPOC, reflujo, tabaquismo, alarmas, Rx tórax, espirometría y derivación a neumología, ORL o digestivo.
-- Completar enlaces CIMA pendientes: losartán monofármaco, doxiciclina, amoxicilina, claritromicina/eritromicina si se incorporan.
+- Identificar PROA local/autonómico aplicable para NAC si se quiere adaptar la selección antibiótica al entorno asistencial concreto.
+- Completar enlaces CIMA pendientes: losartán monofármaco.
 - Revisar ajustes renales/hepáticos con fichas técnicas concretas para cada presentación seleccionada.
 - Añadir pruebas automatizadas ligeras para render, búsqueda y calculadoras.
 - Mantener revisión bibliográfica anual o antes si ADA/ESC/NICE/redGDPS publican actualización.
