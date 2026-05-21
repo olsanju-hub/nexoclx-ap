@@ -29,7 +29,7 @@ Estructura:
 | `manifest.webmanifest` | Configuración instalable PWA |
 | `sw.js` | Service worker básico con caché de shell y datos V1 |
 | `assets/logo.svg` | Logo original de NexoClx AP |
-| `assets/icons/` | Iconos PNG 192x192 y 512x512 |
+| `assets/icons/` | Iconos PNG PWA, favicon y variantes maskable |
 | `data/protocols.js` | Contenido clínico estructurado por protocolo |
 | `data/medications.js` | Medicamentos, dosis, seguridad y enlaces CIMA |
 | `data/calculators.js` | Metadatos y criterios de calculadoras |
@@ -77,6 +77,7 @@ Jerarquía aceptada: guías oficiales de sociedades científicas u organismos p�
 
 | Fecha | Cambio | Archivos modificados | Protocolos afectados | Commit asociado | Pendientes |
 | --- | --- | --- | --- | --- | --- |
+| 2026-05-21 | Sustitución de iconos por el paquete `nexoclx-ap-icon-pack-verde`, incorporación de favicon ICO, Apple Touch Icon y variantes maskable; carpeta de paquete eliminada | `assets/logo.svg`, `assets/icons/`, `favicon.png`, `favicon.ico`, `apple-touch-icon.png`, `index.html`, `manifest.webmanifest`, `sw.js`, `README.md` | Ninguno | `chore: use provided green icon pack` | Comprobar refresco de icono en PWAs ya instaladas |
 | 2026-05-21 | Conversión de tratamientos a filas estructuradas de decisión rápida y reparación del filtro por categoría/tipo | `app.js`, `styles.css`, `data/protocols.js`, `sw.js`, `README.md` | HTA, DM2, dislipemia, tos | `fix: make protocols clinically actionable and repair filters` | Validación clínica externa de filas terapéuticas |
 | 2026-05-21 | Corrección geométrica del icono PWA solicitado | `assets/logo.svg`, `assets/icons/`, `favicon.png`, `sw.js` | Ninguno | `fix: correct app icon geometry` | Comprobar actualización de icono en PWAs ya instaladas |
 | 2026-05-21 | Limpieza de la interfaz pública para ocultar notas internas y reducir explicaciones no necesarias en la vista clínica | `app.js`, `data/protocols.js`, `data/calculators.js`, `sw.js`, `README.md` | HTA, DM2, dislipemia, tos | `chore: simplify clinical UI copy` | Revisar con uso real si quedan textos demasiado largos en medicamentos |

@@ -1,13 +1,18 @@
-const CACHE_NAME = 'nexoclx-ap-v5';
+const CACHE_NAME = 'nexoclx-ap-v6';
 const APP_SHELL = [
   './',
   './index.html',
   './styles.css',
   './app.js',
   './manifest.webmanifest',
+  './favicon.ico',
+  './favicon.png',
+  './apple-touch-icon.png',
   './assets/logo.svg',
   './assets/icons/icon-192.png',
   './assets/icons/icon-512.png',
+  './assets/icons/maskable-192.png',
+  './assets/icons/maskable-512.png',
   './data/protocols.js',
   './data/calculators.js',
   './data/medications.js',
