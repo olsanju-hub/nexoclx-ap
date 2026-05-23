@@ -3,7 +3,8 @@ const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selec
 
 const state = {
   query: '',
-  category: 'Todas'
+  category: 'Todas',
+  activeProtocolTab: 'sospecha'
 };
 
 const data = {
@@ -54,11 +55,13 @@ function filterProtocols() {
 
 function route() {
   const hash = location.hash.replace(/^#\/?/, '') || 'inicio';
-  const [name, id] = hash.split('/');
+  const [path, queryString = ''] = hash.split('?');
+  const [name, id] = path.split('/');
+  const params = new URLSearchParams(queryString);
   setActiveNav(name);
   if (name === 'protocolos' && id) return renderProtocol(id);
   if (name === 'protocolos') return renderProtocols();
-  if (name === 'herramientas') return renderTools();
+  if (name === 'herramientas') return renderTools(id, params.get('from'));
   if (name === 'bibliografia') return renderBibliography();
   return renderHome();
 }
@@ -87,7 +90,7 @@ function layout(title, subtitle, content) {
 function protocolList(protocols) {
   if (!protocols.length) return '<p class="empty">No hay protocolos que coincidan con la búsqueda.</p>';
   return `<div class="protocol-list">${protocols.map((protocol) => `
-    <a class="protocol-row" href="#/protocolos/${protocol.id}">
+    <a class="protocol-row" href="#/protocolos/${protocol.id}" data-protocol-open>
       <span>
         <strong>${protocol.title}</strong>
         <small>${protocol.category} · ${protocol.focus}</small>
@@ -124,6 +127,12 @@ function bindSearch() {
     button.addEventListener('click', () => {
       if (button.dataset.category) state.category = button.dataset.category;
       route();
+    });
+  });
+  $$('[data-protocol-open]').forEach((link) => {
+    link.addEventListener('click', () => {
+      state.query = '';
+      state.activeProtocolTab = 'sospecha';
     });
   });
 }
@@ -166,33 +175,104 @@ function renderProtocol(id) {
     return;
   }
   const medCards = protocol.meds.map((medId) => medById(medId)).filter(Boolean).map(renderMedication).join('');
-  const calcCards = protocol.calculators.map((calcId) => calcById(calcId)).filter(Boolean).map(renderCalculator).join('');
+  const calcCards = protocol.calculators.map((calcId) => calcById(calcId)).filter(Boolean).map((calc) => renderCalculatorLink(calc, protocol.id)).join('');
   const bibRows = protocol.bibliography.map((bibId) => bibById(bibId)).filter(Boolean).map(renderBibRow).join('');
+  const tabs = protocolTabs(protocol);
+  const activeTab = tabs.find((tab) => tab.id === state.activeProtocolTab) ? state.activeProtocolTab : tabs[0].id;
+  state.activeProtocolTab = activeTab;
+  const active = tabs.find((tab) => tab.id === activeTab);
 
   layout(
     protocol.title,
     `${protocol.category} · ${protocol.focus}`,
     `
-      <section class="protocol-grid">
-        ${protocol.blocks.map((block) => `
-          <article class="clinical-block">
-            <h2>${block.title}</h2>
-            ${block.title === 'Tratamiento' && protocol.treatmentRows ? renderTreatmentRows(protocol.treatmentRows) : `<ul>${block.items.map((item) => `<li>${linkMedicationNames(item)}</li>`).join('')}</ul>`}
-          </article>
-        `).join('')}
+      <a class="back-link" href="#/protocolos">← Protocolos</a>
+      <section class="protocol-detail-card">
+        <div class="protocol-tabs" role="tablist" aria-label="Secciones de la patología">
+          ${tabs.map((tab) => `<button type="button" class="tab-button" data-tab="${tab.id}" ${tab.id === activeTab ? 'aria-selected="true"' : ''}>${tab.label}</button>`).join('')}
+        </div>
+        <article class="clinical-block active-tab-panel">
+          <h2>${active.title}</h2>
+          ${active.html}
+        </article>
       </section>
-      ${calcCards ? `<section><h2>Calculadoras vinculadas</h2>${calcCards}</section>` : ''}
-      ${medCards ? `<section><h2>Medicamentos</h2><div class="med-grid">${medCards}</div></section>` : ''}
-      <section class="details">${protocol.secondary.map((section) => `
+      ${calcCards ? `<section class="secondary-section"><h2>Herramientas vinculadas</h2><div class="tool-grid">${calcCards}</div></section>` : ''}
+      ${medCards ? `<section class="secondary-section"><h2>Medicamentos</h2><div class="med-grid">${medCards}</div></section>` : ''}
+      <section class="details secondary-section">${protocol.secondary.map((section) => `
         <details>
           <summary>${section.title}</summary>
           <ul>${section.items.map((item) => `<li>${linkMedicationNames(item)}</li>`).join('')}</ul>
         </details>
       `).join('')}</section>
-      <section><h2>Bibliografía del protocolo</h2><div class="table-wrap"><table><thead><tr><th>Fuente</th><th>Año</th><th>Confianza</th><th>Enlace</th></tr></thead><tbody>${bibRows}</tbody></table></div></section>
+      <section class="secondary-section details">
+        <details>
+          <summary>Bibliografía del protocolo</summary>
+          <div class="biblio-card-list">${bibRows}</div>
+        </details>
+      </section>
     `
   );
+  bindProtocolTabs();
   bindCalculators();
+}
+
+function protocolTabs(protocol) {
+  const blockByTitle = Object.fromEntries(protocol.blocks.map((block) => [block.title, block]));
+  const tabItems = [
+    {
+      id: 'sospecha',
+      label: 'Sospecha',
+      title: 'Sospecha',
+      html: `
+        <dl class="compact-definition">
+          <dt>Categoría</dt><dd>${protocol.category}</dd>
+          <dt>Foco AP</dt><dd>${protocol.focus}</dd>
+          <dt>Tipo</dt><dd>${protocol.type}</dd>
+          <dt>Fuente principal</dt><dd>${protocol.mainSource}</dd>
+        </dl>
+      `
+    },
+    {
+      id: 'valoracion',
+      label: 'Valoración',
+      source: blockByTitle['Qué hacer ahora']
+    },
+    {
+      id: 'manejo',
+      label: 'Manejo',
+      source: blockByTitle.Tratamiento,
+      html: protocol.treatmentRows ? renderTreatmentRows(protocol.treatmentRows) : null
+    },
+    {
+      id: 'seguimiento',
+      label: 'Seguimiento',
+      source: blockByTitle.Seguimiento
+    },
+    {
+      id: 'derivacion',
+      label: 'Derivación',
+      source: blockByTitle['Derivar / urgencias']
+    }
+  ];
+
+  return tabItems.map((tab) => {
+    if (tab.html) return { ...tab, title: tab.source?.title || tab.title };
+    const items = tab.source?.items || [];
+    return {
+      ...tab,
+      title: tab.source?.title || tab.title,
+      html: items.length ? `<ul>${items.map((item) => `<li>${linkMedicationNames(item)}</li>`).join('')}</ul>` : '<p class="empty">Sin contenido específico registrado.</p>'
+    };
+  });
+}
+
+function bindProtocolTabs() {
+  $$('.tab-button').forEach((button) => {
+    button.addEventListener('click', () => {
+      state.activeProtocolTab = button.dataset.tab;
+      route();
+    });
+  });
 }
 
 function renderTreatmentRows(rows) {
@@ -248,13 +328,30 @@ function renderMedication(med) {
   `;
 }
 
-function renderTools() {
+function renderTools(selectedId, fromProtocolId) {
+  const calculators = selectedId
+    ? data.calculators.filter((calc) => calc.id === selectedId)
+    : data.calculators;
+  const protocol = fromProtocolId ? data.protocols.find((item) => item.id === fromProtocolId) : null;
   layout(
     'Herramientas / Calculadoras',
     'Solo se incluyen herramientas vinculadas a decisiones de los protocolos V1.',
-    data.calculators.map(renderCalculator).join('')
+    `
+      ${protocol ? `<a class="back-link" href="#/protocolos/${protocol.id}">← Volver a ${protocol.title}</a>` : ''}
+      ${calculators.map(renderCalculator).join('')}
+      ${selectedId && calculators.length ? '<p><a class="button-link" href="#/herramientas">Ver todas las herramientas</a></p>' : ''}
+    `
   );
   bindCalculators();
+}
+
+function renderCalculatorLink(calc, protocolId) {
+  return `
+    <a class="tool-link tool-card-link" href="#/herramientas/${calc.id}?from=${protocolId}">
+      <strong>${calc.title}</strong>
+      <small>${calc.status}</small>
+    </a>
+  `;
 }
 
 function renderCalculator(calc) {
@@ -375,20 +472,17 @@ function renderBibliography() {
   layout(
     'Bibliografía',
     'Fuentes usadas por protocolo, año, institución y trazabilidad.',
-    `<div class="table-wrap"><table><thead><tr><th>Protocolo</th><th>Fuente</th><th>Año</th><th>Institución</th><th>Confianza</th><th>Enlace</th></tr></thead><tbody>${rows}</tbody></table></div>`
+    `<div class="biblio-card-list">${rows}</div>`
   );
 }
 
 function renderBibRow(bib) {
   return `
-    <tr>
-      <td>${bib.protocol}</td>
-      <td>${bib.title}</td>
-      <td>${bib.year}</td>
-      <td>${bib.institution}</td>
-      <td>${bib.confidence}</td>
-      <td><a href="${bib.url}" target="_blank" rel="noopener">Abrir</a></td>
-    </tr>
+    <article class="biblio-card">
+      <h3>${bib.title}</h3>
+      <p>${bib.institution} · ${bib.year} · confianza ${bib.confidence}</p>
+      <a href="${bib.url}" target="_blank" rel="noopener">Abrir fuente</a>
+    </article>
   `;
 }
 
