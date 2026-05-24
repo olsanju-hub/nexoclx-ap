@@ -115,6 +115,13 @@ input, select, textarea {
   color: var(--text);
 }
 
+.governance-note {
+  margin: .4rem 0 1rem;
+  color: var(--muted);
+  font-size: .82rem;
+  line-height: 1.45;
+}
+
 .filter-group {
   display: grid;
   gap: .35rem;

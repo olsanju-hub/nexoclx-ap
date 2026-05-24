@@ -38,15 +38,6 @@ function PageHead({ title, subtitle }) {
   );
 }
 
-function ClinicalWarning() {
-  return (
-    <p className="clinical-warning">
-      NexoClx AP es una herramienta de apoyo clínico. No sustituye el juicio clínico,
-      la valoración individual ni las guías oficiales vigentes.
-    </p>
-  );
-}
-
 function ProtocolSearch({ query, setQuery, category, setCategory }) {
   return (
     <div className="search-panel">
@@ -84,16 +75,18 @@ function useFilteredProtocols(query, category) {
 
 function HomeView({ query, setQuery, category, setCategory }) {
   const visibleProtocols = useFilteredProtocols(query, category);
+  const hasActiveFilter = Boolean(normalize(query)) || category !== 'Todas';
   return (
     <>
       <PageHead title="NexoClx AP" subtitle="Protocolos rápidos de Atención Primaria para consulta clínica con tiempo limitado." />
-      <ClinicalWarning />
       <ProtocolSearch query={query} setQuery={setQuery} category={category} setCategory={setCategory} />
       <section className="split">
-        <div>
-          <h2>Protocolos frecuentes</h2>
-          <ProtocolList protocols={visibleProtocols} />
-        </div>
+        {hasActiveFilter ? (
+          <div>
+            <h2>Resultados</h2>
+            <ProtocolList protocols={visibleProtocols} />
+          </div>
+        ) : null}
         <aside className="side-panel">
           <h2>Herramientas</h2>
           {calculators.map((calc) => (
@@ -113,7 +106,6 @@ function ProtocolsView({ query, setQuery, category, setCategory }) {
   return (
     <>
       <PageHead title="Protocolos" subtitle="Lista filtrable por categoría, sinónimos, síntomas y fármacos." />
-      <ClinicalWarning />
       <ProtocolSearch query={query} setQuery={setQuery} category={category} setCategory={setCategory} />
       <section><ProtocolList protocols={visibleProtocols} /></section>
     </>
@@ -126,7 +118,6 @@ function ToolsView({ selectedId, fromProtocolId }) {
   return (
     <>
       <PageHead title="Herramientas / Calculadoras" subtitle="Solo se incluyen herramientas vinculadas a decisiones de los protocolos V1." />
-      <ClinicalWarning />
       {protocol ? <a className="back-link" href={routes.protocol(protocol.id)}>← Volver a {protocol.title}</a> : null}
       {items.map((calc) => <Calculator key={calc.id} calc={calc} />)}
       {selectedId && items.length ? <p><a className="button-link" href={routes.tools}>Ver todas las herramientas</a></p> : null}
@@ -212,7 +203,10 @@ function BibliographyView() {
   return (
     <>
       <PageHead title="Bibliografía" subtitle="Fuentes usadas por protocolo, año, institución y trazabilidad." />
-      <ClinicalWarning />
+      <p className="governance-note">
+        NexoClx AP es una herramienta de apoyo clínico. No sustituye el juicio clínico,
+        la valoración individual ni las guías oficiales vigentes.
+      </p>
       <div className="biblio-card-list">
         {bibliography.map((bib) => <BibliographyCard key={bib.id} bib={bib} />)}
       </div>
