@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   color-scheme: light;
   --bg: #f7faf9;
@@ -208,6 +212,66 @@ h3 { margin: 0 0 .4rem; font-size: 1rem; }
   background: var(--surface);
 }
 
+.protocol-detail-card > .back-link,
+.protocol-detail-card > .protocol-title,
+.protocol-detail-card > .clinical-warning {
+  margin-left: .7rem;
+  margin-right: .7rem;
+}
+
+.protocol-detail-card > .back-link {
+  margin-top: .7rem;
+}
+
+.protocol-title {
+  display: grid;
+  gap: .25rem;
+  margin-top: .55rem;
+  margin-bottom: .55rem;
+}
+
+.protocol-title h1 {
+  margin: 0;
+  font-size: clamp(1.35rem, 3.2vw, 1.9rem);
+  line-height: 1.08;
+}
+
+.protocol-title p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.tag {
+  width: fit-content;
+  border: 1px solid #bfe0da;
+  border-radius: 999px;
+  background: #e6f4f1;
+  color: var(--primary);
+  padding: .18rem .55rem;
+  font-size: .72rem;
+  font-weight: 800;
+}
+
+.protocol-context {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .35rem;
+  padding: .55rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.protocol-context span {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #fff;
+  color: var(--muted);
+  padding: .42rem .5rem;
+  font-size: .78rem;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
 .protocol-tabs {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -269,11 +333,13 @@ li + li { margin-top: .45rem; }
 .med-grid {
   display: grid;
   gap: .75rem;
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .tool-grid {
   display: grid;
   gap: .6rem;
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .tool-card-link {
@@ -292,6 +358,8 @@ li + li { margin-top: .45rem; }
   border: 1px solid var(--line);
   border-radius: var(--radius);
   padding: .95rem;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .med-card p { margin: .35rem 0; }
@@ -391,6 +459,7 @@ th { background: #eef8f6; font-size: .88rem; }
 .biblio-card-list {
   display: grid;
   gap: .65rem;
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .biblio-card {
@@ -440,6 +509,7 @@ th { background: #eef8f6; font-size: .88rem; }
   .split { grid-template-columns: 1fr 320px; align-items: start; }
   .protocol-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .protocol-tabs { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .protocol-context { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .med-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .tool-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .calc-form { grid-template-columns: repeat(2, minmax(0, 1fr)); }

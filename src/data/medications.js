@@ -1,4 +1,4 @@
-window.NEXO_MEDICATIONS = [
+export const medications = [
   {
     id: 'enalapril',
     generic: 'enalapril',

@@ -1,4 +1,4 @@
-window.NEXO_PROTOCOLS = [
+export const protocols = [
   {
     id: 'hta',
     title: 'Hipertensión arterial en Atención Primaria',

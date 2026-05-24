@@ -9,36 +9,41 @@ NexoClx AP no sustituye el juicio clínico, la valoración individual ni las gu�
 | Campo | Estado |
 | --- | --- |
 | Versión | 0.1.0 |
-| Última actualización | 2026-05-21 |
-| GitHub Pages | Configurado para publicar desde `main` / raíz |
+| Última actualización | 2026-05-24 |
+| GitHub Pages | Build estático Vite con `base: './'`; publicar `dist` desde GitHub Pages |
 | Repositorio | https://github.com/olsanju-hub/nexoclx-ap |
 | Enlace público | https://olsanju-hub.github.io/nexoclx-ap/ |
 | PWA | Instalable en estructura: manifest, service worker, iconos 192/512 y favicon creados |
 
 ## Arquitectura técnica
 
-Tecnologías: HTML, CSS y JavaScript vanilla, sin frameworks ni dependencias externas. Motivo: carga rápida, bajo mantenimiento, funcionamiento offline y compatibilidad directa con GitHub Pages.
+Tecnologías: React, Vite y Tailwind. La migración desde HTML/CSS/JS vanilla conserva el contenido clínico original y transforma `window.NEXO_*` en módulos ES dentro de `src/data`.
 
 Estructura:
 
 | Ruta | Función |
 | --- | --- |
-| `index.html` | Shell de la app, navegación principal y carga de datos/scripts |
-| `styles.css` | Diseño mobile-first, tokens visuales y layout responsive |
-| `app.js` | Router hash, búsqueda, render de protocolos, calculadoras y PWA |
-| `manifest.webmanifest` | Configuración instalable PWA |
-| `sw.js` | Service worker básico con caché de shell y datos V1 |
-| `assets/logo.svg` | Logo verde de NexoClx AP del paquete de iconos |
-| `assets/icons/` | Iconos PNG PWA y variantes maskable |
-| `favicon.ico`, `favicon.png`, `apple-touch-icon.png` | Iconos de navegador y Apple generados desde la misma identidad verde |
-| `data/protocols.js` | Contenido clínico estructurado por protocolo |
-| `data/medications.js` | Medicamentos, dosis, seguridad y enlaces CIMA |
-| `data/calculators.js` | Metadatos y criterios de calculadoras |
-| `data/bibliography.js` | Fuentes clínicas trazables |
+| `index.html` | Shell Vite con punto de montaje React |
+| `src/App.jsx` | Router hash, búsqueda, vistas principales y composición de componentes |
+| `src/main.jsx` | Entrada React y registro del service worker |
+| `src/components/layout/` | AppShell, cabecera, navegación inferior y navegación por secciones |
+| `src/components/protocols/` | Tarjetas, listado, detalle, cabecera, bloques, alertas y acciones de protocolos |
+| `src/components/ui/` | Componentes básicos reutilizables |
+| `src/styles/index.css` | Tailwind + tokens visuales actuales de AP y CSS de la app |
+| `public/manifest.webmanifest` | Configuración instalable PWA |
+| `public/sw.js` | Service worker básico |
+| `public/assets/logo.svg` | Logo verde de NexoClx AP del paquete de iconos |
+| `public/assets/icons/` | Iconos PNG PWA y variantes maskable |
+| `public/favicon.ico`, `public/favicon.png`, `public/apple-touch-icon.png` | Iconos de navegador y Apple generados desde la misma identidad verde |
+| `src/data/protocols.js` | Contenido clínico estructurado por protocolo |
+| `src/data/medications.js` | Medicamentos, dosis, seguridad y enlaces CIMA |
+| `src/data/calculators.js` | Metadatos y criterios de calculadoras |
+| `src/data/bibliography.js` | Fuentes clínicas trazables |
+| `src/utils/` | Routing hash, búsqueda y funciones de cálculo/formato clínico |
 
-El service worker precachea los archivos principales para uso offline de la V1. Si se añaden archivos, deben registrarse en `APP_SHELL`.
+Los colores actuales de AP se conservan en variables CSS y en `tailwind.config.js`. La presentación de protocolos sigue el patrón operativo de NexoClx 061: tarjeta compacta, cabecera, metadatos, pestañas y bloques clínicos.
 
-Los tratamientos rápidos se registran en `treatmentRows` dentro de cada protocolo. Cada fila debe incluir escenario, conducta, grupo, fármaco, dosis, frecuencia, duración, escalado, control, seguridad y `cimaMedicationId` cuando exista enlace en `data/medications.js`. La interfaz mantiene solo búsqueda y filtro simple por categoría para evitar controles innecesarios en la V1.
+Los tratamientos rápidos se registran en `treatmentRows` dentro de cada protocolo. Cada fila debe incluir escenario, conducta, grupo, fármaco, dosis, frecuencia, duración, escalado, control, seguridad y `cimaMedicationId` cuando exista enlace en `src/data/medications.js`. La interfaz mantiene solo búsqueda y filtro simple por categoría para evitar controles innecesarios en la V1.
 
 ## Protocolos incluidos
 
@@ -59,7 +64,7 @@ Los tratamientos rápidos se registran en `treatmentRows` dentro de cada protoco
 
 ## Medicamentos y CIMA/AEMPS
 
-Los medicamentos se registran en `data/medications.js` con nombre genérico, protocolos, dosis, duración, seguridad, ajuste renal/hepático y enlace a ficha técnica CIMA/AEMPS. No se deben inventar URLs. Si no se verifica un enlace, usar literalmente `enlace CIMA pendiente` y no añadir una URL comercial.
+Los medicamentos se registran en `src/data/medications.js` con nombre genérico, protocolos, dosis, duración, seguridad, ajuste renal/hepático y enlace a ficha técnica CIMA/AEMPS. No se deben inventar URLs. Si no se verifica un enlace, usar literalmente `enlace CIMA pendiente` y no añadir una URL comercial.
 
 Fármacos con enlace CIMA verificado en V1: enalapril, amlodipino, hidroclorotiazida, metformina, empagliflozina, sitagliptina, gliclazida, liraglutida, insulina glargina, atorvastatina, rosuvastatina, ezetimiba, doxiciclina, amoxicilina, claritromicina y amoxicilina/ácido clavulánico. Pendiente o parcial: losartán monofármaco.
 
@@ -80,6 +85,7 @@ Jerarquía aceptada: guías oficiales de sociedades científicas u organismos p�
 
 | Fecha | Cambio | Archivos modificados | Protocolos afectados | Commit asociado | Pendientes |
 | --- | --- | --- | --- | --- | --- |
+| 2026-05-24 | Homologación visual y de estructura con la suite NexoClx: estilos en `src/styles/`, scripts en `src/scripts/`, datos en `src/data/` y assets en `public/assets/`; tokens visuales comunes con acento AP verde/teal | `index.html`, `src/styles/index.css`, `src/scripts/app.js`, `src/data/`, `public/assets/`, `manifest.webmanifest`, `sw.js`, `README.md` | Ninguno | pendiente | Validación clínica no afectada; comprobar despliegue GitHub Pages tras publicar |
 | 2026-05-21 | Corrección del favicon de navegador con query string de versión, unificación visual de icono interno/PWA/favicon y sustitución del protocolo amplio de IRA/tos aguda por NAC en AP con filas terapéuticas accionables | `index.html`, `styles.css`, `app.js`, `sw.js`, `data/protocols.js`, `data/medications.js`, `data/bibliography.js`, `README.md` | NAC | `refactor: replace acute cough protocol with CAP and fix favicon` | Identificar PROA local/autonómico aplicable; validación clínica local de pauta antibiótica y criterios de derivación |
 | 2026-05-21 | Eliminación del filtro visible de tipo para reducir densidad; cambio de Tos en AP a Infección respiratoria aguda / tos aguda; unificación del icono interno con el icono PWA usando el PNG verde del paquete | `app.js`, `styles.css`, `index.html`, `data/protocols.js`, `data/bibliography.js`, `sw.js`, `README.md` | Respiratorio | `refactor: simplify filters focus respiratory protocol and unify icon` | Protocolo futuro de tos persistente/crónica; validación clínica del protocolo respiratorio agudo |
 | 2026-05-21 | Sustitución de iconos por el paquete `nexoclx-ap-icon-pack-verde`, incorporación de favicon ICO, Apple Touch Icon y variantes maskable; carpeta de paquete eliminada | `assets/logo.svg`, `assets/icons/`, `favicon.png`, `favicon.ico`, `apple-touch-icon.png`, `index.html`, `manifest.webmanifest`, `sw.js`, `README.md` | Ninguno | `chore: use provided green icon pack` | Comprobar refresco de icono en PWAs ya instaladas |
@@ -103,10 +109,10 @@ GitHub Pages: publicar desde la rama `main`, carpeta raíz.
 
 ## Cómo añadir un nuevo protocolo
 
-1. Añadir medicamentos nuevos en `data/medications.js`; verificar CIMA o marcar `enlace CIMA pendiente`.
-2. Añadir fuentes en `data/bibliography.js` con año, institución, enlace, revisión y confianza.
-3. Añadir calculadoras en `data/calculators.js` solo si influyen en una decisión clínica y la fórmula está verificada.
-4. Añadir el protocolo en `data/protocols.js` con `id`, categoría, enfoque, palabras clave, sinónimos, revisión, fuente, nivel de confianza, bloques principales, secciones secundarias, medicamentos, calculadoras y bibliografía.
+1. Añadir medicamentos nuevos en `src/data/medications.js`; verificar CIMA o marcar `enlace CIMA pendiente`.
+2. Añadir fuentes en `src/data/bibliography.js` con año, institución, enlace, revisión y confianza.
+3. Añadir calculadoras en `src/data/calculators.js` solo si influyen en una decisión clínica y la fórmula está verificada.
+4. Añadir el protocolo en `src/data/protocols.js` con `id`, categoría, enfoque, palabras clave, sinónimos, revisión, fuente, nivel de confianza, bloques principales, secciones secundarias, medicamentos, calculadoras y bibliografía.
 5. Añadir `treatmentRows` con filas estructuradas. No usar texto largo si puede expresarse como decisión: escenario -> fármaco -> dosis -> frecuencia -> escalado -> control.
 6. Actualizar este README: tabla de protocolos, calculadoras, bibliografía, changelog y pendientes.
 7. Verificar búsqueda, filtro por categoría, navegación, calculadoras, responsive, PWA y enlaces internos antes del commit.

@@ -1,9 +1,7 @@
-const CACHE_NAME = 'nexoclx-ap-v8';
+const CACHE_NAME = 'nexoclx-ap-v10';
 const APP_SHELL = [
   './',
   './index.html',
-  './styles.css',
-  './app.js',
   './manifest.webmanifest',
   './favicon.ico',
   './favicon.png',
@@ -12,11 +10,7 @@ const APP_SHELL = [
   './assets/icons/icon-192.png',
   './assets/icons/icon-512.png',
   './assets/icons/maskable-192.png',
-  './assets/icons/maskable-512.png',
-  './data/protocols.js',
-  './data/calculators.js',
-  './data/medications.js',
-  './data/bibliography.js'
+  './assets/icons/maskable-512.png'
 ];
 
 self.addEventListener('install', (event) => {

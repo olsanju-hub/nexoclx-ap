@@ -1,4 +1,4 @@
-window.NEXO_BIBLIOGRAPHY = [
+export const bibliography = [
   {
     id: 'esc-hta-2024',
     protocol: 'hta',

@@ -1,4 +1,4 @@
-window.NEXO_CALCULATORS = [
+export const calculators = [
   {
     id: 'insulina-basal',
     title: 'Inicio y titulación de insulina basal',
