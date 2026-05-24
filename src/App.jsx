@@ -203,10 +203,6 @@ function BibliographyView() {
   return (
     <>
       <PageHead title="Bibliografía" subtitle="Fuentes usadas por protocolo, año, institución y trazabilidad." />
-      <p className="governance-note">
-        NexoClx AP es una herramienta de apoyo clínico. No sustituye el juicio clínico,
-        la valoración individual ni las guías oficiales vigentes.
-      </p>
       <div className="biblio-card-list">
         {bibliography.map((bib) => <BibliographyCard key={bib.id} bib={bib} />)}
       </div>

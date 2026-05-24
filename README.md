@@ -1,8 +1,8 @@
 # NexoClx AP
 
-NexoClx AP es una app web estática de apoyo clínico rápido para consulta de Atención Primaria. La V1 contiene 4 protocolos piloto: hipertensión arterial, diabetes mellitus tipo 2 con insulinización basal, dislipemia/riesgo cardiovascular y neumonía adquirida en la comunidad.
+NexoClx AP es una app web estática para consulta rápida en Atención Primaria. La V1 contiene 4 protocolos piloto: hipertensión arterial, diabetes mellitus tipo 2 con insulinización basal, dislipemia/riesgo cardiovascular y neumonía adquirida en la comunidad.
 
-NexoClx AP no sustituye el juicio clínico, la valoración individual ni las guías oficiales vigentes. El contenido debe revisarse antes de uso asistencial real.
+El contenido debe revisarse antes de uso asistencial real y mantenerse alineado con las fuentes clínicas vigentes.
 
 ## Estado actual
 

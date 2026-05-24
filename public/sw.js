@@ -1,16 +1,17 @@
-const CACHE_NAME = 'nexoclx-ap-v10';
+const CACHE_NAME = 'nexoclx-ap-v11';
+const BASE_PATH = '/nexoclx-ap/';
 const APP_SHELL = [
-  './',
-  './index.html',
-  './manifest.webmanifest',
-  './favicon.ico',
-  './favicon.png',
-  './apple-touch-icon.png',
-  './assets/logo.svg',
-  './assets/icons/icon-192.png',
-  './assets/icons/icon-512.png',
-  './assets/icons/maskable-192.png',
-  './assets/icons/maskable-512.png'
+  BASE_PATH,
+  `${BASE_PATH}index.html`,
+  `${BASE_PATH}manifest.webmanifest`,
+  `${BASE_PATH}favicon.ico`,
+  `${BASE_PATH}favicon.png`,
+  `${BASE_PATH}apple-touch-icon.png`,
+  `${BASE_PATH}assets/logo.svg`,
+  `${BASE_PATH}assets/icons/icon-192.png`,
+  `${BASE_PATH}assets/icons/icon-512.png`,
+  `${BASE_PATH}assets/icons/maskable-192.png`,
+  `${BASE_PATH}assets/icons/maskable-512.png`
 ];
 
 self.addEventListener('install', (event) => {
@@ -29,14 +30,22 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
+  const requestUrl = new URL(event.request.url);
+  const isAppRequest = requestUrl.origin === self.location.origin && requestUrl.pathname.startsWith(BASE_PATH);
+  const isNavigation = event.request.mode === 'navigate';
+
+  if (!isAppRequest) return;
+
   event.respondWith(
-    caches.match(event.request).then((cached) => {
-      if (cached) return cached;
-      return fetch(event.request).then((response) => {
+    fetch(event.request).then((response) => {
+      if (response.ok && !isNavigation) {
         const copy = response.clone();
         caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
-        return response;
-      }).catch(() => caches.match('./index.html'));
+      }
+      return response;
+    }).catch(() => {
+      if (isNavigation) return caches.match(BASE_PATH);
+      return caches.match(event.request);
     })
   );
 });
