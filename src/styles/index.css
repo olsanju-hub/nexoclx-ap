@@ -259,26 +259,6 @@ h3 { margin: 0 0 .4rem; font-size: 1rem; }
   font-weight: 800;
 }
 
-.protocol-context {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: .35rem;
-  padding: .55rem;
-  border-bottom: 1px solid var(--line);
-}
-
-.protocol-context span {
-  min-width: 0;
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  background: #fff;
-  color: var(--muted);
-  padding: .42rem .5rem;
-  font-size: .78rem;
-  font-weight: 700;
-  overflow-wrap: anywhere;
-}
-
 .protocol-tabs {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -320,13 +300,6 @@ h3 { margin: 0 0 .4rem; font-size: 1rem; }
 }
 
 .active-tab-panel {
-  margin: 0;
-}
-
-.compact-definition {
-  display: grid;
-  grid-template-columns: minmax(6.5rem, 32%) 1fr;
-  gap: .45rem .65rem;
   margin: 0;
 }
 
@@ -516,7 +489,6 @@ th { background: #eef8f6; font-size: .88rem; }
   .split { grid-template-columns: 1fr 320px; align-items: start; }
   .protocol-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .protocol-tabs { grid-template-columns: repeat(5, minmax(0, 1fr)); }
-  .protocol-context { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .med-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .tool-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .calc-form { grid-template-columns: repeat(2, minmax(0, 1fr)); }

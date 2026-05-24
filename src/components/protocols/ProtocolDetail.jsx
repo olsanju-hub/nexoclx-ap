@@ -11,21 +11,13 @@ function protocolTabs(protocol, medications) {
   return [
     {
       id: 'sospecha',
-      label: 'Sospecha',
-      title: 'Sospecha',
-      content: (
-        <dl className="compact-definition">
-          <dt>Categoría</dt><dd>{protocol.category}</dd>
-          <dt>Foco AP</dt><dd>{protocol.focus}</dd>
-          <dt>Tipo</dt><dd>{protocol.type}</dd>
-          <dt>Fuente principal</dt><dd>{protocol.mainSource}</dd>
-        </dl>
-      ),
+      label: 'Inicio',
+      source: blockByTitle['Qué hacer ahora'] || protocol.blocks[0],
     },
     {
       id: 'valoracion',
       label: 'Valoración',
-      source: blockByTitle['Qué hacer ahora'],
+      source: blockByTitle.Valoración || blockByTitle.Diagnóstico,
     },
     {
       id: 'manejo',
