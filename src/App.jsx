@@ -43,8 +43,8 @@ function ProtocolSearch({ query, setQuery, category, setCategory }) {
     <div className="search-panel">
       <SearchInput value={query} onChange={setQuery} />
       <div className="filter-group">
-        <span>Categoría</span>
-        <div className="filters" role="list" aria-label="Categorías">
+        <span>Filtro</span>
+        <div className="filters" role="list" aria-label="Filtros">
           {categories.map((item) => (
             <button
               key={item}
@@ -81,16 +81,14 @@ function HomeView({ query, setQuery, category, setCategory }) {
       <PageHead title="NexoClx AP" subtitle="Protocolos rápidos de Atención Primaria para consulta clínica con tiempo limitado." />
       <ProtocolSearch query={query} setQuery={setQuery} category={category} setCategory={setCategory} />
       <section className="split">
-        {hasActiveFilter ? (
-          <div>
-            <h2>Resultados</h2>
-            <ProtocolList protocols={visibleProtocols} />
-          </div>
-        ) : null}
+        <div>
+          <h2>{hasActiveFilter ? 'Resultados' : 'Protocolos clínicos'}</h2>
+          <ProtocolList protocols={visibleProtocols} />
+        </div>
         <aside className="side-panel">
           <h2>Herramientas</h2>
           {calculators.map((calc) => (
-            <a href={routes.tools} className="tool-link" key={calc.id}>
+            <a href={routes.tool(calc.id)} className="tool-link" key={calc.id}>
               <strong>{calc.title}</strong>
               <small>{calc.protocol}</small>
             </a>

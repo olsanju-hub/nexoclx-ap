@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nexoclx-ap-v11';
+const CACHE_NAME = 'nexoclx-ap-v12';
 const BASE_PATH = '/nexoclx-ap/';
 const APP_SHELL = [
   BASE_PATH,
