@@ -4,7 +4,7 @@ const navItems = [
   ['inicio', 'Inicio', routes.home],
   ['protocolos', 'Protocolos', routes.protocols],
   ['herramientas', 'Herramientas', routes.tools],
-  ['bibliografia', 'Bibliografía', routes.bibliography],
+  ['mas', 'Más', routes.more],
 ];
 
 export function Header({ activeRoute }) {

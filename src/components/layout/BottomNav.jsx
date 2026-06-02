@@ -4,7 +4,7 @@ const navItems = [
   ['inicio', 'Inicio', routes.home],
   ['protocolos', 'Protocolos', routes.protocols],
   ['herramientas', 'Herramientas', routes.tools],
-  ['bibliografia', 'Fuentes', routes.bibliography],
+  ['mas', 'Más', routes.more],
 ];
 
 export function BottomNav({ activeRoute }) {

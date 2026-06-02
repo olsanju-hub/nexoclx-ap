@@ -498,6 +498,20 @@ li + li { margin-top: .45rem; }
   margin-top: 1rem;
 }
 
+.more-list {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #fff;
+}
+
+.more-list .tool-link {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: .18rem;
+  padding: .85rem;
+}
+
 .med-card, .calculator {
   background: var(--surface);
   border: 1px solid var(--line);
@@ -674,7 +688,12 @@ th { background: #eef8f6; font-size: .88rem; }
   border-top: 1px solid var(--line);
 }
 
-.bottom-nav a { text-align: center; padding: .55rem .25rem; font-size: .82rem; }
+.bottom-nav a {
+  text-align: center;
+  padding: .55rem .25rem;
+  font-size: .82rem;
+  white-space: nowrap;
+}
 
 @media (hover: none) {
   button:hover, .button-link:hover,

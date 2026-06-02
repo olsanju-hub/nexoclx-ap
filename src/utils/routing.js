@@ -16,4 +16,5 @@ export const routes = {
   tools: '#/herramientas',
   tool: (id, from) => `#/herramientas/${id}${from ? `?from=${from}` : ''}`,
   bibliography: '#/bibliografia',
+  more: '#/mas',
 };

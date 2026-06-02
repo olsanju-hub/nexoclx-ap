@@ -208,11 +208,25 @@ function BibliographyView() {
   );
 }
 
+function MoreView() {
+  return (
+    <>
+      <PageHead title="Más" subtitle="Accesos secundarios y trazabilidad." />
+      <section className="secondary-section more-list">
+        <a className="tool-link" href={routes.bibliography}>
+          <strong>Bibliografía</strong>
+          <small>Fuentes usadas por protocolo, año, institución y trazabilidad.</small>
+        </a>
+      </section>
+    </>
+  );
+}
+
 export default function App() {
   const route = useHashRoute();
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState('Todas');
-  const activeRoute = route.name === 'herramientas' ? 'herramientas' : route.name === 'bibliografia' ? 'bibliografia' : route.name === 'protocolos' ? 'protocolos' : 'inicio';
+  const activeRoute = route.name === 'herramientas' ? 'herramientas' : route.name === 'mas' || route.name === 'bibliografia' ? 'mas' : route.name === 'protocolos' ? 'protocolos' : 'inicio';
 
   let content;
   if (route.name === 'protocolos' && route.id) {
@@ -228,6 +242,8 @@ export default function App() {
     content = <ToolsView selectedId={route.id} fromProtocolId={route.params.get('from')} />;
   } else if (route.name === 'bibliografia') {
     content = <BibliographyView />;
+  } else if (route.name === 'mas') {
+    content = <MoreView />;
   } else {
     content = <HomeView query={query} setQuery={setQuery} category={category} setCategory={setCategory} />;
   }
