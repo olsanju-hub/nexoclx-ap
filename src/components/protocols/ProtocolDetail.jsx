@@ -111,7 +111,7 @@ export function ProtocolDetail({ protocol, medications, calculators, bibliograph
       <section className="protocol-detail-card">
         <ProtocolHeader protocol={protocol} />
         <SectionNav tabs={tabs} activeTab={activeTab} onSelect={setActiveTab} />
-        <ProtocolBlock title={active.title}>{active.content}</ProtocolBlock>
+        <ProtocolBlock key={active.id} id={active.id} title={active.title}>{active.content}</ProtocolBlock>
       </section>
       <ProtocolActions calculators={calcCards} protocolId={protocol.id} />
       {meds.length ? (

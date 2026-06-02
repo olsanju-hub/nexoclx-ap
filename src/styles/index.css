@@ -16,9 +16,46 @@
   --danger: #b42318;
   --danger-bg: #fff0ef;
   --radius: 8px;
+  --motion-fast: 140ms;
+  --motion-base: 190ms;
+  --motion-ease: cubic-bezier(.2, 0, .16, 1);
+  --motion-ease-out: cubic-bezier(.16, 1, .3, 1);
 }
 
 * { box-sizing: border-box; }
+
+@keyframes clinical-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes clinical-panel {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes clinical-highlight {
+  0% {
+    border-color: #8fd1c5;
+    box-shadow: 0 0 0 3px rgba(15, 118, 110, .12);
+  }
+  100% {
+    border-color: #bfe0da;
+    box-shadow: 0 0 0 0 rgba(15, 118, 110, 0);
+  }
+}
 
 body {
   margin: 0;
@@ -30,6 +67,16 @@ body {
 }
 
 a { color: var(--primary-dark); text-decoration-thickness: .08em; text-underline-offset: .16em; }
+
+a, button, .button-link, input, select, textarea, summary {
+  transition:
+    color var(--motion-fast) var(--motion-ease),
+    background-color var(--motion-fast) var(--motion-ease),
+    border-color var(--motion-fast) var(--motion-ease),
+    box-shadow var(--motion-fast) var(--motion-ease),
+    opacity var(--motion-fast) var(--motion-ease),
+    transform var(--motion-fast) var(--motion-ease);
+}
 
 .app-header {
   position: sticky;
@@ -54,6 +101,8 @@ a { color: var(--primary-dark); text-decoration-thickness: .08em; text-underline
   min-width: 0;
 }
 
+.brand:hover { color: var(--primary); }
+
 .brand span { display: grid; }
 .brand strong { font-size: 1.05rem; }
 .brand small { color: var(--muted); font-size: .78rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -70,6 +119,12 @@ a { color: var(--primary-dark); text-decoration-thickness: .08em; text-underline
 
 [aria-current="true"] { color: var(--primary); background: #e6f4f1; }
 
+.top-nav a:hover, .bottom-nav a:hover,
+.top-nav a:focus-visible, .bottom-nav a:focus-visible {
+  color: var(--primary);
+  background: #eef8f6;
+}
+
 main {
   width: min(1120px, 100%);
   margin: 0 auto;
@@ -77,6 +132,15 @@ main {
 }
 
 main:focus { outline: none; }
+
+.page-head,
+.search-panel,
+.split,
+.protocol-detail-shell,
+.calculator,
+.biblio-card-list {
+  animation: clinical-enter var(--motion-base) var(--motion-ease-out) both;
+}
 
 .page-head h1 {
   margin: .3rem 0 .2rem;
@@ -115,6 +179,16 @@ input, select, textarea {
   color: var(--text);
 }
 
+input:hover, select:hover, textarea:hover {
+  border-color: #b6cfca;
+}
+
+input:focus-visible, select:focus-visible, textarea:focus-visible {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(15, 118, 110, .14);
+  outline: none;
+}
+
 .governance-note {
   margin: .4rem 0 1rem;
   color: var(--muted);
@@ -150,14 +224,39 @@ button, .button-link {
   align-items: center;
 }
 
+button:hover, .button-link:hover {
+  background: #116b63;
+  border-color: #116b63;
+  box-shadow: 0 2px 8px rgba(15, 118, 110, .14);
+  transform: translateY(-1px);
+}
+
+button:active, .button-link:active,
+.top-nav a:active, .bottom-nav a:active,
+.protocol-row:active, .tool-link:active, .back-link:active {
+  transform: translateY(1px);
+}
+
+button:focus-visible, .button-link:focus-visible,
+a:focus-visible, summary:focus-visible {
+  outline: 3px solid rgba(15, 118, 110, .22);
+  outline-offset: 2px;
+}
+
 .chip {
   background: #fff;
   color: var(--primary);
 }
 
+.chip:hover {
+  background: #eef8f6;
+  border-color: #8fd1c5;
+}
+
 .chip[aria-pressed="true"] {
   background: var(--primary);
   color: #fff;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .22);
 }
 
 section { margin-top: 1.4rem; }
@@ -177,6 +276,12 @@ h3 { margin: 0 0 .4rem; font-size: 1rem; }
   text-decoration: none;
   font-size: .9rem;
   font-weight: 750;
+}
+
+.back-link:hover {
+  border-color: #bfe0da;
+  background: #eef8f6;
+  color: var(--primary);
 }
 
 .split {
@@ -199,6 +304,33 @@ h3 { margin: 0 0 .4rem; font-size: 1rem; }
   text-decoration: none;
 }
 
+.protocol-row, .tool-link, .tool-card-link,
+.clinical-block, .med-card, .calculator,
+.treatment-row, .biblio-card, .protocol-detail-card,
+.clinical-warning, .notice, .empty {
+  transition:
+    border-color var(--motion-base) var(--motion-ease),
+    box-shadow var(--motion-base) var(--motion-ease),
+    background-color var(--motion-base) var(--motion-ease),
+    transform var(--motion-fast) var(--motion-ease),
+    opacity var(--motion-fast) var(--motion-ease);
+}
+
+.protocol-row:hover, .tool-link:hover {
+  color: var(--text);
+  background: rgba(238, 248, 246, .72);
+}
+
+.tool-card-link:hover,
+.med-card:hover,
+.calculator:hover,
+.treatment-row:hover,
+.biblio-card:hover,
+.clinical-block:hover {
+  border-color: #bfe0da;
+  box-shadow: 0 3px 12px rgba(23, 33, 36, .06);
+}
+
 .protocol-row small, .tool-link small, table small { display: block; color: var(--muted); margin-top: .15rem; }
 .protocol-row em { color: var(--primary); font-style: normal; font-size: .88rem; white-space: nowrap; }
 
@@ -211,6 +343,32 @@ h3 { margin: 0 0 .4rem; font-size: 1rem; }
   display: grid;
   gap: .8rem;
 }
+
+.protocol-grid > *,
+.med-grid > *,
+.tool-grid > *,
+.biblio-card-list > *,
+.treatment-grid > * {
+  animation: clinical-enter var(--motion-base) var(--motion-ease-out) both;
+}
+
+.protocol-grid > *:nth-child(2),
+.med-grid > *:nth-child(2),
+.tool-grid > *:nth-child(2),
+.biblio-card-list > *:nth-child(2),
+.treatment-grid > *:nth-child(2) { animation-delay: 25ms; }
+
+.protocol-grid > *:nth-child(3),
+.med-grid > *:nth-child(3),
+.tool-grid > *:nth-child(3),
+.biblio-card-list > *:nth-child(3),
+.treatment-grid > *:nth-child(3) { animation-delay: 50ms; }
+
+.protocol-grid > *:nth-child(n+4),
+.med-grid > *:nth-child(n+4),
+.tool-grid > *:nth-child(n+4),
+.biblio-card-list > *:nth-child(n+4),
+.treatment-grid > *:nth-child(n+4) { animation-delay: 70ms; }
 
 .protocol-detail-card {
   overflow: hidden;
@@ -284,6 +442,12 @@ h3 { margin: 0 0 .4rem; font-size: 1rem; }
   border-color: #bfe0da;
   background: #fff;
   color: var(--primary);
+  box-shadow: 0 1px 4px rgba(23, 33, 36, .06);
+}
+
+.tab-button:hover {
+  color: var(--primary);
+  background: rgba(255, 255, 255, .7);
 }
 
 .clinical-block {
@@ -301,6 +465,7 @@ h3 { margin: 0 0 .4rem; font-size: 1rem; }
 
 .active-tab-panel {
   margin: 0;
+  animation: clinical-panel var(--motion-base) var(--motion-ease-out) both;
 }
 
 .clinical-block:has(.treatment-grid) {
@@ -383,12 +548,37 @@ li + li { margin-top: .45rem; }
 .details details {
   border-top: 1px solid var(--line);
   padding: .75rem 0;
+  overflow: clip;
 }
 
 summary {
   cursor: pointer;
   font-weight: 750;
   color: var(--primary-dark);
+  border-radius: var(--radius);
+  list-style-position: inside;
+  padding: .1rem 0;
+}
+
+summary:hover {
+  color: var(--primary);
+}
+
+details > :not(summary) {
+  max-block-size: 0;
+  opacity: 0;
+  overflow: hidden;
+  transform: translateY(-2px);
+  transition:
+    max-block-size 220ms var(--motion-ease-out),
+    opacity var(--motion-base) var(--motion-ease),
+    transform var(--motion-base) var(--motion-ease);
+}
+
+details[open] > :not(summary) {
+  max-block-size: 120rem;
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .calculator { margin-bottom: 1rem; }
@@ -427,6 +617,10 @@ input[type="checkbox"] {
   border-radius: var(--radius);
   padding: .75rem;
   min-height: 2.5rem;
+}
+
+.calc-output:not(:empty) {
+  animation: clinical-highlight 520ms var(--motion-ease-out);
 }
 
 .protocol-grid > *, .split > *, section { min-width: 0; }
@@ -481,6 +675,40 @@ th { background: #eef8f6; font-size: .88rem; }
 }
 
 .bottom-nav a { text-align: center; padding: .55rem .25rem; font-size: .82rem; }
+
+@media (hover: none) {
+  button:hover, .button-link:hover,
+  .tool-card-link:hover, .med-card:hover, .calculator:hover,
+  .treatment-row:hover, .biblio-card:hover, .clinical-block:hover {
+    box-shadow: none;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 1ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 1ms !important;
+  }
+
+  .page-head,
+  .search-panel,
+  .split,
+  .protocol-detail-shell,
+  .calculator,
+  .biblio-card-list,
+  .protocol-grid > *,
+  .med-grid > *,
+  .tool-grid > *,
+  .biblio-card-list > *,
+  .treatment-grid > *,
+  .active-tab-panel {
+    transform: none !important;
+  }
+}
 
 @media (min-width: 760px) {
   .top-nav { display: flex; }

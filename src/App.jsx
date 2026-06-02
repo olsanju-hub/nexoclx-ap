@@ -167,7 +167,7 @@ function BasalCalculator() {
       <label><input type="checkbox" name="fragile" /> Fragilidad o alto riesgo de hipoglucemia</label>
       <label><input type="checkbox" name="risk" /> Situación de riesgo actual: cetosis, vómitos, deshidratación, infección grave, embarazo o sospecha DM1</label>
       <button type="submit">Calcular orientación</button>
-      <output className="calc-output">{result.map((item) => <span key={item}>{item}<br /></span>)}</output>
+      <output className="calc-output" key={result.join('|')}>{result.map((item) => <span key={item}>{item}<br /></span>)}</output>
     </form>
   );
 }
@@ -192,7 +192,7 @@ function RenalCalculator() {
         <select name="unit"><option value="mgdl">mg/dl</option><option value="umol">µmol/l</option></select>
       </label>
       <button type="submit">Calcular ClCr</button>
-      <output className="calc-output">{result.map((item) => <span key={item}>{item}<br /></span>)}</output>
+      <output className="calc-output" key={result.join('|')}>{result.map((item) => <span key={item}>{item}<br /></span>)}</output>
     </form>
   );
 }
