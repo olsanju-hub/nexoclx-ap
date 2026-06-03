@@ -74,26 +74,27 @@ function useFilteredProtocols(query, category) {
 }
 
 function HomeView({ query, setQuery, category, setCategory }) {
-  const visibleProtocols = useFilteredProtocols(query, category);
-  const hasActiveFilter = Boolean(normalize(query)) || category !== 'Todas';
+  const sections = [
+    { title: 'Protocolos', note: 'Listado completo de protocolos de Atención Primaria.', href: routes.protocols },
+    { title: 'Herramientas', note: 'Calculadoras y herramientas vinculadas a protocolos.', href: routes.tools },
+    { title: 'Bibliografía', note: 'Fuentes clínicas y trazabilidad.', href: routes.bibliography },
+  ];
+
   return (
     <>
       <PageHead title="NexoClx AP" subtitle="Protocolos rápidos de Atención Primaria para consulta clínica con tiempo limitado." />
       <ProtocolSearch query={query} setQuery={setQuery} category={category} setCategory={setCategory} />
-      <section className="split">
-        <div>
-          <h2>{hasActiveFilter ? 'Resultados' : 'Protocolos clínicos'}</h2>
-          <ProtocolList protocols={visibleProtocols} />
-        </div>
-        <aside className="side-panel">
-          <h2>Herramientas</h2>
-          {calculators.map((calc) => (
-            <a href={routes.tool(calc.id)} className="tool-link" key={calc.id}>
-              <strong>{calc.title}</strong>
-              <small>{calc.protocol}</small>
-            </a>
-          ))}
-        </aside>
+      <section className="home-map" aria-label="Secciones disponibles">
+        {sections.map((item) => (
+          <a key={item.title} href={item.href}>
+            <strong>{item.title}</strong>
+            <small>{item.note}</small>
+            <span aria-hidden="true">›</span>
+          </a>
+        ))}
+      </section>
+      <section>
+        <p className="home-note">Consulta por búsqueda o abre una sección disponible.</p>
       </section>
     </>
   );

@@ -131,6 +131,10 @@ main {
   padding: .9rem 1rem 5.5rem;
 }
 
+main.home-main {
+  padding-bottom: 2rem;
+}
+
 main:focus { outline: none; }
 
 .page-head,
@@ -158,6 +162,49 @@ main:focus { outline: none; }
   padding: .58rem .75rem;
   border-radius: var(--radius);
   font-size: .94rem;
+}
+
+.home-note {
+  margin: 0;
+  color: var(--muted);
+  font-size: .95rem;
+  line-height: 1.5;
+}
+
+.home-map {
+  display: grid;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.home-map a {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: .16rem .75rem;
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+  padding: .82rem .9rem;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.home-map a:last-child {
+  border-bottom: 0;
+}
+
+.home-map small {
+  color: var(--muted);
+  font-size: .85rem;
+  line-height: 1.35;
+}
+
+.home-map span {
+  grid-row: 1 / span 2;
+  grid-column: 2;
+  color: var(--primary);
+  font-weight: 800;
 }
 
 .search-panel {
@@ -637,6 +684,24 @@ input[type="checkbox"] {
   animation: clinical-highlight 520ms var(--motion-ease-out);
 }
 
+@media (max-width: 640px) {
+  .calculator dl {
+    display: block;
+  }
+
+  .calculator dt {
+    margin-top: .7rem;
+    font-size: .78rem;
+  }
+
+  .calculator dd {
+    margin-top: .15rem;
+    color: var(--text);
+    font-size: .9rem;
+    line-height: 1.38;
+  }
+}
+
 .protocol-grid > *, .split > *, section { min-width: 0; }
 
 .table-wrap { overflow-x: auto; max-width: 100%; border: 1px solid var(--line); border-radius: var(--radius); background: #fff; }
@@ -730,9 +795,17 @@ th { background: #eef8f6; font-size: .88rem; }
 }
 
 @media (min-width: 760px) {
-  .top-nav { display: flex; }
-  .bottom-nav { display: none; }
-  main { padding-bottom: 2rem; }
+  main { padding-bottom: 5.5rem; }
+  main.home-main { padding-bottom: 2rem; }
+  .bottom-nav {
+    left: 50%;
+    right: auto;
+    width: min(640px, calc(100% - 24px));
+    transform: translateX(-50%);
+    bottom: 10px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+  }
   .split { grid-template-columns: 1fr 320px; align-items: start; }
   .protocol-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .protocol-tabs { grid-template-columns: repeat(5, minmax(0, 1fr)); }

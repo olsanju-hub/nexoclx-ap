@@ -1,13 +1,13 @@
 export function SearchInput({ value, onChange }) {
   return (
     <label htmlFor="main-search">
-      Buscar protocolo, síntoma, fármaco o término clínico
+      Buscar protocolo, síntoma, cálculo...
       <input
         id="main-search"
         type="search"
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        placeholder="tensión, azúcar, colesterol, neumonía, NAC, insulina..."
+        placeholder="Buscar protocolo, síntoma, cálculo..."
       />
     </label>
   );

@@ -7,18 +7,20 @@ const navItems = [
   ['mas', 'Más', routes.more],
 ];
 
-export function Header({ activeRoute }) {
+export function Header({ activeRoute, showNav = true }) {
   return (
     <header className="app-header">
       <a className="brand" href={routes.home} aria-label="Inicio NexoClx AP">
         <img src={`${import.meta.env.BASE_URL}assets/icons/icon-192.png?v=9`} alt="" width="42" height="42" />
         <span><strong>NexoClx AP</strong><small>Protocolos rápidos de Atención Primaria</small></span>
       </a>
-      <nav className="top-nav" aria-label="Navegación principal">
-        {navItems.map(([key, label, href]) => (
-          <a key={key} href={href} aria-current={activeRoute === key ? 'true' : undefined}>{label}</a>
-        ))}
-      </nav>
+      {showNav ? (
+        <nav className="top-nav" aria-label="Navegación principal">
+          {navItems.map(([key, label, href]) => (
+            <a key={key} href={href} aria-current={activeRoute === key ? 'true' : undefined}>{label}</a>
+          ))}
+        </nav>
+      ) : null}
     </header>
   );
 }
