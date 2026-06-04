@@ -6,7 +6,7 @@ export function AppShell({ activeRoute, children }) {
 
   return (
     <>
-      <Header activeRoute={activeRoute} showNav={false} />
+      <Header activeRoute={activeRoute} showNav={showSectionNav} />
       <main id="app" className={showSectionNav ? undefined : 'home-main'} tabIndex="-1">{children}</main>
       {showSectionNav ? <BottomNav activeRoute={activeRoute} /> : null}
     </>

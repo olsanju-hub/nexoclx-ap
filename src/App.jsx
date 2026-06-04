@@ -73,28 +73,30 @@ function useFilteredProtocols(query, category) {
   }, [query, category]);
 }
 
-function HomeView({ query, setQuery, category, setCategory }) {
+function HomeView({ query, setQuery }) {
   const sections = [
-    { title: 'Protocolos', note: 'Listado completo de protocolos de Atención Primaria.', href: routes.protocols },
-    { title: 'Herramientas', note: 'Calculadoras y herramientas vinculadas a protocolos.', href: routes.tools },
-    { title: 'Bibliografía', note: 'Fuentes clínicas y trazabilidad.', href: routes.bibliography },
+    { title: 'Protocolos', icon: '▤', note: 'Listado completo de protocolos de Atención Primaria.', href: routes.protocols },
+    { title: 'Herramientas', icon: '◎', note: 'Calculadoras y herramientas vinculadas a protocolos.', href: routes.tools },
+    { title: 'Bibliografía', icon: '§', note: 'Fuentes clínicas y trazabilidad.', href: routes.bibliography },
   ];
 
   return (
     <>
-      <PageHead title="NexoClx AP" subtitle="Protocolos rápidos de Atención Primaria para consulta clínica con tiempo limitado." />
-      <ProtocolSearch query={query} setQuery={setQuery} category={category} setCategory={setCategory} />
+      <section className="home-intro">
+        <p>Atención Primaria</p>
+      </section>
+      <div className="search-panel">
+        <SearchInput value={query} onChange={setQuery} />
+      </div>
       <section className="home-map" aria-label="Secciones disponibles">
         {sections.map((item) => (
           <a key={item.title} href={item.href}>
+            <span className="home-map-icon" aria-hidden="true">{item.icon}</span>
             <strong>{item.title}</strong>
             <small>{item.note}</small>
-            <span aria-hidden="true">›</span>
+            <span className="home-map-chevron" aria-hidden="true">›</span>
           </a>
         ))}
-      </section>
-      <section>
-        <p className="home-note">Consulta por búsqueda o abre una sección disponible.</p>
       </section>
     </>
   );
@@ -246,7 +248,7 @@ export default function App() {
   } else if (route.name === 'mas') {
     content = <MoreView />;
   } else {
-    content = <HomeView query={query} setQuery={setQuery} category={category} setCategory={setCategory} />;
+    content = <HomeView query={query} setQuery={setQuery} />;
   }
 
   return <AppShell activeRoute={activeRoute}>{content}</AppShell>;

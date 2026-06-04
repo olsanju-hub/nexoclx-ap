@@ -164,10 +164,15 @@ main:focus { outline: none; }
   font-size: .94rem;
 }
 
+.home-intro {
+  margin: .45rem 0 .2rem;
+}
+
+.home-intro p,
 .home-note {
   margin: 0;
   color: var(--muted);
-  font-size: .95rem;
+  font-size: .9rem;
   line-height: 1.5;
 }
 
@@ -181,11 +186,11 @@ main:focus { outline: none; }
 
 .home-map a {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: 2.15rem minmax(0, 1fr) auto;
   gap: .16rem .75rem;
   align-items: center;
   border-bottom: 1px solid var(--line);
-  padding: .82rem .9rem;
+  padding: .9rem .95rem;
   color: var(--text);
   text-decoration: none;
 }
@@ -195,14 +200,29 @@ main:focus { outline: none; }
 }
 
 .home-map small {
+  grid-column: 2;
   color: var(--muted);
   font-size: .85rem;
   line-height: 1.35;
 }
 
-.home-map span {
+.home-map-icon {
   grid-row: 1 / span 2;
-  grid-column: 2;
+  display: grid;
+  place-items: center;
+  width: 1.72rem;
+  height: 1.72rem;
+  border: 1px solid var(--line);
+  border-radius: .55rem;
+  color: var(--primary);
+  background: #f7fbfa;
+  font-size: .92rem;
+  font-weight: 800;
+}
+
+.home-map-chevron {
+  grid-row: 1 / span 2;
+  grid-column: 3;
   color: var(--primary);
   font-weight: 800;
 }
@@ -795,17 +815,10 @@ th { background: #eef8f6; font-size: .88rem; }
 }
 
 @media (min-width: 760px) {
-  main { padding-bottom: 5.5rem; }
+  .top-nav { display: flex; }
+  main { padding-bottom: 2rem; }
   main.home-main { padding-bottom: 2rem; }
-  .bottom-nav {
-    left: 50%;
-    right: auto;
-    width: min(640px, calc(100% - 24px));
-    transform: translateX(-50%);
-    bottom: 10px;
-    border: 1px solid var(--line);
-    border-radius: 14px;
-  }
+  .bottom-nav { display: none; }
   .split { grid-template-columns: 1fr 320px; align-items: start; }
   .protocol-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .protocol-tabs { grid-template-columns: repeat(5, minmax(0, 1fr)); }
@@ -813,4 +826,9 @@ th { background: #eef8f6; font-size: .88rem; }
   .tool-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .calc-form { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .calc-form button, .calc-form output, .calc-form label:has(textarea), .calc-form label:has(input[type="checkbox"]) { grid-column: 1 / -1; }
+}
+
+@media (min-width: 760px) {
+  .top-nav { display: flex !important; }
+  .bottom-nav { display: none !important; }
 }
