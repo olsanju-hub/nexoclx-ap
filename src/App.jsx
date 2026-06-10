@@ -11,7 +11,6 @@ import { calculateBasal, calculateRenal } from './utils/clinicalFormat';
 import { normalize, protocolSearchText } from './utils/search';
 import { parseRoute, routes } from './utils/routing';
 
-const categories = ['Todas', ...new Set(protocols.map((protocol) => protocol.category))];
 const medicationsById = Object.fromEntries(medications.map((med) => [med.id, med]));
 
 function useHashRoute() {
@@ -38,53 +37,33 @@ function PageHead({ title, subtitle }) {
   );
 }
 
-function ProtocolSearch({ query, setQuery, category, setCategory }) {
+function ProtocolSearch({ query, setQuery }) {
   return (
     <div className="search-panel">
       <SearchInput value={query} onChange={setQuery} />
-      <div className="filter-group">
-        <span>Filtro</span>
-        <div className="filters" role="list" aria-label="Filtros">
-          {categories.map((item) => (
-            <button
-              key={item}
-              type="button"
-              className="chip"
-              aria-pressed={category === item ? 'true' : undefined}
-              onClick={() => setCategory(item)}
-            >
-              {item}
-            </button>
-          ))}
-        </div>
-      </div>
     </div>
   );
 }
 
-function useFilteredProtocols(query, category) {
+function useFilteredProtocols(query) {
   return useMemo(() => {
     const q = normalize(query);
     return protocols.filter((protocol) => {
-      const categoryOk = category === 'Todas' || protocol.category === category;
       const queryOk = !q || protocolSearchText(protocol, medicationsById).includes(q);
-      return categoryOk && queryOk;
+      return queryOk;
     });
-  }, [query, category]);
+  }, [query]);
 }
 
 function HomeView({ query, setQuery }) {
   const sections = [
-    { title: 'Protocolos', icon: '▤', note: 'Listado completo de protocolos de Atención Primaria.', href: routes.protocols },
-    { title: 'Herramientas', icon: '◎', note: 'Calculadoras y herramientas vinculadas a protocolos.', href: routes.tools },
-    { title: 'Bibliografía', icon: '§', note: 'Fuentes clínicas y trazabilidad.', href: routes.bibliography },
+    { title: 'Protocolos', icon: '▤', href: routes.protocols },
+    { title: 'Herramientas', icon: '◎', href: routes.tools },
+    { title: 'Bibliografía', icon: '§', href: routes.bibliography },
   ];
 
   return (
     <>
-      <section className="home-intro">
-        <p>Atención Primaria</p>
-      </section>
       <div className="search-panel">
         <SearchInput value={query} onChange={setQuery} />
       </div>
@@ -93,7 +72,6 @@ function HomeView({ query, setQuery }) {
           <a key={item.title} href={item.href}>
             <span className="home-map-icon" aria-hidden="true">{item.icon}</span>
             <strong>{item.title}</strong>
-            <small>{item.note}</small>
             <span className="home-map-chevron" aria-hidden="true">›</span>
           </a>
         ))}
@@ -102,12 +80,12 @@ function HomeView({ query, setQuery }) {
   );
 }
 
-function ProtocolsView({ query, setQuery, category, setCategory }) {
-  const visibleProtocols = useFilteredProtocols(query, category);
+function ProtocolsView({ query, setQuery }) {
+  const visibleProtocols = useFilteredProtocols(query);
   return (
     <>
-      <PageHead title="Protocolos" subtitle="Lista filtrable por categoría, sinónimos, síntomas y fármacos." />
-      <ProtocolSearch query={query} setQuery={setQuery} category={category} setCategory={setCategory} />
+      <PageHead title="Protocolos" />
+      <ProtocolSearch query={query} setQuery={setQuery} />
       <section><ProtocolList protocols={visibleProtocols} /></section>
     </>
   );
@@ -140,7 +118,7 @@ function Calculator({ calc }) {
       <p className="notice">{calc.warning}</p>
       {calc.id === 'insulina-basal' ? <BasalCalculator /> : null}
       {calc.id === 'cockcroft-gault' ? <RenalCalculator /> : null}
-      {calc.id === 'score2-link' ? <p><a className="button-link" href="https://www.heartscore.org/" target="_blank" rel="noopener noreferrer">Abrir ESC HeartScore oficial</a></p> : null}
+      {calc.id === 'score2-link' ? <p><a className="button-link" href="https://www.heartscore.org/">Abrir ESC HeartScore oficial</a></p> : null}
     </article>
   );
 }
@@ -228,7 +206,6 @@ function MoreView() {
 export default function App() {
   const route = useHashRoute();
   const [query, setQuery] = useState('');
-  const [category, setCategory] = useState('Todas');
   const activeRoute = route.name === 'herramientas' ? 'herramientas' : route.name === 'mas' || route.name === 'bibliografia' ? 'mas' : route.name === 'protocolos' ? 'protocolos' : 'inicio';
 
   let content;
@@ -237,10 +214,10 @@ export default function App() {
     content = protocol ? (
       <ProtocolDetail protocol={protocol} medications={medications} calculators={calculators} bibliography={bibliography} />
     ) : (
-      <ProtocolsView query={query} setQuery={setQuery} category={category} setCategory={setCategory} />
+      <ProtocolsView query={query} setQuery={setQuery} />
     );
   } else if (route.name === 'protocolos') {
-    content = <ProtocolsView query={query} setQuery={setQuery} category={category} setCategory={setCategory} />;
+    content = <ProtocolsView query={query} setQuery={setQuery} />;
   } else if (route.name === 'herramientas') {
     content = <ToolsView selectedId={route.id} fromProtocolId={route.params.get('from')} />;
   } else if (route.name === 'bibliografia') {

@@ -1,13 +1,13 @@
 export function SearchInput({ value, onChange }) {
   return (
     <label htmlFor="main-search">
-      Buscar protocolo, síntoma, cálculo...
+      Buscar
       <input
         id="main-search"
         type="search"
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        placeholder="Buscar protocolo, síntoma, cálculo..."
+        placeholder="síntoma, protocolo, cálculo..."
       />
     </label>
   );

@@ -1,5 +1,4 @@
-import { useMemo, useState } from 'react';
-import { SectionNav } from '../layout/SectionNav';
+import { useMemo } from 'react';
 import { ProtocolHeader } from './ProtocolHeader';
 import { ProtocolBlock } from './ProtocolBlock';
 import { ProtocolSection } from './ProtocolSection';
@@ -53,7 +52,7 @@ function TreatmentRows({ rows, medications }) {
       {rows.map((row) => {
         const med = row.cimaMedicationId ? byId[row.cimaMedicationId] : null;
         const cima = med?.cima?.startsWith('http') ? (
-          <a href={med.cima} target="_blank" rel="noopener noreferrer">CIMA</a>
+          <a href={med.cima}>CIMA</a>
         ) : row.medication && row.medication !== '-' ? (
           <span className="pending">CIMA pendiente</span>
         ) : '-';
@@ -81,7 +80,7 @@ function TreatmentRows({ rows, medications }) {
 
 function MedicationCard({ med }) {
   const cima = med.cima.startsWith('http') ? (
-    <a href={med.cima} target="_blank" rel="noopener noreferrer">Ficha CIMA/AEMPS</a>
+    <a href={med.cima}>Ficha CIMA/AEMPS</a>
   ) : (
     <span className="pending">{med.cima}</span>
   );
@@ -100,8 +99,6 @@ function MedicationCard({ med }) {
 
 export function ProtocolDetail({ protocol, medications, calculators, bibliography }) {
   const tabs = useMemo(() => protocolTabs(protocol, medications), [protocol, medications]);
-  const [activeTab, setActiveTab] = useState(tabs[0].id);
-  const active = tabs.find((tab) => tab.id === activeTab) || tabs[0];
   const meds = protocol.meds.map((id) => medications.find((med) => med.id === id)).filter(Boolean);
   const calcCards = protocol.calculators.map((id) => calculators.find((calc) => calc.id === id)).filter(Boolean);
   const bibRows = protocol.bibliography.map((id) => bibliography.find((bib) => bib.id === id)).filter(Boolean);
@@ -110,8 +107,18 @@ export function ProtocolDetail({ protocol, medications, calculators, bibliograph
     <section className="protocol-detail-shell">
       <section className="protocol-detail-card">
         <ProtocolHeader protocol={protocol} />
-        <SectionNav tabs={tabs} activeTab={activeTab} onSelect={setActiveTab} />
-        <ProtocolBlock key={active.id} id={active.id} title={active.title}>{active.content}</ProtocolBlock>
+        <nav className="phase-jump" aria-label="Secciones del protocolo">
+          {tabs.map((tab) => (
+            <a key={tab.id} href={`#panel-${tab.id}`}>
+              {tab.label}
+            </a>
+          ))}
+        </nav>
+        <div className="protocol-sections">
+          {tabs.map((tab) => (
+            <ProtocolBlock key={tab.id} id={tab.id} title={tab.title}>{tab.content}</ProtocolBlock>
+          ))}
+        </div>
       </section>
       <ProtocolActions calculators={calcCards} protocolId={protocol.id} />
       {meds.length ? (
@@ -140,7 +147,7 @@ export function BibliographyCard({ bib }) {
     <article className="biblio-card">
       <h3>{bib.title}</h3>
       <p>{bib.institution} · {bib.year} · confianza {bib.confidence}</p>
-      <a href={bib.url} target="_blank" rel="noopener noreferrer">Abrir fuente</a>
+      <a href={bib.url}>Abrir fuente</a>
     </article>
   );
 }

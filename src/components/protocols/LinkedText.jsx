@@ -9,7 +9,7 @@ export function LinkedText({ text, medications }) {
       const chunks = part.split(regex);
       return chunks.map((chunk, index) => (
         index % 2 === 1
-          ? <a key={`${med.id}-${chunk}-${index}`} href={med.cima} target="_blank" rel="noopener noreferrer">{chunk}</a>
+          ? <a key={`${med.id}-${chunk}-${index}`} href={med.cima}>{chunk}</a>
           : chunk
       ));
     });
