@@ -1,0 +1,17 @@
+{
+  "name": "NexoClx AP",
+  "context": "Atencion Primaria",
+  "colors": {
+    "bg": "#f7faf9",
+    "surface": "#ffffff",
+    "text": "#172124",
+    "muted": "#5c6b70",
+    "line": "#d7e2df",
+    "accent": "#0f766e",
+    "accentStrong": "#135f86",
+    "warning": "#9a6700",
+    "warningBg": "#fff7df",
+    "danger": "#b42318",
+    "dangerBg": "#fff0ef"
+  }
+}
