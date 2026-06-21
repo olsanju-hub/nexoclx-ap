@@ -1,0 +1,20 @@
+:root {
+  --app-name: "NexoClx AP";
+  --clinical-context: "Atencion Primaria";
+  --color-bg: #f7faf9;
+  --color-bg-soft: #eef8f6;
+  --color-surface: #ffffff;
+  --color-surface-subtle: #fbfdfc;
+  --color-text: #172124;
+  --color-text-soft: #314247;
+  --color-muted: #5c6b70;
+  --color-line: #d7e2df;
+  --color-line-strong: #bfe0da;
+  --color-accent: #0f766e;
+  --color-accent-strong: #135f86;
+  --color-accent-soft: #e6f4f1;
+  --color-warning: #9a6700;
+  --color-warning-bg: #fff7df;
+  --color-danger: #b42318;
+  --color-danger-bg: #fff0ef;
+}
