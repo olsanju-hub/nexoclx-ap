@@ -15,7 +15,7 @@ import { routes } from '../app/routes.js';
 export const appConfig = {
   name: 'NexoClx AP',
   context: 'Atencion Primaria',
-  icon: '/icons/icon-192.png',
+  icon: `${import.meta.env.BASE_URL}icons/icon-192.png`,
   accent: '#0f766e',
   homeVariant: 'standard',
 };
