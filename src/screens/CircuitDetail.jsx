@@ -1,11 +1,13 @@
 import { DetailHeader } from '../components/detail/DetailHeader.jsx';
-import { EmptyClinicalState } from '../components/feedback/EmptyClinicalState.jsx';
+import { ContentBlock } from '../components/detail/ContentBlock.jsx';
 
 export function CircuitDetail({ onBack }) {
   return (
     <div className="screen">
-      <DetailHeader title="Módulo pendiente" subtitle="Módulo no operativo" onBack={onBack} />
-      <EmptyClinicalState text="Módulo no operativo. Pendiente de contenido clínico validado." />
+      <DetailHeader title="Dolor torácico" subtitle="Circuito de derivación desde Atención Primaria" onBack={onBack} />
+      <ContentBlock title="Flujo">
+        <p>Valorar estabilidad, realizar ECG si está disponible sin retrasar el traslado y activar derivación urgente cuando el protocolo lo indique.</p>
+      </ContentBlock>
     </div>
   );
 }
