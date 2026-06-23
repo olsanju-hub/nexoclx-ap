@@ -17,46 +17,47 @@ export const appConfig = {
   context: 'Atencion Primaria',
   icon: '/icons/icon-192.png',
   accent: '#0f766e',
+  homeVariant: 'standard',
 };
 
 export const primarySections = [
   {
     id: routes.protocols,
     title: 'Protocolos',
-    description: 'Diagnostico inicial y derivacion.',
+    description: 'Módulo no operativo.',
     icon: FileText,
   },
   {
     id: routes.tools,
     title: 'Herramientas',
-    description: 'Calculos y ayudas pendientes.',
+    description: 'Módulo no operativo.',
     icon: Calculator,
   },
   {
     id: routes.bibliography,
-    title: 'Bibliografia',
-    description: 'Fuentes pendientes.',
+    title: 'Bibliografía',
+    description: 'Pendiente de bibliografía validada.',
     icon: BookOpen,
   },
 ];
 
 export const secondarySections = [
-  { id: routes.protocols, title: 'Protocolos', description: 'Listado estructural no operativo.', icon: FolderOpen },
-  { id: routes.tools, title: 'Herramientas', description: 'Sin formulas clinicas activas.', icon: Wrench },
-  { id: routes.bibliography, title: 'Bibliografia', description: 'Pendiente de fuentes.', icon: Library },
+  { id: routes.protocols, title: 'Protocolos', description: 'Módulo no operativo.', icon: FolderOpen },
+  { id: routes.tools, title: 'Herramientas', description: 'Módulo no operativo.', icon: Wrench },
+  { id: routes.bibliography, title: 'Bibliografía', description: 'Pendiente de bibliografía validada.', icon: Library },
 ];
 
 export const bottomNavItems = [
   { id: routes.home, label: 'Inicio', icon: HeartPulse },
   { id: routes.protocols, label: 'Protocolos', icon: FileText },
   { id: routes.tools, label: 'Herramientas', icon: Calculator },
-  { id: routes.more, label: 'Mas', icon: MoreHorizontal },
+  { id: routes.more, label: 'Más', icon: MoreHorizontal },
 ];
 
 export const desktopNavItems = [
   { id: routes.protocols, label: 'Protocolos' },
   { id: routes.tools, label: 'Herramientas' },
-  { id: routes.bibliography, label: 'Bibliografia' },
+  { id: routes.bibliography, label: 'Bibliografía' },
 ];
 
 export const sectionIcons = {
