@@ -1,0 +1,74 @@
+{
+  "fecha": "2026-07-03",
+  "app": "NexoClx AP",
+  "rama": "main",
+  "commit_inicial": "7d78d1e",
+  "commit_final": null,
+  "tema_creado": "HTA",
+  "archivos_modificados": [
+    "src/data/placeholders.js",
+    "src/screens/ProtocolDetail.jsx",
+    "src/styles/index.css",
+    "reports/hta-report.json"
+  ],
+  "fuentes_usadas": [
+    "ESC 2024 Guidelines for the management of elevated blood pressure and hypertension",
+    "European Society of Hypertension 2023 Guidelines for the management of arterial hypertension",
+    "NICE NG136 Hypertension in adults: diagnosis and management",
+    "NICE NG136 visual summary",
+    "BNF/NICE: amlodipine, ramipril, losartan potassium, indapamide, spironolactone, doxazosin"
+  ],
+  "fuente_por_bloque_clinico": {
+    "confirmacion_diagnostica_AMPA_MAPA": ["ESC 2024", "ESH 2023", "NICE NG136"],
+    "clasificacion_riesgo_derivacion": ["ESC 2024", "ESH 2023", "NICE NG136"],
+    "tratamiento_escalonado": ["NICE NG136 visual summary", "ESC 2024", "ESH 2023"],
+    "medidas_coadyuvantes": ["ESC 2024", "ESH 2023", "NICE NG136"],
+    "seguimiento_seguridad": ["NICE NG136", "BNF/NICE"]
+  },
+  "fuente_por_tratamiento_dosis": {
+    "amlodipino_5_10_mg_24h": "BNF/NICE amlodipine",
+    "ramipril_1_25_2_5_mg_hasta_10_mg_24h": "BNF/NICE ramipril",
+    "losartan_50_100_mg_24h": "BNF/NICE losartan potassium",
+    "indapamida_2_5_mg_o_MR_1_5_mg_24h": "BNF/NICE indapamide",
+    "espironolactona_25_50_mg_24h": "BNF/NICE spironolactone",
+    "doxazosina_1_mg_titulacion_gradual": "BNF/NICE doxazosin"
+  },
+  "dosis_anadidas": [
+    "ramipril 1,25-2,5 mg cada 24 h hasta 10 mg cada 24 h",
+    "losartan 50 mg cada 24 h hasta 100 mg cada 24 h",
+    "amlodipino 5 mg cada 24 h hasta 10 mg cada 24 h",
+    "indapamida 2,5 mg cada 24 h o liberacion modificada 1,5 mg cada 24 h",
+    "espironolactona 25 mg cada 24 h hasta 50 mg cada 24 h",
+    "doxazosina 1 mg cada 24 h con titulacion gradual"
+  ],
+  "escalones_terapeuticos_anadidos": [
+    "Paso 1: IECA/ARA-II, calcioantagonista o tiazidico-like segun perfil",
+    "Paso 2: IECA o ARA-II asociado a calcioantagonista o tiazidico-like",
+    "Paso 3: IECA o ARA-II mas calcioantagonista mas tiazidico-like",
+    "HTA resistente: confirmar resistencia real antes de cuarto farmaco"
+  ],
+  "tratamientos_coadyuvantes_anadidos": [
+    "reduccion de sal",
+    "moderar alcohol",
+    "perdida ponderal si procede",
+    "actividad fisica regular",
+    "dieta cardiosaludable",
+    "abandono de tabaco",
+    "revision de farmacos que elevan la presion arterial"
+  ],
+  "contenido_omitido_por_falta_de_fuente": [
+    "Dosis o pautas no incluidas en BNF/NICE o guias principales",
+    "Protocolos locales de derivacion no publicados"
+  ],
+  "calculadoras_nuevas": false,
+  "formulas_modificadas": false,
+  "build": "pass",
+  "errores_consola": [],
+  "overflow_horizontal": false,
+  "colores_base_modificados": false,
+  "navegacion_global_modificada": false,
+  "vercel_tocado": false,
+  "riesgos_pendientes": [
+    "Adaptar objetivos tensionales y umbrales exactos a criterio medico/local si se requiere mayor granularidad"
+  ]
+}

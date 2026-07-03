@@ -7,6 +7,19 @@ export const placeholderSources = [
   'ACC/AHA. 2022 Guideline for the Diagnosis and Management of Aortic Disease. https://www.ahajournals.org/doi/10.1161/CIR.0000000000001106',
 ];
 
+export const hypertensionSources = [
+  'ESC. 2024 Guidelines for the management of elevated blood pressure and hypertension. https://www.escardio.org/guidelines/clinical-practice-guidelines/all-esc-practice-guidelines/elevated-blood-pressure-and-hypertension/',
+  'European Society of Hypertension. 2023 ESH Guidelines for the management of arterial hypertension. Journal of Hypertension. https://journals.lww.com/jhypertension/fulltext/2023/12000/2023_esh_guidelines_for_the_management_of_arterial.2.aspx',
+  'NICE. Hypertension in adults: diagnosis and management, NG136. https://www.nice.org.uk/guidance/ng136/chapter/recommendations',
+  'NICE. Hypertension in adults: diagnosis and management, visual summary. https://www.nice.org.uk/guidance/ng136/resources/visual-summary-pdf-6899919517',
+  'BNF/NICE. Amlodipine. https://bnf.nice.org.uk/drugs/amlodipine/',
+  'BNF/NICE. Ramipril. https://bnf.nice.org.uk/drugs/ramipril/',
+  'BNF/NICE. Losartan potassium. https://bnf.nice.org.uk/drugs/losartan-potassium/',
+  'BNF/NICE. Indapamide. https://bnf.nice.org.uk/drugs/indapamide/',
+  'BNF/NICE. Spironolactone. https://bnf.nice.org.uk/drugs/spironolactone/',
+  'BNF/NICE. Doxazosin. https://bnf.nice.org.uk/drugs/doxazosin/',
+];
+
 export const placeholderProtocols = [
   {
     id: 'dolor-toracico',
@@ -86,5 +99,111 @@ export const placeholderProtocols = [
       copyPrefix: 'Dolor torácico AP',
     },
     sources: placeholderSources,
+  },
+  {
+    id: 'hta',
+    title: 'HTA',
+    description: 'Diagnóstico, riesgo, tratamiento escalonado y derivación en Atención Primaria.',
+    status: 'Guía clínica',
+    sections: [
+      {
+        step: '01',
+        title: 'Confirmar antes de etiquetar',
+        body: 'Verifica técnica de medida, repetición de tomas y confirmación fuera de consulta cuando proceda.',
+        items: [
+          'Usa medición estandarizada, manguito adecuado y reposo previo antes de tomar decisiones.',
+          'Confirma con AMPA o MAPA si la situación clínica lo permite.',
+          'Clasifica las cifras junto al riesgo cardiovascular, comorbilidad y posible lesión de órgano diana.',
+        ],
+      },
+      {
+        step: '02',
+        title: 'Separar control ambulatorio de urgencia',
+        body: 'La prioridad en AP es detectar daño agudo o sospecha de emergencia hipertensiva y no demorar la transferencia.',
+        items: [
+          'Busca dolor torácico, disnea, focalidad neurológica, confusión, alteración visual, edema agudo de pulmón o datos de disección aórtica.',
+          'Si hay síntomas o signos de daño agudo, activa derivación urgente o recurso emergente.',
+          'Si no hay daño agudo, decide confirmación, inicio o intensificación terapéutica y seguimiento programado.',
+        ],
+      },
+      {
+        step: '03',
+        title: 'Tratamiento ambulatorio escalonado',
+        body: 'Combina medidas no farmacológicas con fármacos de primera línea y escala según respuesta, tolerancia y perfil clínico.',
+        items: [
+          'Prioriza IECA/ARA-II, calcioantagonista o diurético tiazídico-like según edad, origen familiar, diabetes y tolerancia.',
+          'Escala a doble y triple combinación antes de etiquetar HTA resistente.',
+          'En aparente resistencia, confirma con AMPA/MAPA, revisa adherencia, interacciones, hipotensión postural y causas secundarias.',
+        ],
+      },
+      {
+        step: '04',
+        title: 'Seguimiento y derivación',
+        body: 'El seguimiento debe comprobar respuesta, seguridad, adherencia y necesidad de derivación.',
+        items: [
+          'Controla función renal y potasio cuando uses IECA, ARA-II, diuréticos o antagonistas mineralocorticoides.',
+          'Revisa adherencia, automedida, sal, alcohol, peso, actividad física y fármacos que elevan la presión arterial.',
+          'Deriva si hay sospecha secundaria, daño de órgano diana, embarazo, mala respuesta persistente o emergencia hipertensiva.',
+        ],
+      },
+    ],
+    tools: [
+      'Checklist de confirmación diagnóstica con AMPA/MAPA cuando proceda.',
+      'Selector de alarma por daño agudo y necesidad de derivación urgente.',
+      'Panel de escalones farmacológicos con dosis trazables.',
+    ],
+    treatment: [
+      {
+        title: 'Paso 1',
+        body: 'Inicio farmacológico orientado por perfil clínico y tolerancia.',
+        items: [
+          'IECA/ARA-II: ramipril 1,25-2,5 mg cada 24 h, titular hasta 10 mg cada 24 h; losartán 50 mg cada 24 h, titular hasta 100 mg cada 24 h.',
+          'Calcioantagonista: amlodipino 5 mg cada 24 h, titular hasta 10 mg cada 24 h.',
+          'Diurético tiazídico-like: indapamida 2,5 mg cada 24 h o liberación modificada 1,5 mg cada 24 h.',
+        ],
+      },
+      {
+        title: 'Paso 2-3',
+        body: 'Escalada combinada cuando no se alcanza control suficiente.',
+        items: [
+          'Paso 2: IECA o ARA-II asociado a calcioantagonista o diurético tiazídico-like.',
+          'Paso 3: IECA o ARA-II más calcioantagonista más diurético tiazídico-like.',
+          'Evita combinar IECA y ARA-II de forma sistemática.',
+        ],
+      },
+      {
+        title: 'HTA resistente',
+        body: 'Confirmar resistencia real antes de añadir cuarto fármaco.',
+        items: [
+          'Si el potasio lo permite: espironolactona 25 mg cada 24 h, ajustar hasta 50 mg cada 24 h.',
+          'Si no procede antagonista mineralocorticoide: considerar doxazosina 1 mg cada 24 h con titulación gradual.',
+          'Revisar adherencia, AMPA/MAPA, interacciones, función renal, potasio y necesidad de derivación.',
+        ],
+      },
+      {
+        title: 'Medidas coadyuvantes',
+        body: 'Aplicarlas desde el diagnóstico y reforzarlas en cada escalón.',
+        items: [
+          'Reducir sal, moderar alcohol, pérdida ponderal si procede y actividad física regular.',
+          'Dieta cardiosaludable, abandono de tabaco y revisión de fármacos que puedan elevar la presión arterial.',
+        ],
+      },
+    ],
+    interactive: {
+      title: 'Decisión rápida HTA AP',
+      intro: 'Marca los datos presentes.',
+      checks: [
+        'Síntomas o signos compatibles con daño agudo de órgano diana.',
+        'Cifras elevadas no confirmadas con AMPA/MAPA y paciente estable.',
+        'Riesgo cardiovascular alto, diabetes, enfermedad renal crónica o lesión de órgano diana.',
+        'Mala respuesta pese a triple terapia con adherencia y medición revisadas.',
+      ],
+      positiveTitle: 'Priorizar alarma, confirmación o escalada',
+      positiveBody: 'Si hay daño agudo, deriva urgente. Si no, confirma diagnóstico, estratifica riesgo e inicia o escala tratamiento con seguimiento de seguridad.',
+      negativeTitle: 'Seguimiento estructurado',
+      negativeBody: 'Mantén automedida, medidas coadyuvantes, revisión de adherencia y control programado antes de intensificar.',
+      copyPrefix: 'HTA AP',
+    },
+    sources: hypertensionSources,
   },
 ];
