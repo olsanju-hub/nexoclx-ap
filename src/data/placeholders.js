@@ -70,6 +70,21 @@ export const placeholderProtocols = [
       'Registro estructurado de constantes, hora de inicio y síntomas acompañantes.',
       'Circuito de derivación urgente o activación 061 según estabilidad y sospecha.',
     ],
+    interactive: {
+      title: 'Decisión rápida en AP',
+      intro: 'Marca los datos presentes para obtener una salida operativa basada en el protocolo.',
+      checks: [
+        'Inestabilidad hemodinámica, síncope, disnea intensa, sudoración, palidez, confusión o dolor persistente.',
+        'Sospecha alta de síndrome coronario agudo o ECG con elevación del ST, cambios isquémicos nuevos o arritmia relevante.',
+        'Sospecha de TEP, síndrome aórtico agudo, neumotórax, pericarditis o miocarditis.',
+        'Necesidad de ECG seriado, troponina, imagen o monitorización no disponible en AP.',
+      ],
+      positiveTitle: 'Derivar o activar recurso urgente',
+      positiveBody: 'Con cualquiera de estos datos, prioriza transferencia asistencial, comunicación estructurada y vigilancia hasta el traslado.',
+      negativeTitle: 'Valorar manejo no urgente',
+      negativeBody: 'Solo si no hay datos de alarma, la exploración es concordante y existe seguimiento claro, documenta razonamiento y señales de reconsulta urgente.',
+      copyPrefix: 'Dolor torácico AP',
+    },
     sources: placeholderSources,
   },
 ];
