@@ -72,7 +72,7 @@ export const placeholderProtocols = [
     ],
     interactive: {
       title: 'Decisión rápida en AP',
-      intro: 'Marca los datos presentes para obtener una salida operativa basada en el protocolo.',
+      intro: 'Marca los datos presentes.',
       checks: [
         'Inestabilidad hemodinámica, síncope, disnea intensa, sudoración, palidez, confusión o dolor persistente.',
         'Sospecha alta de síndrome coronario agudo o ECG con elevación del ST, cambios isquémicos nuevos o arritmia relevante.',

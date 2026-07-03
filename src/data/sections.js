@@ -30,7 +30,7 @@ export const primarySections = [
   {
     id: routes.tools,
     title: 'Herramientas',
-    description: 'Apoyo rápido para valoración inicial.',
+    description: 'Valoración inicial.',
     icon: Calculator,
   },
   {
@@ -43,7 +43,7 @@ export const primarySections = [
 
 export const secondarySections = [
   { id: routes.protocols, title: 'Protocolos', description: 'Guías clínicas por motivo de consulta.', icon: FolderOpen },
-  { id: routes.tools, title: 'Herramientas', description: 'Apoyo rápido para valoración inicial.', icon: Wrench },
+  { id: routes.tools, title: 'Herramientas', description: 'Valoración inicial.', icon: Wrench },
   { id: routes.bibliography, title: 'Bibliografía', description: 'Fuentes clínicas consultadas.', icon: Library },
 ];
 

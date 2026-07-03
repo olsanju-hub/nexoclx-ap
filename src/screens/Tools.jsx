@@ -26,7 +26,7 @@ export function Tools() {
     <div className="screen">
       <div className="section-heading">
         <h1>Herramientas</h1>
-        <p>Apoyo rápido vinculado al protocolo Dolor torácico.</p>
+        <p>Valoración inicial.</p>
       </div>
       <ContentBlock title="Checklist de valoración inicial">
         <div className="checklist-grid">
@@ -39,7 +39,7 @@ export function Tools() {
         </div>
         <div className="decision-result">
           <h3>{selected.length === checks.length ? 'Valoración mínima completa' : 'Completar datos mínimos'}</h3>
-          <p>Usa el protocolo Dolor torácico para decidir derivación urgente o manejo no urgente según los datos marcados.</p>
+          <p>Revisa derivación urgente o manejo no urgente según los datos marcados.</p>
           <button className="copy-button" type="button" onClick={copySummary}>{copied ? 'Resumen copiado' : 'Copiar resumen'}</button>
         </div>
       </ContentBlock>
