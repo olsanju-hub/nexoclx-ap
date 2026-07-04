@@ -1,60 +1,103 @@
 # NexoClx AP
 
-NexoClx AP es una app independiente de la familia NexoClx para Atención Primaria. Su función es convertir temas clínicos en herramientas rápidas para consulta: sospechar, confirmar, iniciar o ajustar tratamiento ambulatorio, hacer seguimiento, detectar alarma y derivar.
+NexoClx AP es una app independiente de la familia NexoClx para Atención Primaria de adultos/general. Su función es convertir temas clínicos en herramientas rápidas para consulta: sospechar, confirmar, iniciar o ajustar tratamiento ambulatorio, hacer seguimiento, detectar alarmas y derivar.
 
-## Qué temas pertenecen a AP
+La familia NexoClx está formada por AP, Urg, 061 y Ped. No se deben fusionar apps ni crear un selector común.
 
-Incluye un tema solo si Atención Primaria puede tomar una decisión real:
+## Identidad
+
+- Contexto: Atención Primaria.
+- Enfoque: diagnóstico inicial, confirmación, pruebas/analítica, tratamiento ambulatorio, seguimiento, prevención, alarmas y derivación.
+- Mantener colores, iconos, rutas, home, bottom nav y estética aprobada.
+
+## Pertinencia de temas
+
+Añadir un tema solo si AP puede tomar una decisión real:
 
 - sospecha o diagnóstico inicial;
 - confirmación con medición, analítica, prueba o seguimiento;
-- inicio de tratamiento ambulatorio;
-- ajuste, escalada o revisión de mala respuesta;
+- tratamiento ambulatorio, dosis y escalada;
 - medidas no farmacológicas y prevención;
-- señales de alarma;
-- criterios de derivación.
+- mala respuesta o seguimiento;
+- alarma y derivación.
 
-No añadir temas puramente hospitalarios, de procedimiento avanzado, soporte crítico o traslado si AP solo actuaría como derivación inmediata sin herramienta útil. Si un tema tiempo-dependiente aplica a AP, debe centrarse en alarma, datos mínimos y derivación.
+No añadir temas puramente hospitalarios, soporte crítico, traslado o procedimientos avanzados si AP solo actuaría como derivación inmediata sin herramienta útil. No añadir temas por simetría con Urg, 061 o Ped.
 
-## Cómo construir una herramienta clínica
+## Cómo decidir si aplica
 
-Cada tema debe ser una herramienta, no un texto:
+Antes de crear un tema, responder:
 
-- pedir datos mínimos mediante inputs, selectores o checks;
-- devolver una conducta concreta;
-- mostrar tratamiento, dosis y escalones si proceden;
-- indicar qué pedir o revisar;
-- dar criterios de derivación;
-- permitir copiar un resumen útil;
-- dejar fuentes trazables al final.
+- ¿AP puede hacer algo más que leer?
+- ¿Qué dato debe introducir el usuario?
+- ¿Qué salida práctica obtiene?
+- ¿Hay fuente para criterios, tratamiento, dosis o derivación?
 
-Si un contenido no cambia una decisión clínica, resumirlo, ocultarlo como detalle secundario o no incluirlo.
+Si no hay respuesta clara, no se añade y se documenta en el reporte.
 
-## Tratamiento, dosis y escalada
+## Herramienta clínica
 
-Cuando el tema requiera tratamiento, incluir grupo farmacológico, indicación, dosis inicial, rango, combinaciones, escalada, precauciones relevantes, seguimiento y mala respuesta. Cada dosis y escalón debe tener fuente trazable. No usar frases genéricas como "ajustar tratamiento" si existen pautas concretas respaldadas.
+Cada tema debe comportarse como herramienta, no como capítulo:
+
+- inputs, selectores o checklists;
+- resultado o nivel de riesgo;
+- conducta concreta;
+- tratamiento, dosis y escalada si procede;
+- criterios de derivación;
+- resumen copiable;
+- fuentes al final.
+
+Si un bloque no cambia una decisión clínica, resumirlo, moverlo a detalle secundario o no incluirlo.
+
+## Tratamiento
+
+Cuando el tema requiera tratamiento, incluir grupo farmacológico, indicación, dosis inicial, rango, combinaciones, escalada, precauciones, seguimiento y mala respuesta. Cada dosis y escalón debe tener fuente trazable.
+
+No usar frases genéricas como "ajustar tratamiento" si existen pautas concretas respaldadas.
 
 ## Cálculos
 
-No mencionar cálculos, escalas o scores si la app no los calcula. Si son necesarios y hay fórmula validada, crear campos, calcular resultado, interpretar y conectar la salida con una conducta. Si no se pueden implementar correctamente, documentarlos en `report.json` como omitidos.
+No mencionar cálculos, escalas o scores si la app no los calcula realmente. Si son necesarios y hay fórmula validada, crear campos, calcular resultado, interpretar y conectar con una conducta.
 
-## Fuentes aceptables
+Si no se pueden implementar correctamente, no mostrarlos como herramienta activa y documentarlos en `report.json`.
 
-Usar guías de sociedades científicas, organismos oficiales, consensos publicados y documentos oficiales referenciados. Fuentes preferentes según tema: ESC/ESH, AHA/ACC, NICE, SEC, SEMES, semFYC, SEMERGEN, AHA/ERC, CHEST y documentos oficiales nacionales o autonómicos.
+## Fuentes
+
+Fuentes aceptables: guías de sociedades científicas, organismos oficiales, consensos publicados, documentos oficiales referenciados y fuentes internas ya trazables.
+
+Fuentes preferentes según tema: ESC/ESH, AHA/ACC, NICE, SEC, SEMES, semFYC, SEMERGEN, AHA/ERC, CHEST y documentos nacionales o autonómicos publicados.
 
 No usar blogs, webs comerciales, apuntes, contenido generado por IA, presentaciones sin respaldo, protocolos locales no publicados ni textos sin trazabilidad.
 
-## Estética y navegación
+## Derivación
 
-No rediseñar. Mantener colores, iconos, home, rutas, bottom nav, tipografía, cards, espaciado y patrón visual actual. Las nuevas interacciones deben encajar en los componentes existentes.
+Toda herramienta AP debe indicar, si procede:
+
+- manejo ambulatorio;
+- revisión o seguimiento;
+- derivación preferente;
+- derivación urgente;
+- activación de recurso si el tema lo exige.
+
+## Estética
+
+No rediseñar. Mantener patrón visual family-discovery-aesthetic, tipografía, cards, espaciados, bordes, sombras, navegación, home, bottom nav, rutas, iconos y colores.
+
+## Reglas permanentes
+
+- No poner temas por poner.
+- No copiar contenido de Urg, 061 o Ped sin adaptar al contexto AP.
+- No mostrar textos internos, pendientes, mocks ni placeholders.
+- No mostrar contenido clínico sin fuente.
+- No mencionar cálculos si no se calculan.
+- No tocar Vercel.
 
 ## Validación antes de commit/push
 
 - `npm run build` pasa.
-- No hay temas añadidos por simetría.
-- Cada tema aporta una decisión real en AP.
+- El tema aporta una decisión real en AP.
 - No hay contenido clínico visible sin fuente.
 - No hay cálculos mencionados sin cálculo real.
-- No hay textos internos, pendientes, mocks ni placeholders visibles.
-- No se modifican colores, iconos, navegación ni Vercel.
+- Tratamiento/dosis/escalones tienen fuente trazable.
+- No se modifican colores, iconos, navegación ni estética global.
+- No se mezclan apps.
 - `report.json` documenta fuentes, omisiones, cálculos, riesgos y pertinencia.
