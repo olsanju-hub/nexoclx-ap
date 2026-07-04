@@ -4,6 +4,12 @@ NexoClx AP es una app independiente de la familia NexoClx para Atención Primari
 
 La familia NexoClx está formada por AP, Urg, 061 y Ped. No se deben fusionar apps ni crear un selector común.
 
+## Modelo de conducta
+
+Cada tema debe responder: "estoy ante esta patología en este paciente, ¿qué hago ahora?". La secuencia de trabajo es patología -> datos del paciente -> gravedad/riesgo -> pruebas -> tratamiento -> dosis -> escalada -> revisión -> derivación -> fuentes documentadas internamente.
+
+La interfaz debe priorizar conducta: qué recoger, qué pedir, qué pautar, cuándo revisar y cuándo derivar. No debe mostrar capítulos, pasos de lectura ni bibliografía como parte del flujo clínico.
+
 ## Identidad
 
 - Contexto: Atención Primaria.
@@ -40,11 +46,13 @@ Cada tema debe comportarse como herramienta, no como capítulo:
 
 - inputs, selectores o checklists;
 - resultado o nivel de riesgo;
+- pruebas iniciales, confirmatorias o de seguimiento si cambian conducta;
 - conducta concreta;
 - tratamiento, dosis y escalada si procede;
+- revisión y mala respuesta;
 - criterios de derivación;
 - resumen copiable;
-- fuentes al final.
+- fuentes documentadas en reportes o README, no como bloque visible de la herramienta.
 
 Si un bloque no cambia una decisión clínica, resumirlo, moverlo a detalle secundario o no incluirlo.
 
@@ -60,13 +68,15 @@ No mencionar cálculos, escalas o scores si la app no los calcula realmente. Si 
 
 Si no se pueden implementar correctamente, no mostrarlos como herramienta activa y documentarlos en `report.json`.
 
-## Fuentes
+## Fuentes internas
 
 Fuentes aceptables: guías de sociedades científicas, organismos oficiales, consensos publicados, documentos oficiales referenciados y fuentes internas ya trazables.
 
 Fuentes preferentes según tema: ESC/ESH, AHA/ACC, NICE, SEC, SEMES, semFYC, SEMERGEN, AHA/ERC, CHEST y documentos nacionales o autonómicos publicados.
 
 No usar blogs, webs comerciales, apuntes, contenido generado por IA, presentaciones sin respaldo, protocolos locales no publicados ni textos sin trazabilidad.
+
+Las fuentes sostienen la herramienta por detrás. No añadir "Fuentes" o "Bibliografía" como card, paso o bloque visible dentro de cada herramienta clínica.
 
 ## Derivación
 
@@ -89,6 +99,7 @@ No rediseñar. Mantener patrón visual family-discovery-aesthetic, tipografía, 
 - No mostrar textos internos, pendientes, mocks ni placeholders.
 - No mostrar contenido clínico sin fuente.
 - No mencionar cálculos si no se calculan.
+- No mostrar bibliografía como ítem del flujo de la herramienta.
 - No tocar Vercel.
 
 ## Validación antes de commit/push

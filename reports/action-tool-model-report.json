@@ -1,0 +1,47 @@
+{
+  "fecha": "2026-07-04",
+  "app": "NexoClx AP",
+  "README_actualizado": true,
+  "herramientas_temas_revisados": ["Dolor toracico", "HTA", "ACV"],
+  "decision_pertinencia": {
+    "Dolor toracico": "aplica como alarma, ECG si disponible, derivacion urgente o manejo no urgente con seguimiento",
+    "HTA": "aplica como confirmacion, tratamiento ambulatorio escalonado, seguimiento y derivacion",
+    "ACV": "aplica como sospecha, activacion urgente y derivacion por posible AIT"
+  },
+  "herramientas_corregidas": [
+    "Detalle de protocolo centrado en panel de conducta y resumen copiable",
+    "Retirados pasos narrativos visibles del flujo de herramienta",
+    "Retirado bloque visible de fuentes dentro del detalle de herramienta",
+    "Retirado bloque visible de herramientas relacionadas dentro del detalle"
+  ],
+  "herramientas_no_modificadas_y_motivo": [],
+  "herramientas_retiradas_ocultadas_y_motivo": [],
+  "fuentes_usadas_internamente": [
+    "ACC/AHA/ASE/CHEST/SAEM/SCCT/SCMR chest pain guideline",
+    "NICE CG95 chest pain",
+    "ESC ACS and pulmonary embolism guidelines",
+    "ACC/AHA aortic disease guideline",
+    "ESC/ESH/NICE hypertension guidance",
+    "AHA/ASA/NICE/Ministerio de Sanidad/Comunidad de Madrid stroke sources"
+  ],
+  "bibliografia_visible_anadida": false,
+  "item_bibliografia_visible_eliminado": true,
+  "calculos_implementados": [],
+  "calculos_omitidos": [],
+  "tratamientos_dosis_escaladas_anadidas": [],
+  "archivos_modificados": [
+    "README.md",
+    "src/screens/ProtocolDetail.jsx",
+    "src/data/placeholders.js",
+    "reports/action-tool-model-report.json"
+  ],
+  "build": "pass",
+  "errores_consola": [],
+  "overflow_horizontal": false,
+  "estetica_modificada": false,
+  "navegacion_modificada": false,
+  "vercel_tocado": false,
+  "riesgos_pendientes": [
+    "Revisar en fases futuras si alguna herramienta requiere calculadora especifica antes de mencionar scores."
+  ]
+}
