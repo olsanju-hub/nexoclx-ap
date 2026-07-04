@@ -73,7 +73,7 @@ export const placeholderProtocols = [
         body: 'Solo considera manejo ambulatorio si la valoración clínica no sugiere causa tiempo-dependiente y existe plan de seguimiento claro.',
         items: [
           'Documenta exploración, ECG si se realizó, razonamiento clínico y señales de reconsulta urgente.',
-          'Organiza seguimiento y prevención cardiovascular según riesgo global y guías aplicables.',
+          'Organiza seguimiento y prevención cardiovascular según perfil clínico y guías aplicables.',
           'No uses una única prueba aislada para cerrar el episodio si la clínica no es concordante.',
         ],
       },
@@ -103,13 +103,14 @@ export const placeholderProtocols = [
       intro: 'Introduce los datos mínimos para orientar derivación o manejo no urgente.',
       copyPrefix: 'Dolor torácico AP',
       fields: [
-        { id: 'onsetMinutes', type: 'number', label: 'Minutos desde el inicio del episodio', min: 0, max: 10080, unit: 'min' },
+        { id: 'onsetMinutes', type: 'number', label: 'Minutos desde el inicio del episodio', min: 0, max: 10080, unit: 'min', required: true },
         { id: 'persistentPain', type: 'checkbox', label: 'Dolor persistente o equivalente anginoso activo' },
         { id: 'unstable', type: 'checkbox', label: 'Inestabilidad, síncope, disnea intensa, sudoración, palidez o confusión' },
         {
           id: 'ecg',
           type: 'select',
           label: 'ECG disponible',
+          required: true,
           options: [
             { value: 'not-available', label: 'No disponible o retrasa traslado' },
             { value: 'normal', label: 'Sin cambios agudos' },
@@ -134,6 +135,16 @@ export const placeholderProtocols = [
           ],
         },
       ],
+      incompleteOutcome: {
+        status: 'Datos',
+        title: 'Completa datos mínimos antes de decidir',
+        body: 'La derivación o el manejo ambulatorio dependen como mínimo de tiempo de inicio y ECG disponible/no disponible.',
+        actions: [
+          'Introducir tiempo desde inicio.',
+          'Indicar si el ECG está disponible, no disponible o alterado.',
+          'Marcar inestabilidad, dolor persistente o diferencial grave si aparecen.',
+        ],
+      },
       defaultOutcome: {
         status: 'Seguimiento',
         title: 'Manejo no urgente solo si la valoración es concordante',
@@ -150,7 +161,7 @@ export const placeholderProtocols = [
   {
     id: 'hta',
     title: 'HTA',
-    description: 'Diagnóstico, riesgo, tratamiento escalonado y derivación en Atención Primaria.',
+    description: 'Diagnóstico, tratamiento escalonado y derivación en Atención Primaria.',
     status: 'Guía clínica',
     sections: [
       {
@@ -160,7 +171,7 @@ export const placeholderProtocols = [
         items: [
           'Usa medición estandarizada, manguito adecuado y reposo previo antes de tomar decisiones.',
           'Confirma con AMPA o MAPA si la situación clínica lo permite.',
-          'Clasifica las cifras junto al riesgo cardiovascular, comorbilidad y posible lesión de órgano diana.',
+          'Clasifica las cifras junto a comorbilidad y posible lesión de órgano diana.',
         ],
       },
       {
@@ -246,7 +257,7 @@ export const placeholderProtocols = [
         'Mala respuesta pese a triple terapia con adherencia y medición revisadas.',
       ],
       positiveTitle: 'Priorizar alarma, confirmación o escalada',
-      positiveBody: 'Si hay daño agudo, deriva urgente. Si no, confirma diagnóstico, estratifica riesgo e inicia o escala tratamiento con seguimiento de seguridad.',
+      positiveBody: 'Si hay daño agudo, deriva urgente. Si no, confirma diagnóstico, revisa comorbilidad e inicia o escala tratamiento con seguimiento de seguridad.',
       negativeTitle: 'Seguimiento estructurado',
       negativeBody: 'Mantén automedida, medidas coadyuvantes, revisión de adherencia y control programado antes de intensificar.',
       copyPrefix: 'HTA AP',
@@ -256,12 +267,13 @@ export const placeholderProtocols = [
       intro: 'Introduce cifras y contexto para decidir confirmación, derivación o escalada terapéutica.',
       copyPrefix: 'HTA AP',
       fields: [
-        { id: 'sbp', type: 'number', label: 'Presión sistólica', min: 70, max: 300, unit: 'mmHg' },
-        { id: 'dbp', type: 'number', label: 'Presión diastólica', min: 40, max: 180, unit: 'mmHg' },
+        { id: 'sbp', type: 'number', label: 'Presión sistólica', min: 70, max: 300, unit: 'mmHg', required: true },
+        { id: 'dbp', type: 'number', label: 'Presión diastólica', min: 40, max: 180, unit: 'mmHg', required: true },
         {
           id: 'confirmed',
           type: 'select',
           label: 'Confirmación fuera de consulta',
+          required: true,
           options: [
             { value: 'no', label: 'No confirmada con AMPA/MAPA' },
             { value: 'yes', label: 'Confirmada con AMPA/MAPA' },
@@ -311,7 +323,7 @@ export const placeholderProtocols = [
           any: ['highRisk', { id: 'confirmed', equals: 'yes' }],
           status: 'Tratar',
           title: 'Iniciar o escalar tratamiento estructurado',
-          body: 'La HTA confirmada o el riesgo alto justifican intervención activa y seguimiento de seguridad.',
+          body: 'La HTA confirmada o la comorbilidad relevante justifican intervención activa y seguimiento de seguridad.',
           actions: [
             'Aplicar medidas coadyuvantes.',
             'Elegir escalón farmacológico según perfil y tolerancia.',
@@ -319,6 +331,16 @@ export const placeholderProtocols = [
           ],
         },
       ],
+      incompleteOutcome: {
+        status: 'Datos',
+        title: 'Completa TA y confirmación diagnóstica',
+        body: 'La herramienta necesita cifras y saber si la HTA está confirmada por AMPA/MAPA para proponer conducta.',
+        actions: [
+          'Introducir presión sistólica y diastólica.',
+          'Indicar si existe confirmación fuera de consulta.',
+          'Marcar daño agudo, comorbilidad relevante o triple terapia si procede.',
+        ],
+      },
       defaultOutcome: {
         status: 'Confirmar',
         title: 'Confirmar diagnóstico antes de intensificar',
