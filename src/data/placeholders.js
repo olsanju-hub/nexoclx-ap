@@ -20,6 +20,13 @@ export const hypertensionSources = [
   'BNF/NICE. Doxazosin. https://bnf.nice.org.uk/drugs/doxazosin/',
 ];
 
+export const strokeSources = [
+  'AHA/ASA. 2026 Guideline for the Early Management of Patients With Acute Ischemic Stroke. https://www.ahajournals.org/doi/10.1161/STR.0000000000000513',
+  'NICE. Stroke and transient ischaemic attack in over 16s: diagnosis and initial management, NG128. https://www.nice.org.uk/guidance/ng128',
+  'Ministerio de Sanidad. Estrategia en Ictus del Sistema Nacional de Salud. Actualización 2024. https://www.sanidad.gob.es/areas/calidadAsistencial/estrategias/ictus/docs/Estrategia_en_Ictus_del_SNS._Actualizacion_2024_accesible.pdf',
+  'Comunidad de Madrid. Código Ictus. https://www.comunidad.madrid/salud/codigo-ictus',
+];
+
 export const placeholderProtocols = [
   {
     id: 'dolor-toracico',
@@ -100,7 +107,7 @@ export const placeholderProtocols = [
     },
     assessment: {
       title: 'Herramienta de actuación en AP',
-      intro: 'Introduce los datos mínimos para orientar derivación o manejo no urgente.',
+      intro: 'Orienta derivación urgente o manejo no urgente.',
       copyPrefix: 'Dolor torácico AP',
       fields: [
         { id: 'onsetMinutes', type: 'number', label: 'Minutos desde el inicio del episodio', min: 0, max: 10080, unit: 'min', required: true },
@@ -137,13 +144,9 @@ export const placeholderProtocols = [
       ],
       incompleteOutcome: {
         status: 'Datos',
-        title: 'Completa datos mínimos antes de decidir',
-        body: 'La derivación o el manejo ambulatorio dependen como mínimo de tiempo de inicio y ECG disponible/no disponible.',
-        actions: [
-          'Introducir tiempo desde inicio.',
-          'Indicar si el ECG está disponible, no disponible o alterado.',
-          'Marcar inestabilidad, dolor persistente o diferencial grave si aparecen.',
-        ],
+        title: 'Faltan datos obligatorios',
+        body: 'Completa los campos marcados para orientar derivación o manejo no urgente.',
+        actions: [],
       },
       defaultOutcome: {
         status: 'Seguimiento',
@@ -333,13 +336,9 @@ export const placeholderProtocols = [
       ],
       incompleteOutcome: {
         status: 'Datos',
-        title: 'Completa TA y confirmación diagnóstica',
-        body: 'La herramienta necesita cifras y saber si la HTA está confirmada por AMPA/MAPA para proponer conducta.',
-        actions: [
-          'Introducir presión sistólica y diastólica.',
-          'Indicar si existe confirmación fuera de consulta.',
-          'Marcar daño agudo, comorbilidad relevante o triple terapia si procede.',
-        ],
+        title: 'Faltan datos obligatorios',
+        body: 'Completa los campos marcados para orientar confirmación, derivación o escalada.',
+        actions: [],
       },
       defaultOutcome: {
         status: 'Confirmar',
@@ -353,5 +352,106 @@ export const placeholderProtocols = [
       },
     },
     sources: hypertensionSources,
+  },
+  {
+    id: 'acv',
+    title: 'ACV',
+    description: 'Sospecha de ictus en AP, alarmas y activación/derivación urgente.',
+    status: 'Herramienta clínica',
+    sections: [
+      {
+        step: '01',
+        title: 'Sospecha tiempo-dependiente',
+        body: 'El objetivo en AP es reconocer déficit neurológico brusco, fijar hora de inicio o última vez visto bien y no retrasar la transferencia.',
+        items: [
+          'Déficit facial, braquial, habla/lenguaje, visual, coordinación o sensibilidad de inicio brusco orienta a ictus hasta demostrar lo contrario.',
+          'Hipoglucemia, síncope, crisis epiléptica u otros imitadores no deben retrasar derivación si el déficit persiste o hay duda.',
+          'Registrar anticoagulación, situación basal, hora de inicio y teléfono de contacto facilita el circuito receptor.',
+        ],
+      },
+      {
+        step: '02',
+        title: 'Derivación',
+        body: 'Si hay sospecha de ictus activo, activar recurso urgente o código ictus según circuito local; AP no debe cerrar el episodio con observación prolongada.',
+        items: [
+          'Comunicar hora de inicio o última vez visto bien, déficit actual, glucemia si disponible, anticoagulantes y autonomía basal.',
+          'No administrar antiagregación o anticoagulación antes de descartar hemorragia intracraneal.',
+          'Si los síntomas han cedido, derivar para valoración urgente de AIT según circuito asistencial.',
+        ],
+      },
+    ],
+    tools: [
+      'Selector FAST/BEFAST y déficit neurológico brusco.',
+      'Panel de activación urgente o derivación por AIT.',
+      'Resumen copiable para transferencia asistencial.',
+    ],
+    assessment: {
+      title: 'Herramienta ACV en AP',
+      intro: 'Orienta sospecha de ictus y activación urgente.',
+      copyPrefix: 'ACV AP',
+      fields: [
+        {
+          id: 'onset',
+          type: 'select',
+          label: 'Inicio o última vez visto bien',
+          required: true,
+          options: [
+            { value: 'under-24', label: 'Menos de 24 h' },
+            { value: 'over-24', label: 'Más de 24 h' },
+            { value: 'unknown', label: 'Desconocido' },
+            { value: 'resolved', label: 'Síntomas resueltos' },
+          ],
+        },
+        { id: 'faceArmSpeech', type: 'checkbox', label: 'Asimetría facial, brazo caído o alteración del habla/lenguaje' },
+        { id: 'otherDeficit', type: 'checkbox', label: 'Déficit visual, coordinación, sensibilidad, fuerza o campo visual de inicio brusco' },
+        { id: 'decreasedConsciousness', type: 'checkbox', label: 'Disminución de conciencia, cefalea súbita intensa, vómitos o crisis' },
+        { id: 'persistentDeficit', type: 'checkbox', label: 'Déficit actual persistente' },
+        { id: 'anticoagulated', type: 'checkbox', label: 'Anticoagulación o trastorno hemorrágico conocido' },
+        { id: 'glucoseChecked', type: 'checkbox', label: 'Glucemia capilar realizada si está disponible' },
+      ],
+      outcomes: [
+        {
+          any: ['faceArmSpeech', 'otherDeficit', 'persistentDeficit', 'decreasedConsciousness'],
+          status: 'Activar',
+          tone: 'alert',
+          title: 'Sospecha de ictus: activar recurso urgente/código ictus',
+          body: 'Hay déficit neurológico brusco o dato de gravedad. La prioridad es traslado urgente y comunicación estructurada.',
+          actions: [
+            'Activar 061 o circuito local de código ictus.',
+            'Comunicar hora de inicio o última vez visto bien, déficit actual, situación basal, anticoagulación y glucemia si existe.',
+            'No administrar antiagregantes ni anticoagulantes antes de imagen cerebral.',
+          ],
+        },
+        {
+          any: [{ id: 'onset', equals: 'resolved' }],
+          status: 'AIT',
+          tone: 'alert',
+          title: 'Síntomas resueltos: valoración urgente por posible AIT',
+          body: 'La resolución clínica no excluye riesgo precoz. Requiere derivación urgente según circuito de ictus/AIT.',
+          actions: [
+            'Registrar hora de inicio y resolución.',
+            'Derivar a evaluación urgente según circuito local.',
+            'No cerrar como episodio banal sin valoración especializada.',
+          ],
+        },
+      ],
+      incompleteOutcome: {
+        status: 'Datos',
+        title: 'Faltan datos obligatorios',
+        body: 'Completa el inicio o última vez visto bien para orientar activación.',
+        actions: [],
+      },
+      defaultOutcome: {
+        status: 'Reevaluar',
+        title: 'Sin datos de ictus activo registrados',
+        body: 'Si la clínica no es compatible con déficit neurológico brusco, reevaluar diagnóstico diferencial y seguridad del plan.',
+        actions: [
+          'Revisar constantes, glucemia si procede y exploración neurológica.',
+          'Dar instrucciones de reconsulta urgente si aparece déficit focal, habla alterada, pérdida visual, inestabilidad brusca o cefalea súbita intensa.',
+          'Derivar si persiste duda clínica o riesgo vascular relevante.',
+        ],
+      },
+    },
+    sources: strokeSources,
   },
 ];
