@@ -67,4 +67,9 @@ export const htaSupportSources = [
     url: 'https://cima.aemps.es/cima/publico/home.html',
     supports: 'Precauciones y seguridad farmacologica.',
   },
+  {
+    label: 'ESC. 2021 Guidelines on cardiovascular disease prevention in clinical practice.',
+    url: 'https://eas-society.org/wp-content/uploads/2022/05/2021-Prevention-Guidelines.pdf',
+    supports: 'Categorias de riesgo SCORE2/SCORE2-OP estratificadas por edad.',
+  },
 ];

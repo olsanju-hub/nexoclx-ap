@@ -32,15 +32,17 @@ const routeTitles = {
 export default function App() {
   const [route, setRoute] = useState(() => window.location.hash.replace('#/', '') || routes.home);
   const [selectedId, setSelectedId] = useState(null);
+  const [routePayload, setRoutePayload] = useState(null);
 
   const currentProtocol = useMemo(
     () => placeholderProtocols.find((item) => item.id === selectedId) ?? placeholderProtocols[0],
     [selectedId],
   );
 
-  const navigate = (nextRoute, id = null) => {
+  const navigate = (nextRoute, id = null, payload = null) => {
     setRoute(nextRoute);
     setSelectedId(id);
+    setRoutePayload(payload);
     window.history.replaceState(null, '', `#/${nextRoute}`);
     window.scrollTo({ top: 0, behavior: 'instant' });
   };
@@ -49,6 +51,7 @@ export default function App() {
     const onHashChange = () => {
       setRoute(window.location.hash.replace('#/', '') || routes.home);
       setSelectedId(null);
+      setRoutePayload(null);
     };
     window.addEventListener('hashchange', onHashChange);
     return () => window.removeEventListener('hashchange', onHashChange);
@@ -75,8 +78,8 @@ export default function App() {
       {route === routes.protocols && <Protocols protocols={placeholderProtocols} onOpen={openProtocol} />}
       {route === routes.protocolDetail && <ProtocolDetail protocol={currentProtocol} onBack={() => navigate(routes.protocols)} />}
       {route === routes.tools && <Tools onOpen={(id) => navigate(routes.htaSupportTool, id)} />}
-      {route === routes.htaSupportTool && <HtaSupportTool toolId={selectedId} onBack={() => navigate(routes.tools)} />}
-      {route === routes.htaTool && <HtaTool onBack={() => navigate(routes.protocols)} onOpenTool={(id) => navigate(routes.htaSupportTool, id)} />}
+      {route === routes.htaSupportTool && <HtaSupportTool toolId={selectedId} onBack={() => navigate(routes.tools)} onOpenHta={(payload) => navigate(routes.htaTool, 'hta', payload)} />}
+      {route === routes.htaTool && <HtaTool onBack={() => navigate(routes.protocols)} onOpenTool={(id) => navigate(routes.htaSupportTool, id)} incomingContext={routePayload} />}
       {route === routes.procedures && <Procedures />}
       {route === routes.circuits && <Circuits onOpen={() => navigate(routes.circuitDetail)} />}
       {route === routes.circuitDetail && <CircuitDetail onBack={() => navigate(routes.circuits)} />}

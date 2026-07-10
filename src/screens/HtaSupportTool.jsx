@@ -65,6 +65,49 @@ const classifyAcr = (acrMgG) => {
   return 'A3';
 };
 
+const classifyScore2Risk = (age, score) => {
+  const ageNumber = Number(age);
+  const scoreNumber = Number(score);
+  if (!Number.isFinite(ageNumber) || !Number.isFinite(scoreNumber) || scoreNumber < 0) {
+    return {
+      category: 'Sin clasificar',
+      key: 'none',
+      action: 'Introduce edad y porcentaje SCORE2/SCORE2-OP obtenido con tabla o calculadora oficial.',
+    };
+  }
+  if (ageNumber < 40) {
+    return {
+      category: 'Fuera de rango SCORE2 habitual',
+      key: 'none',
+      action: 'No usar SCORE2 para decidir intensidad. Valorar riesgo clinico, factores familiares y seguimiento preventivo.',
+    };
+  }
+  const thresholds = ageNumber < 50
+    ? { high: 2.5, veryHigh: 7.5 }
+    : ageNumber < 70
+      ? { high: 5, veryHigh: 10 }
+      : { high: 7.5, veryHigh: 15 };
+  if (scoreNumber >= thresholds.veryHigh) {
+    return {
+      category: 'Riesgo muy alto',
+      key: 'veryHigh',
+      action: 'Priorizar control intensivo de factores modificables, confirmar objetivo de TA y revisar indicacion de tratamiento farmacologico en el protocolo HTA.',
+    };
+  }
+  if (scoreNumber >= thresholds.high) {
+    return {
+      category: 'Riesgo alto',
+      key: 'high',
+      action: 'Usar el riesgo para adelantar tratamiento farmacologico si TA elevada/HTA confirmada y reforzar intervencion global.',
+    };
+  }
+  return {
+    category: 'Riesgo bajo-moderado',
+    key: 'moderate',
+    action: 'Priorizar confirmacion de TA, medidas no farmacologicas y seguimiento segun cifras y tolerancia.',
+  };
+};
+
 function Field({ label, children }) {
   return (
     <label className="hta-field">
@@ -184,27 +227,66 @@ function MapaTool() {
   );
 }
 
-function Score2Tool() {
+function Score2Tool({ onOpenHta }) {
+  const [values, setValues] = useState({ age: '', score: '', sbp: '', dbp: '', smoker: 'unknown', diabetes: false, ckd: false, cvd: false });
+  const scoreResult = classifyScore2Risk(values.age, values.score);
+  const update = (key, value) => setValues((current) => ({ ...current, [key]: value }));
+  const openHta = () => {
+    onOpenHta?.({
+      autoCalculate: Boolean(values.sbp || values.dbp),
+      values: {
+        sbp: values.sbp,
+        dbp: values.dbp,
+        situation: values.diabetes ? 'diabetes' : values.ckd ? 'ckd' : values.cvd ? 'cvd' : 'new',
+        diabetes: values.diabetes,
+        ckd: values.ckd,
+        cvd: values.cvd,
+        riskCategory: scoreResult.key,
+        transferNote: `Datos desde SCORE2: ${scoreResult.category}${values.score ? ` (${values.score}%)` : ''}.`,
+      },
+    });
+  };
+
   return (
     <section className="hta-grid hta-main-grid">
       <div className="hta-card">
         <h2>SCORE2 / SCORE2-OP</h2>
-        <div className="hta-result-row">
-          <span>Datos necesarios</span>
-          <p>Edad, sexo, tabaquismo, PAS, colesterol no-HDL y region de riesgo validada.</p>
+        <div className="hta-two-col">
+          <Field label="Edad">
+            <input inputMode="numeric" type="number" value={values.age} onChange={(event) => update('age', event.target.value)} />
+          </Field>
+          <Field label="SCORE2 / OP %">
+            <input inputMode="decimal" type="number" value={values.score} onChange={(event) => update('score', event.target.value)} placeholder="%" />
+          </Field>
+          <Field label="PAS para HTA">
+            <input inputMode="numeric" type="number" value={values.sbp} onChange={(event) => update('sbp', event.target.value)} />
+          </Field>
+          <Field label="PAD para HTA">
+            <input inputMode="numeric" type="number" value={values.dbp} onChange={(event) => update('dbp', event.target.value)} />
+          </Field>
         </div>
-        <div className="hta-result-row">
-          <span>Estado</span>
-          <p>No calcula: faltan tablas SCORE2/SCORE2-OP oficiales implementadas en la app.</p>
+        <div className="hta-check-grid hta-compact-checks">
+          {[
+            ['diabetes', 'Diabetes'],
+            ['ckd', 'ERC'],
+            ['cvd', 'ECV establecida'],
+          ].map(([id, label]) => (
+            <label key={id}>
+              <input type="checkbox" checked={values[id]} onChange={(event) => update(id, event.target.checked)} />
+              {label}
+            </label>
+          ))}
         </div>
+        <button className="hta-primary-action" type="button" onClick={openHta}>Abrir protocolo HTA con estos datos</button>
       </div>
       <ToolResult
         title="Riesgo CV"
         rows={[
-          { label: 'Resultado', value: 'No calculado.' },
-          { label: 'Qué hacer con el resultado', value: 'No usar esta pantalla para estimar riesgo. Hasta implementar tablas validadas, decidir intensidad con riesgo clinico ya conocido y fuentes oficiales externas.' },
-          { label: 'Seguridad', value: 'No se usa formula aproximada ni tabla incompleta.' },
-          { label: 'Fuente', value: 'Requiere implementacion validada de SCORE2/SCORE2-OP.' },
+          { label: 'Resultado', value: scoreResult.category },
+          { label: 'Qué hacer con el resultado', value: scoreResult.action },
+          { label: 'Tratamiento HTA', value: scoreResult.key === 'high' || scoreResult.key === 'veryHigh' ? 'Si HTA o TA elevada se confirma, usar el protocolo HTA con riesgo alto para decidir inicio/intensificacion.' : 'Si no hay alto riesgo, confirmar TA y evitar intensificar sin medias validas.' },
+          { label: 'Datos que pasan a HTA', value: 'PAS, PAD, diabetes, ERC, ECV establecida y categoria de riesgo.' },
+          { label: 'Fuente', value: 'ESC 2021 Prevention: umbrales SCORE2/SCORE2-OP por edad.' },
         ]}
       />
     </section>
@@ -330,13 +412,13 @@ function LabControlTool() {
   );
 }
 
-export function HtaSupportTool({ toolId, onBack }) {
+export function HtaSupportTool({ toolId, onBack, onOpenHta }) {
   const [showBibliography, setShowBibliography] = useState(false);
   const tool = htaSupportTools.find((item) => item.id === toolId) ?? htaSupportTools[0];
   const content = {
     ampa: <AmpaTool />,
     mapa: <MapaTool />,
-    score2: <Score2Tool />,
+    score2: <Score2Tool onOpenHta={onOpenHta} />,
     egfr: <EgfrTool />,
     acr: <AcrTool />,
     'lab-control': <LabControlTool />,

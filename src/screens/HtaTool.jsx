@@ -22,6 +22,8 @@ const initialValues = {
   bradycardia: false,
   adherenceKnown: false,
   drugIntolerance: false,
+  riskCategory: 'none',
+  transferNote: '',
 };
 
 const situations = {
@@ -65,6 +67,13 @@ const problems = {
   intolerance: 'Intolerancia',
 };
 
+const riskCategories = {
+  none: 'No aportado',
+  moderate: 'Riesgo bajo-moderado',
+  high: 'Riesgo alto',
+  veryHigh: 'Riesgo muy alto',
+};
+
 function toNumber(value) {
   const parsed = Number(value);
   return Number.isFinite(parsed) ? parsed : null;
@@ -89,7 +98,7 @@ function buildRecommendation(values, calculated) {
   const dbp = toNumber(values.dbp);
   const classification = classifyBp(sbp, dbp);
   const isComplete = sbp !== null && dbp !== null;
-  const highRisk = values.diabetes || values.ckd || values.cvd || values.situation === 'diabetes' || values.situation === 'ckd' || values.situation === 'cvd';
+  const highRisk = values.diabetes || values.ckd || values.cvd || values.situation === 'diabetes' || values.situation === 'ckd' || values.situation === 'cvd' || values.riskCategory === 'high' || values.riskCategory === 'veryHigh';
   const frail = values.frailty || values.ageAdvanced || values.falls || values.situation === 'frail';
   const ram = findAdverse(values.problem);
 
@@ -320,9 +329,9 @@ function BibliographyModal({ onClose }) {
   );
 }
 
-export function HtaTool({ onBack, onOpenTool }) {
-  const [values, setValues] = useState(initialValues);
-  const [calculated, setCalculated] = useState(false);
+export function HtaTool({ onBack, onOpenTool, incomingContext }) {
+  const [values, setValues] = useState(() => ({ ...initialValues, ...(incomingContext?.values ?? {}) }));
+  const [calculated, setCalculated] = useState(Boolean(incomingContext?.autoCalculate));
   const [showBibliography, setShowBibliography] = useState(false);
   const recommendation = useMemo(() => buildRecommendation(values, calculated), [calculated, values]);
 
@@ -364,6 +373,12 @@ export function HtaTool({ onBack, onOpenTool }) {
               {Object.entries(problems).map(([value, label]) => <option value={value} key={value}>{label}</option>)}
             </select>
           </Field>
+          <Field label="Riesgo CV">
+            <select value={values.riskCategory} onChange={(event) => updateValue('riskCategory', event.target.value)}>
+              {Object.entries(riskCategories).map(([value, label]) => <option value={value} key={value}>{label}</option>)}
+            </select>
+          </Field>
+          {values.transferNote && <p className="hta-transfer-note">{values.transferNote}</p>}
           <div className="hta-check-grid hta-compact-checks">
             {[
               ['diabetes', 'Diabetes'],
