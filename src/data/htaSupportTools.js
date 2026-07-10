@@ -14,8 +14,8 @@ export const htaSupportTools = [
   {
     id: 'score2',
     title: 'SCORE2 / SCORE2-OP',
-    description: 'Riesgo CV no calculado hasta cargar tablas validadas.',
-    status: 'No calculable',
+    description: 'Interpreta un porcentaje SCORE2/SCORE2-OP validado y lo conecta con HTA.',
+    status: 'Interpretador',
   },
   {
     id: 'egfr',
