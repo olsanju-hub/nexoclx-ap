@@ -1525,20 +1525,6 @@ h2 {
   font-weight: 800;
 }
 
-.hta-support-source {
-  border: 1px solid color-mix(in srgb, var(--color-line) 88%, transparent);
-  border-radius: 1rem;
-  background: var(--color-surface);
-  padding: 0.8rem 1rem;
-}
-
-.hta-support-source summary {
-  cursor: pointer;
-  color: var(--color-muted);
-  font-size: 0.82rem;
-  font-weight: 780;
-}
-
 @media (min-width: 820px) {
   .hta-grid {
     grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);

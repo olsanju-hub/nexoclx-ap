@@ -14,8 +14,8 @@ export const htaSupportTools = [
   {
     id: 'score2',
     title: 'SCORE2 / SCORE2-OP',
-    description: 'Slot estructural para riesgo CV; no calcula sin tablas validadas.',
-    status: 'Pendiente',
+    description: 'Riesgo CV no calculado hasta cargar tablas validadas.',
+    status: 'No calculable',
   },
   {
     id: 'egfr',

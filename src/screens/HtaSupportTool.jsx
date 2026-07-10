@@ -89,10 +89,14 @@ function ToolResult({ title, rows }) {
   );
 }
 
-function SourceNote() {
+function BibliographyModal({ onClose }) {
   return (
-    <details className="hta-support-source">
-      <summary>Fuente</summary>
+    <div className="hta-modal-backdrop" role="presentation">
+      <section className="hta-modal" role="dialog" aria-modal="true" aria-labelledby="hta-support-bibliography-title">
+        <div className="hta-modal-header">
+          <h2 id="hta-support-bibliography-title">Bibliografía</h2>
+          <button type="button" onClick={onClose}>Cerrar</button>
+        </div>
       <div className="hta-source-list">
         {htaSupportSources.map((source) => (
           <article key={source.label}>
@@ -102,7 +106,8 @@ function SourceNote() {
           </article>
         ))}
       </div>
-    </details>
+      </section>
+    </div>
   );
 }
 
@@ -139,7 +144,8 @@ function AmpaTool() {
           { label: 'Medidas usadas', value: result.count > 0 ? `${result.count} pares` : 'Sin pares completos.' },
           { label: 'Media', value: result.sbp && result.dbp ? `${result.sbp}/${result.dbp} mmHg` : 'Introduce PAS y PAD.' },
           { label: 'Interpretacion', value: result.interpretation },
-          { label: 'Conducta', value: 'Usar el promedio para confirmar diagnostico o control; no decidir por una toma aislada.' },
+          { label: 'Qué hacer con el resultado', value: 'Si la media es >=135/85, usarla para confirmar HTA o no control y volver al protocolo HTA. Si es inferior, evitar intensificar solo por toma aislada.' },
+          { label: 'Fuente', value: 'NICE NG136.' },
         ]}
       />
     </section>
@@ -170,7 +176,8 @@ function MapaTool() {
         rows={[
           { label: 'Resultado', value: interpretation },
           { label: 'Confirmacion', value: 'NICE usa la media diurna ABPM >=135/85 mmHg para confirmar HTA con clinica >=140/90.' },
-          { label: 'Conducta', value: 'Integrar con clinica, tecnica y objetivo terapeutico del protocolo HTA.' },
+          { label: 'Qué hacer con el resultado', value: 'Si la media diurna es >=135/85, apoya diagnostico/no control. Si nocturna o 24 h estan altas, revisar patron y riesgo antes de intensificar.' },
+          { label: 'Fuente', value: 'NICE NG136.' },
         ]}
       />
     </section>
@@ -179,20 +186,27 @@ function MapaTool() {
 
 function Score2Tool() {
   return (
-    <section className="hta-card">
-      <h2>SCORE2 / SCORE2-OP</h2>
-      <div className="hta-result-row">
-        <span>Estado</span>
-        <p>Pendiente de implementacion validada.</p>
+    <section className="hta-grid hta-main-grid">
+      <div className="hta-card">
+        <h2>SCORE2 / SCORE2-OP</h2>
+        <div className="hta-result-row">
+          <span>Datos necesarios</span>
+          <p>Edad, sexo, tabaquismo, PAS, colesterol no-HDL y region de riesgo validada.</p>
+        </div>
+        <div className="hta-result-row">
+          <span>Estado</span>
+          <p>No calcula: faltan tablas SCORE2/SCORE2-OP oficiales implementadas en la app.</p>
+        </div>
       </div>
-      <div className="hta-result-row">
-        <span>Motivo</span>
-        <p>No se incluye una formula simplificada ni tablas incompletas. Requiere matriz SCORE2/SCORE2-OP validada y version regional aplicable.</p>
-      </div>
-      <div className="hta-result-row">
-        <span>Uso actual</span>
-        <p>Slot estructural para enlazar riesgo cardiovascular cuando se implemente con datos oficiales.</p>
-      </div>
+      <ToolResult
+        title="Riesgo CV"
+        rows={[
+          { label: 'Resultado', value: 'No calculado.' },
+          { label: 'Qué hacer con el resultado', value: 'No usar esta pantalla para estimar riesgo. Hasta implementar tablas validadas, decidir intensidad con riesgo clinico ya conocido y fuentes oficiales externas.' },
+          { label: 'Seguridad', value: 'No se usa formula aproximada ni tabla incompleta.' },
+          { label: 'Fuente', value: 'Requiere implementacion validada de SCORE2/SCORE2-OP.' },
+        ]}
+      />
     </section>
   );
 }
@@ -229,7 +243,8 @@ function EgfrTool() {
         rows={[
           { label: 'Resultado', value: rounded ? `${rounded} mL/min/1,73 m2` : 'Introduce edad y creatinina validas.' },
           { label: 'Categoria', value: classifyGfr(egfr) },
-          { label: 'Conducta', value: 'Usar para seguridad de SRAA, diureticos y espironolactona junto a potasio y contexto clinico.' },
+          { label: 'Qué hacer con el resultado', value: 'Usar para seguridad de IECA/ARA-II, diureticos y espironolactona junto a potasio y contexto clinico.' },
+          { label: 'Fuente', value: 'NKF CKD-EPI 2021 / clasificacion CKD.' },
         ]}
       />
     </section>
@@ -260,7 +275,8 @@ function AcrTool() {
         rows={[
           { label: 'ACR', value: acrMgG === null ? 'Introduce albumina y creatinina.' : `${round(acrMgG, 1)} mg/g (${round(acrMmol, 1)} mg/mmol)` },
           { label: 'Categoria', value: classifyAcr(acrMgG) },
-          { label: 'Conducta', value: 'Integrar con eGFR, diabetes/ERC y decision de SRAA/seguimiento.' },
+          { label: 'Qué hacer con el resultado', value: 'Integrar con eGFR, diabetes/ERC y decision de SRAA, seguimiento renal y riesgo cardiovascular.' },
+          { label: 'Fuente', value: 'NKF categorias A1-A3.' },
         ]}
       />
     </section>
@@ -305,7 +321,7 @@ function LabControlTool() {
         title="Control analitico"
         rows={[
           { label: 'Creatinina', value: creatinineRise === null ? 'Sin comparacion.' : `${round(creatinineRise, 1)}% respecto a basal.` },
-          { label: 'Conducta', value: action },
+          { label: 'Qué hacer con el resultado', value: action },
           { label: 'Comprobar', value: 'Volemia, AINE, suplementos de potasio, sintomas, ECG si hiperpotasemia relevante.' },
           { label: 'Fuente', value: 'NICE CKD / seguridad CIMA / practica conservadora de monitorizacion.' },
         ]}
@@ -315,6 +331,7 @@ function LabControlTool() {
 }
 
 export function HtaSupportTool({ toolId, onBack }) {
+  const [showBibliography, setShowBibliography] = useState(false);
   const tool = htaSupportTools.find((item) => item.id === toolId) ?? htaSupportTools[0];
   const content = {
     ampa: <AmpaTool />,
@@ -327,9 +344,12 @@ export function HtaSupportTool({ toolId, onBack }) {
 
   return (
     <div className="screen detail-screen hta-tool">
-      <DetailHeader title={tool.title} subtitle={tool.description} onBack={onBack} />
+      <div className="hta-protocol-header">
+        <DetailHeader title={tool.title} subtitle={tool.description} onBack={onBack} />
+        <button className="hta-bibliography-button" type="button" onClick={() => setShowBibliography(true)} aria-label="Abrir bibliografía">B</button>
+      </div>
       {content}
-      <SourceNote />
+      {showBibliography && <BibliographyModal onClose={() => setShowBibliography(false)} />}
     </div>
   );
 }
