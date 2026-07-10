@@ -52,7 +52,13 @@ export default function App() {
     return () => window.removeEventListener('hashchange', onHashChange);
   }, []);
 
-  const openProtocol = (id) => navigate(routes.protocolDetail, id);
+  const openProtocol = (id) => {
+    if (id === 'hta') {
+      navigate(routes.htaTool, id);
+      return;
+    }
+    navigate(routes.protocolDetail, id);
+  };
 
   return (
     <AppShell
@@ -66,8 +72,8 @@ export default function App() {
       {route === routes.home && <Home app={appConfig} sections={primarySections} onNavigate={navigate} />}
       {route === routes.protocols && <Protocols protocols={placeholderProtocols} onOpen={openProtocol} />}
       {route === routes.protocolDetail && <ProtocolDetail protocol={currentProtocol} onBack={() => navigate(routes.protocols)} />}
-      {route === routes.tools && <Tools onOpenHta={() => navigate(routes.htaTool)} />}
-      {route === routes.htaTool && <HtaTool onBack={() => navigate(routes.tools)} />}
+      {route === routes.tools && <Tools />}
+      {route === routes.htaTool && <HtaTool onBack={() => navigate(routes.protocols)} />}
       {route === routes.procedures && <Procedures />}
       {route === routes.circuits && <Circuits onOpen={() => navigate(routes.circuitDetail)} />}
       {route === routes.circuitDetail && <CircuitDetail onBack={() => navigate(routes.circuits)} />}

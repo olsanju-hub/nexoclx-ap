@@ -1,21 +1,13 @@
-import { CompactList } from '../components/lists/CompactList.jsx';
-import { ListRow } from '../components/lists/ListRow.jsx';
+import { EmptyClinicalState } from '../components/feedback/EmptyClinicalState.jsx';
 
-export function Tools({ onOpenHta }) {
+export function Tools() {
   return (
     <div className="screen">
       <div className="section-heading">
         <h1>Herramientas</h1>
-        <p>Herramientas clínicas de Atención Primaria.</p>
+        <p>Calculadoras, escalas y utilidades transversales.</p>
       </div>
-      <CompactList label="Listado de herramientas">
-        <ListRow
-          title="HTA"
-          description="Evaluar cifras, decidir conducta, escalar tratamiento y consultar dosis."
-          meta="AP adulta"
-          onClick={onOpenHta}
-        />
-      </CompactList>
+      <EmptyClinicalState text="No hay herramientas transversales cargadas." />
     </div>
   );
 }

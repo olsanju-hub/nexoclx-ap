@@ -5,24 +5,33 @@ import { adverseEvents, drugGroups, htaSources, treatmentSteps } from '../data/h
 const initialValues = {
   sbp: '',
   dbp: '',
-  context: 'new',
+  situation: 'new',
   currentTreatment: 'none',
-  emergencySymptoms: false,
-  pregnancy: false,
+  problem: 'none',
+  diabetes: false,
+  ckd: false,
+  cvd: false,
   frailty: false,
-  diabetesCkd: false,
+  falls: false,
+  hyperkalemia: false,
+  renalDrop: false,
+  gout: false,
+  asthmaCopd: false,
+  bradycardia: false,
 };
 
-const contextLabels = {
+const situations = {
   new: 'Nuevo / no tratado',
-  treated: 'Ya tratado',
+  treated: 'Diagnosticado y tratado',
+  uncontrolled: 'Mal control pese a tratamiento',
   frail: 'Anciano o frágil',
-  diabetesCkd: 'Diabetes o ERC',
-  emergency: 'Sospecha de urgencia/emergencia',
+  diabetes: 'Diabetes',
+  ckd: 'ERC',
+  emergency: 'Sospecha urgencia/emergencia',
   pregnancy: 'Embarazo',
 };
 
-const treatmentLabels = {
+const treatments = {
   none: 'Ninguno',
   ace: 'IECA',
   arb: 'ARA-II',
@@ -31,7 +40,23 @@ const treatmentLabels = {
   dual: 'Doble terapia',
   triple: 'Triple terapia',
   spironolactone: 'Espironolactona',
-  other: 'Otros',
+  beta: 'Betabloqueante',
+  other: 'Otro',
+};
+
+const problems = {
+  none: 'Sin problema específico',
+  uncontrolled: 'No controla',
+  'ace-cough': 'Tos',
+  'ccb-edema': 'Edema maleolar',
+  hyperkalemia: 'Hiperpotasemia',
+  'renal-drop': 'Deterioro función renal',
+  hyponatremia: 'Hiponatremia',
+  hypokalemia: 'Hipopotasemia',
+  'symptomatic-hypotension': 'Hipotensión sintomática',
+  'beta-brady': 'Bradicardia',
+  adherence: 'Mala adherencia',
+  intolerance: 'Intolerancia',
 };
 
 function toNumber(value) {
@@ -40,213 +65,212 @@ function toNumber(value) {
 }
 
 function classifyBp(sbp, dbp) {
-  if (sbp === null || dbp === null) {
-    return {
-      label: 'Pendiente',
-      severity: 'Datos incompletos',
-      tone: 'neutral',
-      needsConfirmation: true,
-    };
-  }
-
-  if (sbp >= 180 || dbp >= 110) {
-    return {
-      label: 'HTA severa',
-      severity: 'Alta',
-      tone: 'alert',
-      needsConfirmation: false,
-    };
-  }
-  if (sbp >= 160 || dbp >= 100) {
-    return {
-      label: 'HTA grado 2',
-      severity: 'Alta',
-      tone: 'alert',
-      needsConfirmation: true,
-    };
-  }
-  if (sbp >= 140 || dbp >= 90) {
-    return {
-      label: 'HTA grado 1',
-      severity: 'Moderada',
-      tone: 'warning',
-      needsConfirmation: true,
-    };
-  }
-  if (sbp >= 120 || dbp >= 70) {
-    return {
-      label: 'Presión arterial elevada',
-      severity: 'Baja-intermedia',
-      tone: 'warning',
-      needsConfirmation: true,
-    };
-  }
-
-  return {
-    label: 'TA no elevada',
-    severity: 'Baja',
-    tone: 'ok',
-    needsConfirmation: false,
-  };
+  if (sbp === null || dbp === null) return { label: 'Pendiente', severity: 'No clasificada', tone: 'neutral' };
+  if (sbp >= 180 || dbp >= 110) return { label: 'HTA severa', severity: 'Alta', tone: 'alert' };
+  if (sbp >= 160 || dbp >= 100) return { label: 'HTA grado 2', severity: 'Alta', tone: 'alert' };
+  if (sbp >= 140 || dbp >= 90) return { label: 'HTA grado 1', severity: 'Moderada', tone: 'warning' };
+  if (sbp >= 120 || dbp >= 70) return { label: 'TA elevada', severity: 'Baja-intermedia', tone: 'warning' };
+  return { label: 'TA no elevada', severity: 'Baja', tone: 'ok' };
 }
 
-function buildRecommendation(values) {
+function findAdverse(problem) {
+  if (problem === 'intolerance') return adverseEvents.find((event) => event.id === 'adherence');
+  return adverseEvents.find((event) => event.id === problem);
+}
+
+function buildRecommendation(values, calculated) {
   const sbp = toNumber(values.sbp);
   const dbp = toNumber(values.dbp);
   const classification = classifyBp(sbp, dbp);
   const isComplete = sbp !== null && dbp !== null;
-  const highRiskContext = values.context === 'diabetesCkd' || values.diabetesCkd;
-  const frailContext = values.context === 'frail' || values.frailty;
-  const emergencyContext = values.context === 'emergency' || values.emergencySymptoms;
-  const pregnancyContext = values.context === 'pregnancy' || values.pregnancy;
-  const alreadyTreated = values.context === 'treated' || values.currentTreatment !== 'none';
+  const highRisk = values.diabetes || values.ckd || values.cvd || values.situation === 'diabetes' || values.situation === 'ckd';
+  const frail = values.frailty || values.falls || values.situation === 'frail';
+  const ram = findAdverse(values.problem);
+
+  if (!calculated) {
+    return {
+      classification,
+      title: 'Introduce datos y calcula',
+      objective: 'Pendiente',
+      now: 'Completa cifras, contexto, antecedentes y tratamiento actual.',
+      treatment: 'Pendiente.',
+      dose: 'Pendiente.',
+      alternative: 'Pendiente.',
+      check: 'PAS, PAD, situación, antecedentes y tratamiento.',
+      followUp: 'Pendiente.',
+      escalate: 'Pendiente.',
+      refer: 'Urgencias si hay clínica de daño agudo.',
+      source: 'Ver B.',
+    };
+  }
 
   if (!isComplete) {
     return {
       classification,
-      title: 'Introduce PAS y PAD',
-      risk: 'No clasificado',
-      now: 'Completa cifras de TA antes de decidir.',
-      treatment: 'No iniciar ni intensificar solo con datos incompletos.',
-      dose: 'Sin dosis hasta clasificar.',
-      alternative: 'Repetir medición con técnica correcta.',
-      followUp: 'Registrar varias tomas si la situación clínica lo permite.',
+      title: 'Faltan PAS/PAD',
+      objective: 'No decidir sin cifras.',
+      now: 'Repetir medición correcta.',
+      treatment: 'No iniciar ni intensificar con datos incompletos.',
+      dose: 'No aplica.',
+      alternative: 'AMPA/MAPA si procede.',
+      check: 'Técnica, manguito y varias tomas.',
+      followUp: 'Registrar cifras válidas.',
       escalate: 'No aplica.',
-      refer: 'Urgencias si hay síntomas de daño agudo aunque falten cifras completas.',
+      refer: 'Urgencias si síntomas de daño agudo.',
+      source: 'NICE NG136.',
     };
   }
 
-  if (pregnancyContext) {
+  if (values.situation === 'pregnancy') {
     return {
       classification,
-      title: 'Embarazo: ruta no aplicable',
-      risk: 'Exclusión de esta herramienta AP adulta general',
-      now: 'No usar esta herramienta para manejo de HTA en embarazo.',
-      treatment: 'No sugerir IECA/ARA-II. Derivar a ruta específica de embarazo/obstetricia.',
-      dose: 'No aplica en esta herramienta.',
-      alternative: 'Confirmar TA y contactar circuito obstétrico según contexto.',
-      followUp: 'Seguimiento por circuito específico.',
-      escalate: 'Cualquier sospecha de preeclampsia o clínica de alarma requiere valoración urgente.',
-      refer: 'Urgencias/obstetricia si cefalea intensa, alteración visual, epigastralgia, disnea, edema brusco o TA severa.',
+      title: 'Embarazo: protocolo no aplicable',
+      objective: 'Ruta específica obstétrica.',
+      now: 'No usar este protocolo AP adulto general.',
+      treatment: 'No IECA/ARA-II.',
+      dose: 'No aplica.',
+      alternative: 'Circuito de embarazo/obstetricia.',
+      check: 'Síntomas de preeclampsia y TA repetida.',
+      followUp: 'Según circuito obstétrico.',
+      escalate: 'Si clínica de alarma.',
+      refer: 'Urgencias/obstetricia si cefalea, visión, epigastralgia, disnea o TA severa.',
+      source: 'Exclusión de seguridad.',
     };
   }
 
-  if (emergencyContext || (classification.label === 'HTA severa' && values.emergencySymptoms)) {
+  if (values.situation === 'emergency' || (classification.label === 'HTA severa' && values.problem !== 'none')) {
     return {
       classification,
       title: 'Descartar emergencia hipertensiva',
-      risk: 'Alta',
-      now: 'Buscar daño agudo de órgano diana y derivar a urgencias si hay clínica compatible.',
-      treatment: 'No buscar descenso brusco ambulatorio si hay sospecha de emergencia.',
-      dose: 'Sin pauta oral de AP como sustituto de valoración urgente.',
-      alternative: 'Monitorizar, repetir TA y documentar síntomas mientras se organiza derivación.',
-      followUp: 'Reevaluación inmediata según estabilidad.',
-      escalate: 'Activar urgencias si dolor torácico, disnea, focalidad, confusión, alteración visual, síncope o dolor dorsal brusco.',
-      refer: 'Urgencias si TA severa con síntomas o cualquier dato de daño agudo.',
+      objective: 'No descenso brusco ambulatorio.',
+      now: 'Buscar daño agudo y derivar si clínica compatible.',
+      treatment: 'No sustituir urgencias por pauta oral.',
+      dose: 'No iniciar dosis de rescate en AP.',
+      alternative: 'Repetir TA, monitorizar y documentar.',
+      check: 'Dolor torácico, disnea, focalidad, confusión, visión, síncope, dolor dorsal.',
+      followUp: 'Inmediato según estabilidad.',
+      escalate: 'Cualquier dato de daño agudo.',
+      refer: 'Urgencias.',
+      source: 'ESC 2024 / NICE NG136.',
+    };
+  }
+
+  if (ram) {
+    return {
+      classification,
+      title: ram.label,
+      objective: 'Mantener control sin perpetuar RAM.',
+      now: ram.action,
+      treatment: ram.suspicion,
+      dose: 'Ajustar según familia alternativa y TA.',
+      alternative: ram.alternative,
+      check: ram.check,
+      followUp: ram.followUp,
+      escalate: 'Si persiste no control o RAM limita tratamiento.',
+      refer: ram.urgent,
+      source: 'CIMA/AEMPS y guías HTA.',
     };
   }
 
   if (classification.label === 'TA no elevada') {
     return {
       classification,
-      title: 'Sin HTA con las cifras introducidas',
-      risk: 'Baja',
-      now: 'Mantener controles periódicos según riesgo global.',
-      treatment: 'No iniciar antihipertensivo por estas cifras.',
+      title: 'Sin HTA con estas cifras',
+      objective: 'Mantener control periódico.',
+      now: 'No iniciar antihipertensivo por estas cifras.',
+      treatment: 'Medidas saludables según riesgo.',
       dose: 'No aplica.',
-      alternative: 'Revisar estilo de vida y riesgo cardiovascular.',
-      followUp: 'Control programado según antecedentes y riesgo.',
-      escalate: 'Reevaluar si aparecen cifras repetidas elevadas o síntomas.',
-      refer: 'No precisa derivación por estas cifras aisladas.',
+      alternative: 'Revisar riesgo cardiovascular.',
+      check: 'Técnica y contexto si hay discordancia.',
+      followUp: 'Programado según riesgo.',
+      escalate: 'Si cifras repetidas elevadas.',
+      refer: 'No precisa por estas cifras.',
+      source: 'ESC 2024 / NICE NG136.',
     };
   }
 
-  if (classification.label === 'Presión arterial elevada') {
+  if (classification.label === 'TA elevada') {
     return {
       classification,
-      title: 'Confirmar y tratar riesgo global',
-      risk: highRiskContext ? 'Intermedia por contexto de riesgo' : 'Baja-intermedia',
-      now: 'Confirmar con mediciones repetidas, AMPA o MAPA si procede.',
-      treatment: highRiskContext ? 'Medidas no farmacológicas y valorar tratamiento si riesgo cardiovascular alto o daño de órgano.' : 'Medidas no farmacológicas como primera intervención.',
-      dose: highRiskContext ? 'Si se decide fármaco: iniciar una familia de primera línea a dosis baja según perfil.' : 'Sin dosis farmacológica inicial por defecto.',
-      alternative: 'Revisar fármacos que eleven TA, sal, alcohol, peso y actividad física.',
-      followUp: highRiskContext ? 'Revisar en 1-3 meses según riesgo.' : 'Revisar en 3-6 meses o antes si suben cifras.',
-      escalate: 'Escalar si se confirma HTA o hay alto riesgo/lesión de órgano.',
-      refer: 'Derivar si sospecha secundaria, lesión de órgano o cifras severas.',
+      title: 'Confirmar y actuar sobre riesgo',
+      objective: highRisk ? 'Individualizar hacia <130/80 si tolera.' : 'Evitar progresión a HTA.',
+      now: 'Confirmar con tomas repetidas, AMPA o MAPA.',
+      treatment: highRisk ? 'Medidas no farmacológicas; valorar fármaco si riesgo alto.' : 'Medidas no farmacológicas.',
+      dose: highRisk ? 'Si se inicia: SRAA a dosis baja según perfil.' : 'Sin dosis inicial por defecto.',
+      alternative: 'Revisar sal, alcohol, peso, AINE y otros fármacos.',
+      check: 'Riesgo CV, ERC, diabetes, lesión de órgano.',
+      followUp: highRisk ? '1-3 meses.' : '3-6 meses.',
+      escalate: 'Si confirma HTA o riesgo alto.',
+      refer: 'Si sospecha secundaria o daño de órgano.',
+      source: 'ESC 2024 / NICE NG136.',
     };
   }
 
-  if (frailContext) {
+  if (frail) {
     return {
       classification,
-      title: 'Tratamiento prudente por fragilidad',
-      risk: classification.severity,
-      now: 'Confirmar técnica y síntomas ortostáticos. Individualizar objetivo.',
-      treatment: 'Iniciar o ajustar monoterapia a dosis bajas; evitar intensificación rápida.',
-      dose: 'Opciones: amlodipino 5 mg/24 h, losartán 50 mg/24 h o ramipril 1,25-2,5 mg/24 h según perfil y tolerancia.',
-      alternative: 'Si hipotensión ortostática, reducir dosis o desescalar el último fármaco añadido.',
-      followUp: 'Revisar TA sentado/de pie, caídas, mareo y tolerancia en 2-4 semanas.',
-      escalate: 'Subir dosis o combinar solo si persiste HTA y lo tolera.',
-      refer: 'Derivar/urgencias si síntomas de daño agudo, caídas repetidas, síncope o deterioro renal/electrolítico.',
+      title: 'Tratamiento prudente',
+      objective: 'Objetivo individualizado; evitar hipotensión.',
+      now: 'Medir sentado/de pie y revisar caídas.',
+      treatment: 'Monoterapia a dosis baja; titular lento.',
+      dose: 'Amlodipino 5 mg/24 h, losartán 50 mg/24 h o ramipril 1,25-2,5 mg/24 h.',
+      alternative: 'Reducir último fármaco si ortostatismo.',
+      check: 'Mareo, caídas, FC, función renal/electrolitos.',
+      followUp: '2-4 semanas.',
+      escalate: 'Solo si persiste HTA y tolera.',
+      refer: 'Síncope, caídas graves, deterioro renal o síntomas agudos.',
+      source: 'ESC 2024 / NICE NG136 / CIMA.',
     };
   }
 
-  if (alreadyTreated) {
-    if (values.currentTreatment === 'triple' || values.currentTreatment === 'spironolactone') {
-      return {
-        classification,
-        title: 'No control con tratamiento avanzado',
-        risk: 'Alta si TA persiste elevada',
-        now: 'Confirmar adherencia, técnica, AMPA/MAPA, dosis toleradas y causas secundarias.',
-        treatment: 'Si triple terapia optimizada no controla, valorar HTA resistente.',
-        dose: 'Considerar espironolactona 25 mg/24 h si eGFR y potasio lo permiten; monitorizar estrechamente.',
-        alternative: 'Si no procede espironolactona, valorar otra estrategia y derivación.',
-        followUp: 'Analítica de función renal/electrolitos tras cambios y revisión en 2-4 semanas.',
-        escalate: 'Derivar si confirma HTA resistente, daño de órgano, ERC progresiva o sospecha secundaria.',
-        refer: 'Urgencias si síntomas de daño agudo o TA severa sintomática.',
-      };
-    }
-
+  if (values.situation === 'uncontrolled' || values.situation === 'treated' || values.problem === 'uncontrolled' || values.currentTreatment !== 'none') {
+    const resistant = values.currentTreatment === 'triple' || values.currentTreatment === 'spironolactone';
     return {
       classification,
-      title: 'HTA no controlada en tratamiento',
-      risk: classification.severity,
-      now: 'Comprobar adherencia, técnica de medida, AMPA/MAPA y dosis actuales.',
-      treatment: 'Optimizar dosis y pasar a combinación si no está ya combinada.',
-      dose: values.currentTreatment === 'dual' ? 'Escalar a triple: SRAA + calcioantagonista + diurético tiazídico/tiazida-like.' : 'Si monoterapia: pasar a doble terapia, por ejemplo SRAA + amlodipino 5 mg/24 h.',
-      alternative: 'Si RAM o intolerancia, cambiar familia antes de añadir fármacos.',
-      followUp: 'Revisar en 2-4 semanas tras intensificación y pedir creatinina/electrolitos si SRAA o diurético.',
-      escalate: 'Escalar si TA sigue fuera de objetivo con adherencia confirmada.',
-      refer: 'Derivar si triple terapia optimizada no controla o hay sospecha secundaria/daño de órgano.',
+      title: resistant ? 'Valorar HTA resistente' : 'HTA no controlada',
+      objective: 'Control con técnica y adherencia verificadas.',
+      now: 'Comprobar medida, AMPA/MAPA, adherencia y dosis.',
+      treatment: resistant ? 'Confirmar triple terapia optimizada; valorar 4º fármaco y derivación.' : 'Optimizar dosis o pasar a combinación.',
+      dose: resistant ? 'Espironolactona 25 mg/24 h si eGFR y K lo permiten.' : (values.currentTreatment === 'dual' ? 'Pasar a triple: SRAA + CCB + tiazida/tiazida-like.' : 'Pasar a doble: SRAA + amlodipino 5 mg/24 h.'),
+      alternative: 'Cambiar familia si RAM o contraindicación.',
+      check: 'Creatinina/eGFR, sodio, potasio, interacciones, AINE, sal, alcohol.',
+      followUp: '2-4 semanas; analítica si SRAA/diurético/espironolactona.',
+      escalate: 'Si sigue fuera de objetivo con adherencia confirmada.',
+      refer: resistant ? 'Derivar si HTA resistente confirmada.' : 'Derivar si sospecha secundaria, daño órgano o mala respuesta.',
+      source: 'ESC 2024 / NICE NG136 / CIMA.',
     };
   }
 
   if (classification.label === 'HTA grado 1') {
     return {
       classification,
-      title: 'Confirmar HTA y decidir inicio',
-      risk: highRiskContext ? 'Moderada-alta por contexto' : 'Moderada',
-      now: 'Confirmar con AMPA/MAPA salvo cifras repetidas claras o alto riesgo.',
-      treatment: highRiskContext ? 'Iniciar tratamiento farmacológico junto a medidas no farmacológicas.' : 'Medidas no farmacológicas; iniciar fármaco si se confirma HTA o hay riesgo alto.',
-      dose: highRiskContext ? 'Preferir SRAA: ramipril 1,25-2,5 mg/24 h o losartán 50 mg/24 h; combinar con amlodipino 5 mg si precisa.' : 'Monoterapia razonable: amlodipino 5 mg/24 h, losartán 50 mg/24 h o ramipril 1,25-2,5 mg/24 h según perfil.',
-      alternative: 'Si tos con IECA, cambiar a ARA-II.',
-      followUp: 'Revisar en 4 semanas si inicia o ajusta fármaco; antes si alto riesgo.',
-      escalate: 'Si no controla, titular o pasar a doble terapia.',
-      refer: 'Derivar si sospecha secundaria, daño de órgano, embarazo o mala respuesta persistente.',
+      title: 'Confirmar HTA',
+      objective: highRisk ? 'Objetivo estricto si tolera.' : 'Reducir riesgo con control sostenido.',
+      now: 'Confirmar AMPA/MAPA salvo alto riesgo o cifras repetidas.',
+      treatment: highRisk ? 'Iniciar fármaco + medidas.' : 'Medidas; fármaco si confirma HTA/riesgo alto.',
+      dose: highRisk ? 'Ramipril 1,25-2,5 mg/24 h o losartán 50 mg/24 h; añadir amlodipino 5 mg si precisa.' : 'Amlodipino 5 mg/24 h, losartán 50 mg/24 h o ramipril 1,25-2,5 mg/24 h.',
+      alternative: 'ARA-II si tos por IECA.',
+      check: 'Riesgo CV, ERC, diabetes, potasio/creatinina si SRAA.',
+      followUp: '4 semanas si inicia/ajusta.',
+      escalate: 'Si no controla: titular o doble terapia.',
+      refer: 'Sospecha secundaria, daño órgano o mala respuesta.',
+      source: 'ESC 2024 / NICE NG136 / CIMA.',
     };
   }
 
   return {
     classification,
-    title: classification.label === 'HTA grado 2' ? 'Iniciar tratamiento y confirmar control' : 'HTA severa sin síntomas declarados',
-    risk: classification.severity,
-    now: classification.label === 'HTA severa' ? 'Repetir TA, buscar síntomas de daño agudo y valorar urgencias aunque esté asintomático.' : 'Confirmar técnica, iniciar tratamiento y programar control estrecho.',
-    treatment: 'Tratamiento combinado salvo fragilidad: IECA/ARA-II + calcioantagonista o IECA/ARA-II + diurético tiazídico/tiazida-like.',
-    dose: 'Ejemplos: losartán 50 mg/24 h + amlodipino 5 mg/24 h; o ramipril 1,25-2,5 mg/24 h + amlodipino 5 mg/24 h.',
-    alternative: 'Si edema por calcioantagonista, reducir/cambiar o combinar con SRAA. Si tos por IECA, cambiar a ARA-II.',
-    followUp: 'Revisar en 2-4 semanas; analítica si SRAA o diurético.',
-    escalate: 'Si no controla, titular dosis y pasar a triple terapia.',
-    refer: classification.label === 'HTA severa' ? 'Urgencias si cualquier síntoma de daño agudo; derivación preferente si persiste severa sin causa clara.' : 'Derivar si sospecha secundaria, daño de órgano o mala respuesta.',
+    title: classification.label === 'HTA severa' ? 'HTA severa sin datos de daño' : 'Iniciar tratamiento',
+    objective: highRisk ? 'Individualizar; buscar control si tolera.' : 'Control sostenido y seguro.',
+    now: classification.label === 'HTA severa' ? 'Repetir TA y buscar daño agudo.' : 'Confirmar técnica e iniciar tratamiento.',
+    treatment: 'Combinación salvo fragilidad: SRAA + CCB o SRAA + diurético.',
+    dose: 'Losartán 50 mg/24 h + amlodipino 5 mg/24 h; alternativa ramipril 1,25-2,5 mg/24 h + amlodipino 5 mg/24 h.',
+    alternative: 'SRAA + tiazida/tiazida-like si CCB no tolerado.',
+    check: 'Creatinina/eGFR, sodio, potasio y riesgo de RAM.',
+    followUp: '2-4 semanas.',
+    escalate: 'Si no controla: titular y pasar a triple terapia.',
+    refer: classification.label === 'HTA severa' ? 'Urgencias si síntomas; derivación preferente si persiste.' : 'Derivar si sospecha secundaria/daño órgano.',
+    source: 'ESC 2024 / NICE NG136 / CIMA.',
   };
 }
 
@@ -268,93 +292,114 @@ function ResultRow({ label, value }) {
   );
 }
 
-export function HtaTool({ onBack }) {
-  const [activeTab, setActiveTab] = useState('evaluate');
-  const [values, setValues] = useState(initialValues);
-  const [selectedAdverse, setSelectedAdverse] = useState(adverseEvents[0].id);
+function BibliographyModal({ onClose }) {
+  return (
+    <div className="hta-modal-backdrop" role="presentation">
+      <section className="hta-modal" role="dialog" aria-modal="true" aria-labelledby="hta-bibliography-title">
+        <div className="hta-modal-header">
+          <h2 id="hta-bibliography-title">Bibliografía</h2>
+          <button type="button" onClick={onClose}>Cerrar</button>
+        </div>
+        <div className="hta-source-list">
+          {htaSources.map((source) => (
+            <article key={source.label}>
+              <h3>{source.label}</h3>
+              <p>{source.supports}</p>
+              <a href={source.url} target="_blank" rel="noreferrer">{source.url}</a>
+            </article>
+          ))}
+        </div>
+      </section>
+    </div>
+  );
+}
 
-  const recommendation = useMemo(() => buildRecommendation(values), [values]);
-  const selectedAdverseEvent = adverseEvents.find((item) => item.id === selectedAdverse) ?? adverseEvents[0];
+export function HtaTool({ onBack }) {
+  const [values, setValues] = useState(initialValues);
+  const [calculated, setCalculated] = useState(false);
+  const [showBibliography, setShowBibliography] = useState(false);
+  const recommendation = useMemo(() => buildRecommendation(values, calculated), [calculated, values]);
 
   const updateValue = (id, value) => {
     setValues((current) => ({ ...current, [id]: value }));
+    setCalculated(false);
   };
 
   return (
     <div className="screen detail-screen hta-tool">
-      <DetailHeader
-        title="HTA"
-        subtitle="Herramienta de Atención Primaria adulta para evaluar cifras, orientar tratamiento, escalada, RAM y seguimiento."
-        onBack={onBack}
-      />
+      <div className="hta-protocol-header">
+        <DetailHeader title="HTA" subtitle="Decisión terapéutica en Atención Primaria" onBack={onBack} />
+        <button className="hta-bibliography-button" type="button" onClick={() => setShowBibliography(true)} aria-label="Abrir bibliografía">B</button>
+      </div>
 
-      <nav className="hta-tabs" aria-label="Secciones HTA">
-        {[
-          ['evaluate', 'Evaluar TA'],
-          ['treatment', 'Tratamiento'],
-          ['doses', 'Dosis'],
-          ['adverse', 'RAM'],
-          ['followup', 'Seguimiento'],
-        ].map(([id, label]) => (
-          <button key={id} className={activeTab === id ? 'is-active' : ''} type="button" onClick={() => setActiveTab(id)}>
-            {label}
-          </button>
-        ))}
-      </nav>
-
-      {activeTab === 'evaluate' && (
-        <section className="hta-grid">
-          <div className="hta-card">
-            <h2>Evaluar TA</h2>
-            <div className="hta-two-col">
-              <Field label="PAS">
-                <input inputMode="numeric" min="60" max="260" type="number" value={values.sbp} onChange={(event) => updateValue('sbp', event.target.value)} placeholder="mmHg" />
-              </Field>
-              <Field label="PAD">
-                <input inputMode="numeric" min="30" max="160" type="number" value={values.dbp} onChange={(event) => updateValue('dbp', event.target.value)} placeholder="mmHg" />
-              </Field>
-            </div>
-            <Field label="Contexto">
-              <select value={values.context} onChange={(event) => updateValue('context', event.target.value)}>
-                {Object.entries(contextLabels).map(([value, label]) => (
-                  <option value={value} key={value}>{label}</option>
-                ))}
-              </select>
+      <section className="hta-grid hta-main-grid">
+        <div className="hta-card hta-input-card">
+          <h2>Datos del paciente</h2>
+          <div className="hta-two-col">
+            <Field label="PAS">
+              <input inputMode="numeric" min="60" max="260" type="number" value={values.sbp} onChange={(event) => updateValue('sbp', event.target.value)} placeholder="mmHg" />
             </Field>
-            <Field label="Tratamiento actual">
-              <select value={values.currentTreatment} onChange={(event) => updateValue('currentTreatment', event.target.value)}>
-                {Object.entries(treatmentLabels).map(([value, label]) => (
-                  <option value={value} key={value}>{label}</option>
-                ))}
-              </select>
+            <Field label="PAD">
+              <input inputMode="numeric" min="30" max="160" type="number" value={values.dbp} onChange={(event) => updateValue('dbp', event.target.value)} placeholder="mmHg" />
             </Field>
-            <div className="hta-check-grid">
-              <label><input type="checkbox" checked={values.emergencySymptoms} onChange={(event) => updateValue('emergencySymptoms', event.target.checked)} /> Síntomas de daño agudo</label>
-              <label><input type="checkbox" checked={values.diabetesCkd} onChange={(event) => updateValue('diabetesCkd', event.target.checked)} /> Diabetes o ERC</label>
-              <label><input type="checkbox" checked={values.frailty} onChange={(event) => updateValue('frailty', event.target.checked)} /> Fragilidad / ortostatismo</label>
-              <label><input type="checkbox" checked={values.pregnancy} onChange={(event) => updateValue('pregnancy', event.target.checked)} /> Embarazo</label>
-            </div>
           </div>
-
-          <div className={`hta-result-card is-${recommendation.classification.tone}`}>
-            <span className="hta-status">{recommendation.classification.label}</span>
-            <h2>{recommendation.title}</h2>
-            <ResultRow label="Riesgo/gravedad" value={recommendation.risk} />
-            <ResultRow label="Qué hacer ahora" value={recommendation.now} />
-            <ResultRow label="Tratamiento sugerido" value={recommendation.treatment} />
-            <ResultRow label="Dosis orientativa" value={recommendation.dose} />
-            <ResultRow label="Alternativa" value={recommendation.alternative} />
-            <ResultRow label="Seguimiento" value={recommendation.followUp} />
-            <ResultRow label="Escalar si" value={recommendation.escalate} />
-            <ResultRow label="Derivar/urgencias si" value={recommendation.refer} />
-            <ResultRow label="Fuente" value="ESC 2024, NICE NG136 y fichas CIMA/AEMPS según bloque." />
+          <Field label="Situación">
+            <select value={values.situation} onChange={(event) => updateValue('situation', event.target.value)}>
+              {Object.entries(situations).map(([value, label]) => <option value={value} key={value}>{label}</option>)}
+            </select>
+          </Field>
+          <Field label="Tratamiento actual">
+            <select value={values.currentTreatment} onChange={(event) => updateValue('currentTreatment', event.target.value)}>
+              {Object.entries(treatments).map(([value, label]) => <option value={value} key={value}>{label}</option>)}
+            </select>
+          </Field>
+          <Field label="Problema actual">
+            <select value={values.problem} onChange={(event) => updateValue('problem', event.target.value)}>
+              {Object.entries(problems).map(([value, label]) => <option value={value} key={value}>{label}</option>)}
+            </select>
+          </Field>
+          <div className="hta-check-grid hta-compact-checks">
+            {[
+              ['diabetes', 'Diabetes'],
+              ['ckd', 'ERC'],
+              ['cvd', 'ECV establecida'],
+              ['frailty', 'Fragilidad'],
+              ['falls', 'Caídas/ortostatismo'],
+              ['hyperkalemia', 'HiperK previa'],
+              ['renalDrop', 'Deterioro renal SRAA'],
+              ['gout', 'Gota/hiperuricemia'],
+              ['asthmaCopd', 'Asma/EPOC'],
+              ['bradycardia', 'Bradicardia'],
+            ].map(([id, label]) => (
+              <label key={id}>
+                <input type="checkbox" checked={values[id]} onChange={(event) => updateValue(id, event.target.checked)} />
+                {label}
+              </label>
+            ))}
           </div>
-        </section>
-      )}
+          <button className="hta-primary-action" type="button" onClick={() => setCalculated(true)}>Calcular conducta</button>
+        </div>
 
-      {activeTab === 'treatment' && (
-        <section className="hta-card">
-          <h2>Tratamiento y escalada</h2>
+        <div className={`hta-result-card is-${recommendation.classification.tone}`}>
+          <span className="hta-status">{recommendation.classification.label}</span>
+          <h2>{recommendation.title}</h2>
+          <ResultRow label="Clasificación" value={`${recommendation.classification.label}. Gravedad: ${recommendation.classification.severity}.`} />
+          <ResultRow label="Objetivo terapéutico" value={recommendation.objective} />
+          <ResultRow label="Qué hacer ahora" value={recommendation.now} />
+          <ResultRow label="Tratamiento recomendado" value={recommendation.treatment} />
+          <ResultRow label="Dosis inicial / ajuste" value={recommendation.dose} />
+          <ResultRow label="Alternativa si contraindicación o RAM" value={recommendation.alternative} />
+          <ResultRow label="Qué comprobar" value={recommendation.check} />
+          <ResultRow label="Seguimiento" value={recommendation.followUp} />
+          <ResultRow label="Escalar si" value={recommendation.escalate} />
+          <ResultRow label="Derivar / urgencias si" value={recommendation.refer} />
+          <ResultRow label="Fuente" value={recommendation.source} />
+        </div>
+      </section>
+
+      <section className="hta-accordion-stack" aria-label="Consulta rápida HTA">
+        <details>
+          <summary>Escalada terapéutica</summary>
           <div className="hta-step-list">
             {treatmentSteps.map((step) => (
               <article className="hta-step" key={step.title}>
@@ -364,12 +409,10 @@ export function HtaTool({ onBack }) {
               </article>
             ))}
           </div>
-        </section>
-      )}
+        </details>
 
-      {activeTab === 'doses' && (
-        <section className="hta-card">
-          <h2>Vademécum de dosis</h2>
+        <details>
+          <summary>Dosis rápidas</summary>
           <div className="hta-drug-groups">
             {drugGroups.map((group) => (
               <article className="hta-drug-group" key={group.group}>
@@ -392,75 +435,33 @@ export function HtaTool({ onBack }) {
               </article>
             ))}
           </div>
-        </section>
-      )}
+        </details>
 
-      {activeTab === 'adverse' && (
-        <section className="hta-grid">
-          <div className="hta-card">
-            <h2>RAM / cambios</h2>
-            <div className="hta-option-list">
-              {adverseEvents.map((event) => (
-                <button key={event.id} type="button" className={selectedAdverse === event.id ? 'is-active' : ''} onClick={() => setSelectedAdverse(event.id)}>
-                  {event.label}
-                </button>
-              ))}
-            </div>
-          </div>
-          <div className="hta-result-card">
-            <span className="hta-status">Problema seleccionado</span>
-            <h2>{selectedAdverseEvent.label}</h2>
-            <ResultRow label="Sospecha" value={selectedAdverseEvent.suspicion} />
-            <ResultRow label="Qué comprobar" value={selectedAdverseEvent.check} />
-            <ResultRow label="Conducta" value={selectedAdverseEvent.action} />
-            <ResultRow label="Alternativa" value={selectedAdverseEvent.alternative} />
-            <ResultRow label="Seguimiento" value={selectedAdverseEvent.followUp} />
-            <ResultRow label="Derivar/urgencias si" value={selectedAdverseEvent.urgent} />
-            <ResultRow label="Fuente" value="Ficha técnica CIMA/AEMPS y guías de tratamiento HTA." />
-          </div>
-        </section>
-      )}
-
-      {activeTab === 'followup' && (
-        <section className="hta-card">
-          <h2>Seguimiento y controles</h2>
+        <details>
+          <summary>RAM / cambios</summary>
           <div className="hta-step-list">
-            <article className="hta-step">
-              <span>Inicio o ajuste</span>
-              <h3>Revisar respuesta</h3>
-              <p>Revisar TA y tolerancia en 2-4 semanas si se inicia o intensifica tratamiento.</p>
-            </article>
-            <article className="hta-step">
-              <span>SRAA / diurético / espironolactona</span>
-              <h3>Control analítico</h3>
-              <p>Controlar creatinina/eGFR, sodio y potasio tras inicio o ajuste; antes si ERC, fragilidad, deshidratación o fármacos de riesgo.</p>
-            </article>
-            <article className="hta-step">
-              <span>No control</span>
-              <h3>Intensificar</h3>
-              <p>Si TA sigue fuera de objetivo con técnica y adherencia confirmadas: titular, pasar a doble/triple terapia o valorar HTA resistente.</p>
-            </article>
-            <article className="hta-step">
-              <span>Derivación</span>
-              <h3>Especializada o urgencias</h3>
-              <p>Derivar si sospecha secundaria, daño de órgano, embarazo, HTA resistente o deterioro renal/electrolítico. Urgencias si síntomas de daño agudo.</p>
-            </article>
+            {adverseEvents.map((event) => (
+              <article className="hta-step" key={event.id}>
+                <span>{event.label}</span>
+                <h3>{event.action}</h3>
+                <p>{event.alternative}</p>
+              </article>
+            ))}
           </div>
-        </section>
-      )}
+        </details>
 
-      <section className="hta-card hta-sources">
-        <h2>Fuentes de la herramienta</h2>
-        <div className="hta-source-list">
-          {htaSources.map((source) => (
-            <article key={source.label}>
-              <h3>{source.label}</h3>
-              <p>{source.supports}</p>
-              <a href={source.url} target="_blank" rel="noreferrer">{source.url}</a>
-            </article>
-          ))}
-        </div>
+        <details>
+          <summary>Seguimiento / derivación</summary>
+          <div className="hta-step-list">
+            <article className="hta-step"><span>Inicio o ajuste</span><h3>Revisar en 2-4 semanas</h3><p>TA, tolerancia y adherencia.</p></article>
+            <article className="hta-step"><span>SRAA / diurético</span><h3>Analítica</h3><p>Creatinina/eGFR, sodio y potasio.</p></article>
+            <article className="hta-step"><span>No control</span><h3>Escalar</h3><p>Titular, doble/triple terapia o HTA resistente.</p></article>
+            <article className="hta-step"><span>Alarma</span><h3>Derivar</h3><p>Daño agudo, sospecha secundaria, embarazo, daño de órgano o HTA resistente.</p></article>
+          </div>
+        </details>
       </section>
+
+      {showBibliography && <BibliographyModal onClose={() => setShowBibliography(false)} />}
     </div>
   );
 }
