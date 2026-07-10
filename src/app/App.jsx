@@ -7,6 +7,7 @@ import { Home } from '../screens/Home.jsx';
 import { Protocols } from '../screens/Protocols.jsx';
 import { ProtocolDetail } from '../screens/ProtocolDetail.jsx';
 import { Tools } from '../screens/Tools.jsx';
+import { HtaTool } from '../screens/HtaTool.jsx';
 import { More } from '../screens/More.jsx';
 import { Procedures } from '../screens/Procedures.jsx';
 import { Circuits } from '../screens/Circuits.jsx';
@@ -18,6 +19,7 @@ const routeTitles = {
   [routes.protocols]: 'Protocolos',
   [routes.protocolDetail]: 'Protocolo',
   [routes.tools]: 'Herramientas',
+  [routes.htaTool]: 'HTA',
   [routes.procedures]: 'Procedimientos',
   [routes.circuits]: 'Circuitos',
   [routes.circuitDetail]: 'Circuito',
@@ -64,7 +66,8 @@ export default function App() {
       {route === routes.home && <Home app={appConfig} sections={primarySections} onNavigate={navigate} />}
       {route === routes.protocols && <Protocols protocols={placeholderProtocols} onOpen={openProtocol} />}
       {route === routes.protocolDetail && <ProtocolDetail protocol={currentProtocol} onBack={() => navigate(routes.protocols)} />}
-      {route === routes.tools && <Tools app={appConfig} />}
+      {route === routes.tools && <Tools onOpenHta={() => navigate(routes.htaTool)} />}
+      {route === routes.htaTool && <HtaTool onBack={() => navigate(routes.tools)} />}
       {route === routes.procedures && <Procedures />}
       {route === routes.circuits && <Circuits onOpen={() => navigate(routes.circuitDetail)} />}
       {route === routes.circuitDetail && <CircuitDetail onBack={() => navigate(routes.circuits)} />}
