@@ -37,6 +37,15 @@ export const htaSupportTools = [
   },
 ];
 
+export const supportToolGroups = [
+  {
+    id: 'hta',
+    title: 'HTA',
+    description: 'Utilidades vinculadas al protocolo de hipertension arterial.',
+    tools: htaSupportTools,
+  },
+];
+
 export const htaSupportSources = [
   {
     label: 'NICE NG136. Hypertension in adults: diagnosis and management.',

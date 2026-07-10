@@ -230,6 +230,37 @@ h2 {
   gap: var(--space-3);
 }
 
+.tool-group-stack {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.tool-pathology-group {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.tool-pathology-heading {
+  display: grid;
+  gap: 0.2rem;
+  padding-inline: 0.15rem;
+}
+
+.tool-pathology-heading h2 {
+  margin: 0;
+  color: var(--color-text);
+  font-size: clamp(1rem, 2vw, 1.18rem);
+  letter-spacing: 0;
+}
+
+.tool-pathology-heading p {
+  margin: 0;
+  max-width: 42rem;
+  color: var(--color-muted);
+  font-size: 0.9rem;
+  line-height: var(--line-height-copy);
+}
+
 .section-card,
 .list-row {
   display: grid;
