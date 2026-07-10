@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { DetailHeader } from '../components/detail/DetailHeader.jsx';
+import { htaSupportTools } from '../data/htaSupportTools.js';
 import { adverseEvents, drugGroups, htaSources, treatmentSteps } from '../data/htaTool.js';
 
 const initialValues = {
@@ -12,12 +13,15 @@ const initialValues = {
   ckd: false,
   cvd: false,
   frailty: false,
+  ageAdvanced: false,
   falls: false,
   hyperkalemia: false,
   renalDrop: false,
   gout: false,
   asthmaCopd: false,
   bradycardia: false,
+  adherenceKnown: false,
+  drugIntolerance: false,
 };
 
 const situations = {
@@ -27,6 +31,7 @@ const situations = {
   frail: 'Anciano o frágil',
   diabetes: 'Diabetes',
   ckd: 'ERC',
+  cvd: 'ECV establecida',
   emergency: 'Sospecha urgencia/emergencia',
   pregnancy: 'Embarazo',
 };
@@ -48,6 +53,7 @@ const problems = {
   none: 'Sin problema específico',
   uncontrolled: 'No controla',
   'ace-cough': 'Tos',
+  angioedema: 'Angioedema',
   'ccb-edema': 'Edema maleolar',
   hyperkalemia: 'Hiperpotasemia',
   'renal-drop': 'Deterioro función renal',
@@ -83,8 +89,8 @@ function buildRecommendation(values, calculated) {
   const dbp = toNumber(values.dbp);
   const classification = classifyBp(sbp, dbp);
   const isComplete = sbp !== null && dbp !== null;
-  const highRisk = values.diabetes || values.ckd || values.cvd || values.situation === 'diabetes' || values.situation === 'ckd';
-  const frail = values.frailty || values.falls || values.situation === 'frail';
+  const highRisk = values.diabetes || values.ckd || values.cvd || values.situation === 'diabetes' || values.situation === 'ckd' || values.situation === 'cvd';
+  const frail = values.frailty || values.ageAdvanced || values.falls || values.situation === 'frail';
   const ram = findAdverse(values.problem);
 
   if (!calculated) {
@@ -314,7 +320,7 @@ function BibliographyModal({ onClose }) {
   );
 }
 
-export function HtaTool({ onBack }) {
+export function HtaTool({ onBack, onOpenTool }) {
   const [values, setValues] = useState(initialValues);
   const [calculated, setCalculated] = useState(false);
   const [showBibliography, setShowBibliography] = useState(false);
@@ -364,12 +370,15 @@ export function HtaTool({ onBack }) {
               ['ckd', 'ERC'],
               ['cvd', 'ECV establecida'],
               ['frailty', 'Fragilidad'],
+              ['ageAdvanced', 'Edad avanzada'],
               ['falls', 'Caídas/ortostatismo'],
               ['hyperkalemia', 'HiperK previa'],
               ['renalDrop', 'Deterioro renal SRAA'],
               ['gout', 'Gota/hiperuricemia'],
               ['asthmaCopd', 'Asma/EPOC'],
               ['bradycardia', 'Bradicardia'],
+              ['adherenceKnown', 'Mala adherencia conocida'],
+              ['drugIntolerance', 'Intolerancias farmacológicas'],
             ].map(([id, label]) => (
               <label key={id}>
                 <input type="checkbox" checked={values[id]} onChange={(event) => updateValue(id, event.target.checked)} />
@@ -457,6 +466,18 @@ export function HtaTool({ onBack }) {
             <article className="hta-step"><span>SRAA / diurético</span><h3>Analítica</h3><p>Creatinina/eGFR, sodio y potasio.</p></article>
             <article className="hta-step"><span>No control</span><h3>Escalar</h3><p>Titular, doble/triple terapia o HTA resistente.</p></article>
             <article className="hta-step"><span>Alarma</span><h3>Derivar</h3><p>Daño agudo, sospecha secundaria, embarazo, daño de órgano o HTA resistente.</p></article>
+          </div>
+        </details>
+
+        <details>
+          <summary>Herramientas de apoyo</summary>
+          <div className="hta-tool-link-grid">
+            {htaSupportTools.map((tool) => (
+              <button type="button" key={tool.id} onClick={() => onOpenTool?.(tool.id)}>
+                <span>{tool.title}</span>
+                <small>{tool.status}</small>
+              </button>
+            ))}
           </div>
         </details>
       </section>
