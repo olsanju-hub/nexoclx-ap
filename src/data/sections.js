@@ -24,27 +24,27 @@ export const primarySections = [
   {
     id: routes.protocols,
     title: 'Protocolos',
-    description: 'Guías clínicas por motivo de consulta.',
+    description: 'Estructura preparada para futuros protocolos.',
     icon: FileText,
   },
   {
     id: routes.tools,
     title: 'Herramientas',
-    description: 'Valoración inicial.',
+    description: 'Estructura preparada para futuras herramientas.',
     icon: Calculator,
   },
   {
     id: routes.bibliography,
     title: 'Bibliografía',
-    description: 'Fuentes clínicas consultadas.',
+    description: 'Estructura preparada para futuras fuentes.',
     icon: BookOpen,
   },
 ];
 
 export const secondarySections = [
-  { id: routes.protocols, title: 'Protocolos', description: 'Guías clínicas por motivo de consulta.', icon: FolderOpen },
-  { id: routes.tools, title: 'Herramientas', description: 'Valoración inicial.', icon: Wrench },
-  { id: routes.bibliography, title: 'Bibliografía', description: 'Fuentes clínicas consultadas.', icon: Library },
+  { id: routes.protocols, title: 'Protocolos', description: 'Estructura preparada para futuros protocolos.', icon: FolderOpen },
+  { id: routes.tools, title: 'Herramientas', description: 'Estructura preparada para futuras herramientas.', icon: Wrench },
+  { id: routes.bibliography, title: 'Bibliografía', description: 'Estructura preparada para futuras fuentes.', icon: Library },
 ];
 
 export const bottomNavItems = [
