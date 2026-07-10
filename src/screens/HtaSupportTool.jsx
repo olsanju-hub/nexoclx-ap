@@ -132,6 +132,14 @@ function ToolResult({ title, rows }) {
   );
 }
 
+function OpenHtaButton({ children = 'Abrir protocolo HTA con estos datos', onClick, disabled = false }) {
+  return (
+    <button className="hta-primary-action" type="button" onClick={onClick} disabled={disabled}>
+      {children}
+    </button>
+  );
+}
+
 function BibliographyModal({ onClose }) {
   return (
     <div className="hta-modal-backdrop" role="presentation">
@@ -154,7 +162,7 @@ function BibliographyModal({ onClose }) {
   );
 }
 
-function AmpaTool() {
+function AmpaTool({ onOpenHta }) {
   const [sbpSeries, setSbpSeries] = useState('');
   const [dbpSeries, setDbpSeries] = useState('');
   const result = useMemo(() => {
@@ -169,6 +177,15 @@ function AmpaTool() {
       interpretation: classifyHomeBp(sbp, dbp),
     };
   }, [dbpSeries, sbpSeries]);
+  const openHta = () => onOpenHta?.({
+    autoCalculate: Boolean(result.sbp && result.dbp),
+    values: {
+      sbp: result.sbp ? String(result.sbp) : '',
+      dbp: result.dbp ? String(result.dbp) : '',
+      situation: result.sbp >= 135 || result.dbp >= 85 ? 'new' : 'treated',
+      transferNote: result.sbp && result.dbp ? `Datos desde AMPA: media ${result.sbp}/${result.dbp} mmHg.` : 'Datos desde AMPA incompletos.',
+    },
+  });
 
   return (
     <section className="hta-grid hta-main-grid">
@@ -180,6 +197,7 @@ function AmpaTool() {
         <Field label="PAD separadas por comas">
           <textarea value={dbpSeries} onChange={(event) => setDbpSeries(event.target.value)} placeholder="86, 82, 84" />
         </Field>
+        <OpenHtaButton onClick={openHta} disabled={!result.sbp || !result.dbp} />
       </div>
       <ToolResult
         title="Promedio AMPA"
@@ -195,11 +213,22 @@ function AmpaTool() {
   );
 }
 
-function MapaTool() {
+function MapaTool({ onOpenHta }) {
   const [values, setValues] = useState({ daySbp: '', dayDbp: '', nightSbp: '', nightDbp: '', day24Sbp: '', day24Dbp: '' });
   const numeric = Object.fromEntries(Object.entries(values).map(([key, value]) => [key, Number(value)]));
   const interpretation = classifyMapa(numeric);
   const update = (key, value) => setValues((current) => ({ ...current, [key]: value }));
+  const transferSbp = Number.isFinite(numeric.daySbp) ? numeric.daySbp : numeric.day24Sbp;
+  const transferDbp = Number.isFinite(numeric.dayDbp) ? numeric.dayDbp : numeric.day24Dbp;
+  const openHta = () => onOpenHta?.({
+    autoCalculate: Boolean(transferSbp && transferDbp),
+    values: {
+      sbp: transferSbp ? String(transferSbp) : '',
+      dbp: transferDbp ? String(transferDbp) : '',
+      situation: transferSbp >= 135 || transferDbp >= 85 ? 'new' : 'treated',
+      transferNote: transferSbp && transferDbp ? `Datos desde MAPA: media usada ${transferSbp}/${transferDbp} mmHg.` : 'Datos desde MAPA incompletos.',
+    },
+  });
 
   return (
     <section className="hta-grid hta-main-grid">
@@ -213,6 +242,7 @@ function MapaTool() {
           <Field label="PAS 24 h"><input inputMode="numeric" type="number" value={values.day24Sbp} onChange={(event) => update('day24Sbp', event.target.value)} /></Field>
           <Field label="PAD 24 h"><input inputMode="numeric" type="number" value={values.day24Dbp} onChange={(event) => update('day24Dbp', event.target.value)} /></Field>
         </div>
+        <OpenHtaButton onClick={openHta} disabled={!transferSbp || !transferDbp} />
       </div>
       <ToolResult
         title="Interpretacion MAPA"
@@ -293,11 +323,20 @@ function Score2Tool({ onOpenHta }) {
   );
 }
 
-function EgfrTool() {
+function EgfrTool({ onOpenHta }) {
   const [values, setValues] = useState({ age: '', sex: 'male', creatinine: '', unit: 'mgdl' });
   const egfr = calculateEgfr(values);
   const rounded = round(egfr);
   const update = (key, value) => setValues((current) => ({ ...current, [key]: value }));
+  const ckd = Number.isFinite(egfr) && egfr < 60;
+  const openHta = () => onOpenHta?.({
+    autoCalculate: false,
+    values: {
+      ckd,
+      situation: ckd ? 'ckd' : 'new',
+      transferNote: rounded ? `Datos desde eGFR: ${rounded} mL/min/1,73 m2 (${classifyGfr(egfr)}).` : 'Datos desde eGFR incompletos.',
+    },
+  });
 
   return (
     <section className="hta-grid hta-main-grid">
@@ -319,6 +358,7 @@ function EgfrTool() {
             </select>
           </Field>
         </div>
+        <OpenHtaButton onClick={openHta} disabled={!rounded} />
       </div>
       <ToolResult
         title="eGFR"
@@ -333,7 +373,7 @@ function EgfrTool() {
   );
 }
 
-function AcrTool() {
+function AcrTool({ onOpenHta }) {
   const [albumin, setAlbumin] = useState('');
   const [creatinine, setCreatinine] = useState('');
   const albuminNumber = Number(albumin);
@@ -342,6 +382,15 @@ function AcrTool() {
     ? albuminNumber / (creatinineNumber * 0.01)
     : null;
   const acrMmol = acrMgG === null ? null : acrMgG / 8.84;
+  const albuminuria = acrMgG !== null && acrMgG >= 30;
+  const openHta = () => onOpenHta?.({
+    autoCalculate: false,
+    values: {
+      ckd: albuminuria,
+      situation: albuminuria ? 'ckd' : 'new',
+      transferNote: acrMgG === null ? 'Datos desde ACR incompletos.' : `Datos desde ACR: ${round(acrMgG, 1)} mg/g (${classifyAcr(acrMgG)}).`,
+    },
+  });
 
   return (
     <section className="hta-grid hta-main-grid">
@@ -351,6 +400,7 @@ function AcrTool() {
           <Field label="Albumina urinaria mg/L"><input inputMode="decimal" type="number" value={albumin} onChange={(event) => setAlbumin(event.target.value)} /></Field>
           <Field label="Creatinina urinaria mg/dL"><input inputMode="decimal" type="number" value={creatinine} onChange={(event) => setCreatinine(event.target.value)} /></Field>
         </div>
+        <OpenHtaButton onClick={openHta} disabled={acrMgG === null} />
       </div>
       <ToolResult
         title="ACR"
@@ -365,7 +415,7 @@ function AcrTool() {
   );
 }
 
-function LabControlTool() {
+function LabControlTool({ onOpenHta }) {
   const [values, setValues] = useState({ baselineCreatinine: '', currentCreatinine: '', potassium: '', sodium: '', drug: 'sraa' });
   const baseline = Number(values.baselineCreatinine);
   const current = Number(values.currentCreatinine);
@@ -380,6 +430,28 @@ function LabControlTool() {
   else if (creatinineRise !== null && creatinineRise >= 30) action = 'Revisar volemia, AINE/interacciones y valorar reducir/suspender SRAA; repetir analitica pronto.';
   else if (Number.isFinite(sodium) && sodium < 130) action = 'Valorar diuretico, sintomas y repeticion/derivacion segun gravedad.';
   else if (creatinineRise !== null || Number.isFinite(potassium) || Number.isFinite(sodium)) action = 'Sin alerta mayor introducida; continuar vigilancia segun farmaco y contexto.';
+  const problem = Number.isFinite(potassium) && potassium >= 5.5
+    ? 'hyperkalemia'
+    : creatinineRise !== null && creatinineRise >= 30
+      ? 'renal-drop'
+      : Number.isFinite(sodium) && sodium < 130
+        ? 'hyponatremia'
+        : 'none';
+  const currentTreatment = values.drug === 'sraa'
+    ? 'ace'
+    : values.drug === 'diuretic'
+      ? 'diuretic'
+      : 'spironolactone';
+  const openHta = () => onOpenHta?.({
+    autoCalculate: false,
+    values: {
+      currentTreatment,
+      problem,
+      hyperkalemia: problem === 'hyperkalemia',
+      renalDrop: problem === 'renal-drop',
+      transferNote: `Datos desde control analitico: ${action}`,
+    },
+  });
 
   return (
     <section className="hta-grid hta-main-grid">
@@ -398,6 +470,7 @@ function LabControlTool() {
           <Field label="Potasio mmol/L"><input inputMode="decimal" type="number" value={values.potassium} onChange={(event) => update('potassium', event.target.value)} /></Field>
           <Field label="Sodio mmol/L"><input inputMode="decimal" type="number" value={values.sodium} onChange={(event) => update('sodium', event.target.value)} /></Field>
         </div>
+        <OpenHtaButton onClick={openHta} disabled={creatinineRise === null && !Number.isFinite(potassium) && !Number.isFinite(sodium)} />
       </div>
       <ToolResult
         title="Control analitico"
@@ -416,12 +489,12 @@ export function HtaSupportTool({ toolId, onBack, onOpenHta }) {
   const [showBibliography, setShowBibliography] = useState(false);
   const tool = htaSupportTools.find((item) => item.id === toolId) ?? htaSupportTools[0];
   const content = {
-    ampa: <AmpaTool />,
-    mapa: <MapaTool />,
+    ampa: <AmpaTool onOpenHta={onOpenHta} />,
+    mapa: <MapaTool onOpenHta={onOpenHta} />,
     score2: <Score2Tool onOpenHta={onOpenHta} />,
-    egfr: <EgfrTool />,
-    acr: <AcrTool />,
-    'lab-control': <LabControlTool />,
+    egfr: <EgfrTool onOpenHta={onOpenHta} />,
+    acr: <AcrTool onOpenHta={onOpenHta} />,
+    'lab-control': <LabControlTool onOpenHta={onOpenHta} />,
   }[tool.id];
 
   return (
