@@ -1,3 +1,5 @@
+import { decisionProtocols } from './decisionProtocols.js';
+
 export const placeholderProtocols = [
   {
     id: 'hta',
@@ -5,4 +7,5 @@ export const placeholderProtocols = [
     description: 'Decisión terapéutica en Atención Primaria adulta.',
     status: 'Interactivo',
   },
+  ...decisionProtocols,
 ];

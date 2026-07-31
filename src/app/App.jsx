@@ -77,7 +77,7 @@ export default function App() {
       {route === routes.home && <Home app={appConfig} sections={primarySections} onNavigate={navigate} />}
       {route === routes.protocols && <Protocols protocols={placeholderProtocols} onOpen={openProtocol} />}
       {route === routes.protocolDetail && <ProtocolDetail protocol={currentProtocol} onBack={() => navigate(routes.protocols)} />}
-      {route === routes.tools && <Tools onOpen={(id) => navigate(routes.htaSupportTool, id)} />}
+      {route === routes.tools && <Tools onOpen={(id) => navigate(routes.htaSupportTool, id)} onOpenProtocol={openProtocol} />}
       {route === routes.htaSupportTool && <HtaSupportTool toolId={selectedId} onBack={() => navigate(routes.tools)} onOpenHta={(payload) => navigate(routes.htaTool, 'hta', payload)} />}
       {route === routes.htaTool && <HtaTool onBack={() => navigate(routes.protocols)} onOpenTool={(id) => navigate(routes.htaSupportTool, id)} incomingContext={routePayload} />}
       {route === routes.procedures && <Procedures />}
