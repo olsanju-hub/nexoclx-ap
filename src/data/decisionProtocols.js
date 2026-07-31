@@ -32,6 +32,8 @@ const hyperkalemiaProtocol = {
     title: 'Asistente AP de hiperpotasemia',
     intro: 'Solicita solo datos que cambian conducta: potasio vigente, ECG, estabilidad, muestra, funcion renal y farmacos.',
     copyPrefix: 'Valoracion AP hiperpotasemia',
+    contextLabel: 'NexoClx AP',
+    operationalTrace: true,
     fields: [
       { id: 'potassium', label: 'Potasio vigente', type: 'number', unit: 'mmol/L', min: 2, max: 10 },
       { id: 'sampleQuality', label: 'Calidad de muestra', type: 'select', required: true, options: [
@@ -95,6 +97,22 @@ const hyperkalemiaProtocol = {
           'No demorar traslado por repetir analitica si hay ECG de riesgo o inestabilidad.',
           'Enviar ECG, valor de potasio, hora de muestra, farmacos y funcion renal disponible.',
         ],
+        recommendations: [
+          {
+            id: 'ap-activate-061',
+            rule: 'HK-AP-TX-001',
+            label: 'Activar 061',
+            detail: 'Solicitar recurso urgente por hiperpotasemia critica, ECG de riesgo o inestabilidad.',
+            critical: true,
+          },
+          {
+            id: 'ap-transfer',
+            rule: 'HK-AP-DST-001',
+            label: 'Derivacion medicalizada',
+            detail: 'Traslado a Urgencias con ECG, potasio, hora de muestra, funcion renal y medicacion.',
+            critical: true,
+          },
+        ],
       },
       {
         status: 'Confirmar',
@@ -105,6 +123,14 @@ const hyperkalemiaProtocol = {
           'Repetir potasio con extraccion correcta y valorar ECG si el resultado previo fue alto o el paciente tiene riesgo.',
           'Si el nuevo valor confirma elevacion o aparecen sintomas/ECG de riesgo, reabrir el asistente con el dato actualizado.',
         ],
+        recommendations: [
+          {
+            id: 'ap-repeat-sample',
+            rule: 'HK-DX-002',
+            label: 'Repetir potasio',
+            detail: 'Confirmar resultado con muestra no hemolizada antes de cerrar conducta ambulatoria.',
+          },
+        ],
       },
       {
         status: 'Urgente',
@@ -113,10 +139,23 @@ const hyperkalemiaProtocol = {
         any: [
           { source: 'computed', id: 'Regla de riesgo', equals: 'HK-RSK-002: hiperpotasemia alta' },
           { source: 'computed', id: 'Regla renal', equals: 'HK-ESC-002: alto riesgo renal o dialisis' },
+          { all: [
+            { id: 'potassium', gt: 5.5 },
+            { id: 'ecgStatus', equals: 'unavailable' },
+          ] },
         ],
         actions: [
           'Derivar con ECG si esta disponible, potasio con hora, funcion renal y medicacion habitual.',
           'Indicar al paciente no tomar suplementos de potasio ni sales potasicas hasta reevaluacion.',
+        ],
+        recommendations: [
+          {
+            id: 'ap-urgent-referral',
+            rule: 'HK-AP-DST-002',
+            label: 'Derivar a Urgencias hoy',
+            detail: 'Enviar al paciente a reevaluacion urgente por potasio alto o riesgo renal.',
+            critical: true,
+          },
         ],
       },
       {
@@ -130,6 +169,14 @@ const hyperkalemiaProtocol = {
         actions: [
           'Revisar farmacos, dieta/aportes y funcion renal; decidir ajuste farmacologico profesional.',
           'Repetir analitica segun riesgo clinico y reabrir asistente si el valor sube, faltan datos o aparecen sintomas.',
+        ],
+        recommendations: [
+          {
+            id: 'ap-follow-up',
+            rule: 'HK-AP-RV-001',
+            label: 'Plan de seguimiento AP',
+            detail: 'Revisar farmacos/aportes y programar control analitico segun riesgo.',
+          },
         ],
       },
     ],
